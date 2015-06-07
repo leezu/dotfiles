@@ -3,6 +3,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'LaTeX-Box-Team/LaTeX-Box'
+Plug 'tpope/vim-unimpaired'
 
 call plug#end()
 
