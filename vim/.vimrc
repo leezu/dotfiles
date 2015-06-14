@@ -4,6 +4,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'LaTeX-Box-Team/LaTeX-Box'
 Plug 'tpope/vim-unimpaired'
+Plug 'scrooloose/nerdcommenter'
+Plug 'ervandew/supertab'
+Plug 'justinmk/vim-sneak'
 
 call plug#end()
 
