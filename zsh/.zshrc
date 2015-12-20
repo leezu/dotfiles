@@ -47,6 +47,10 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(vi-mode git)
 
+# Fix glitches of vi-mode
+bindkey '\e[A' up-line-or-search
+bindkey '\e[B' down-line-or-search
+
 # User configuration
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
