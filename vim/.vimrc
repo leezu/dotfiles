@@ -8,6 +8,14 @@ set showcmd   " Shows the partial command entered so far in the down right corne
 let mapleader = " "
 let maplocalleader = " "
 
+" Window navigation
+map <leader><LEFT> :wincmd h<CR>
+map <leader><UP> :wincmd j<CR>
+map <leader><DOWN> :wincmd k<CR>
+map <leader><RIGHT> :wincmd l<CR>
+
+
+
 " Plugins
 call plug#begin('~/.vim/plugged')
 
