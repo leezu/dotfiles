@@ -10,8 +10,8 @@ let maplocalleader = " "
 
 " Window navigation
 map <leader><LEFT> :wincmd h<CR>
-map <leader><UP> :wincmd j<CR>
-map <leader><DOWN> :wincmd k<CR>
+map <leader><DOWN> :wincmd j<CR>
+map <leader><UP> :wincmd k<CR>
 map <leader><RIGHT> :wincmd l<CR>
 
 
