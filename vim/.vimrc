@@ -17,7 +17,7 @@ map <leader><UP> :wincmd k<CR>
 map <leader><RIGHT> :wincmd l<CR>
 
 "" Often used commands
-map <leader><w> :w <CR>
+map <leader>w :w<CR>
 
 
 " Plugins
