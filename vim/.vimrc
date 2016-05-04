@@ -14,6 +14,8 @@ map <leader><DOWN> :wincmd j<CR>
 map <leader><UP> :wincmd k<CR>
 map <leader><RIGHT> :wincmd l<CR>
 
+" Often used commands
+map <leader><w> :w <CR>
 
 
 " Plugins
@@ -27,19 +29,28 @@ Plug 'lervag/vimtex'
 Plug 'ervandew/supertab'
 Plug 'justinmk/vim-sneak'
 
-" vimtex
-"" Make vimtex work with neovim
-"" Requires neovim-remote package to be installed
+"" Pandoc
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+
+"" LaTeX
+""" Make vimtex work with neovim
+""" Requires neovim-remote package to be installed
 let g:vimtex_latexmk_progname='nvr'
-"" Use Okular for viewing pdfs
+""" Use Okular for viewing pdfs
 let g:vimtex_view_general_viewer = 'okular'
 let g:vimtex_view_general_options = '--unique @pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
 let g:vimtex_quickfix_open_on_warning = 0
 
-" Programming in R
+"" R
 Plug 'vim-scripts/Vim-R-plugin'
 
+"" git
+""" Integrate git command line
+Plug 'tpope/vim-fugitive'
+""" Show diff in sign column
+Plug 'airblade/vim-gitgutter'
+
 call plug#end()
-
-
