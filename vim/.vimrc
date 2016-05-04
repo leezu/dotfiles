@@ -4,17 +4,19 @@ syntax on
 set number
 colorscheme desert
 set showcmd   " Shows the partial command entered so far in the down right corner
+set updatetime=250   " Recommended for vim-gitgutter
 
+" Mapping
 let mapleader = " "
 let maplocalleader = " "
 
-" Window navigation
+"" Window navigation
 map <leader><LEFT> :wincmd h<CR>
 map <leader><DOWN> :wincmd j<CR>
 map <leader><UP> :wincmd k<CR>
 map <leader><RIGHT> :wincmd l<CR>
 
-" Often used commands
+"" Often used commands
 map <leader><w> :w <CR>
 
 
