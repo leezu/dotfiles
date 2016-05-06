@@ -23,7 +23,6 @@ map <leader>w :w<CR>
 " Plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'scrooloose/nerdtree'
 Plug 'lervag/vimtex'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
 " Plug 'tpope/vim-unimpaired'
