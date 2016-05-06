@@ -31,6 +31,13 @@ Plug 'lervag/vimtex'
 Plug 'ervandew/supertab'
 Plug 'justinmk/vim-sneak'
 
+"" fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+"{{
+nnoremap <leader><space> :Files<CR>
+"}}
+
 "" Pandoc
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
