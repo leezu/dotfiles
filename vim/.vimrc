@@ -30,6 +30,12 @@ Plug 'lervag/vimtex'
 Plug 'ervandew/supertab'
 Plug 'justinmk/vim-sneak'
 
+"" Automatically create and restore view sessions
+Plug 'kopischke/vim-stay'
+"{{
+set viewoptions=cursor,folds,slash,unix
+"}}
+
 "" fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
