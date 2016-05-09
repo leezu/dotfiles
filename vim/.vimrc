@@ -49,6 +49,7 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 
 "" LaTeX
+"{{
 """ Make vimtex work with neovim
 """ Requires neovim-remote package to be installed
 let g:vimtex_latexmk_progname='nvr'
@@ -57,6 +58,10 @@ let g:vimtex_view_general_viewer = 'okular'
 let g:vimtex_view_general_options = '--unique @pdf\#src:@line@tex'
 let g:vimtex_view_general_options_latexmk = '--unique'
 let g:vimtex_quickfix_open_on_warning = 0
+""" Folding
+let g:vimtex_fold_enabled = 1
+let g:vimtex_fold_manual = 1 " Folds are recomputed with zx / zX
+"}}
 
 "" R
 Plug 'vim-scripts/Vim-R-plugin'
