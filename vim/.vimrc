@@ -25,10 +25,12 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'lervag/vimtex'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
-" Plug 'tpope/vim-unimpaired'
 " Plug 'scrooloose/nerdcommenter'
 Plug 'ervandew/supertab'
 Plug 'justinmk/vim-sneak'
+
+"" unimpaired.vim: pairs of handy bracket mappings
+Plug 'tpope/vim-unimpaired'
 
 "" Automatically create and restore view sessions
 Plug 'kopischke/vim-stay'
