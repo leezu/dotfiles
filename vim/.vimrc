@@ -27,7 +27,14 @@ Plug 'lervag/vimtex'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
 " Plug 'scrooloose/nerdcommenter'
 Plug 'ervandew/supertab'
+
+"" vim-sneak
+"" Provides way to move quickly and precisely to locations that would be awkward to reach with built-in Vim motions. 
+"" s (sneak forward) or S (sneak backwards), followed by exactly two characters
 Plug 'justinmk/vim-sneak'
+"{{
+let g:sneak#streak = 1
+"}}
 
 "" unimpaired.vim: pairs of handy bracket mappings
 Plug 'tpope/vim-unimpaired'
