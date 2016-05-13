@@ -2,7 +2,6 @@
 filetype plugin indent on
 syntax on
 set number
-colorscheme desert
 set showcmd   " Shows the partial command entered so far in the down right corner
 set updatetime=250   " Recommended for vim-gitgutter
 
@@ -81,4 +80,14 @@ Plug 'tpope/vim-fugitive'
 """ Show diff in sign column
 Plug 'airblade/vim-gitgutter'
 
+"" colorscheme
+Plug 'frankier/neovim-colors-solarized-truecolor-only'
+
 call plug#end()
+
+" Colors
+"" Support true colors
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
+set background=dark " or light
+colorscheme solarized
