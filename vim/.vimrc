@@ -31,6 +31,9 @@ Plug 'lervag/vimtex'
 """ After installation it is necessary to compile with ~/.vim/plugged/YouCompleteMe/install.py --all
 Plug 'Valloric/YouCompleteMe'
 
+"" C++ Debugger
+Plug 'vim-scripts/Conque-GDB'
+
 "" vim-sneak
 "" Provides way to move quickly and precisely to locations that would be awkward to reach with built-in Vim motions. 
 "" s (sneak forward) or S (sneak backwards), followed by exactly two characters
