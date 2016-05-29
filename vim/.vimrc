@@ -25,7 +25,11 @@ call plug#begin('~/.vim/plugged')
 Plug 'lervag/vimtex'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
 " Plug 'scrooloose/nerdcommenter'
-Plug 'ervandew/supertab'
+
+"" Autocomplete
+"" YouCompleteMe
+""" After installation it is necessary to compile with ~/.vim/plugged/YouCompleteMe/install.py --all
+Plug 'Valloric/YouCompleteMe'
 
 "" vim-sneak
 "" Provides way to move quickly and precisely to locations that would be awkward to reach with built-in Vim motions. 
