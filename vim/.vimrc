@@ -6,6 +6,10 @@ set showcmd   " Shows the partial command entered so far in the down right corne
 set updatetime=250   " Recommended for vim-gitgutter
 set hidden   " Only hide buffer when e.g. closing a file. → Undo history persists
 
+"" Code formatting
+set expandtab
+set shiftwidth=4
+
 " Mapping
 let mapleader = " "
 let maplocalleader = " "
@@ -26,6 +30,21 @@ call plug#begin('~/.vim/plugged')
 Plug 'lervag/vimtex'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
 " Plug 'scrooloose/nerdcommenter'
+
+"" Code formatting
+Plug 'rhysd/vim-clang-format'
+"{{
+nmap <leader>k :<C-u>ClangFormat<CR>
+vmap <leader>k :ClangFormat<CR>
+autocmd FileType c ClangFormatAutoEnable
+
+let g:clang_format#command = "clang-format-3.8"
+let g:clang_format#code_style = "llvm"
+let g:clang_format#style_options = {
+            \ "IndentWidth" : 4}
+let g:clang_format#auto_format = 1
+let g:clang_format#auto_format_on_insert_leave = 1
+"}}
 
 "" Autocomplete
 "" YouCompleteMe
