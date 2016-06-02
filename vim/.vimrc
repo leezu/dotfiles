@@ -5,6 +5,7 @@ set number
 set showcmd   " Shows the partial command entered so far in the down right corner
 set updatetime=250   " Recommended for vim-gitgutter
 set hidden   " Only hide buffer when e.g. closing a file. → Undo history persists
+set spell
 
 "" Code formatting
 set expandtab
