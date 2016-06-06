@@ -111,6 +111,13 @@ Plug 'airblade/vim-gitgutter'
 "" colorscheme
 Plug 'frankier/neovim-colors-solarized-truecolor-only'
 
+"" Snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+"{{
+let g:UltiSnipsExpandTrigger="<c-j>"
+"}}
+
 call plug#end()
 
 " Colors
