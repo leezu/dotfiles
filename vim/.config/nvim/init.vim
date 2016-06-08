@@ -26,7 +26,7 @@ map <leader>w :w<CR>
 
 
 " Plugins
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 
 Plug 'lervag/vimtex'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
