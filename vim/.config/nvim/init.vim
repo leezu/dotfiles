@@ -49,8 +49,8 @@ let g:clang_format#auto_format_on_insert_leave = 1
 
 "" Autocomplete
 "" YouCompleteMe
-""" After installation it is necessary to compile with ~/.vim/plugged/YouCompleteMe/install.py --all
-Plug 'Valloric/YouCompleteMe'
+""" Run `/install.py --all` to enable completer support
+Plug 'Valloric/YouCompleteMe', { 'do' : './install.py' }
 
 "" C++ Debugger
 Plug 'vim-scripts/Conque-GDB'
