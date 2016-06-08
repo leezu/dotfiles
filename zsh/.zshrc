@@ -52,6 +52,7 @@ bindkey '\e[A' up-line-or-search
 bindkey '\e[B' down-line-or-search
 
 # User configuration
+export QT_IM_MODULE=fcitx
 
 export PATH="$HOME/.linuxbrew/bin:$HOME/bin:/usr/local/bin:$PATH"
 export MANPATH="$HOME/.linuxbrew/share/man:/usr/local/man:$MANPATH"
