@@ -13,7 +13,7 @@ set shiftwidth=4
 
 " Mapping
 let mapleader = " "
-let maplocalleader = " "
+let maplocalleader = ","
 
 "" Window navigation
 map <leader><LEFT> :wincmd h<CR>
