@@ -100,7 +100,13 @@ let g:vimtex_fold_manual = 1 " Folds are recomputed with zx / zX
 "}}
 
 "" R
-Plug 'vim-scripts/Vim-R-plugin'
+Plug 'jalvesaq/Nvim-R'
+"{{
+let R_assign = 2 " Two underscores (__) get replaced with <-
+"}}
+
+"" CSV
+Plug 'chrisbra/csv.vim'
 
 "" git
 """ Integrate git command line
