@@ -89,3 +89,5 @@ source $ZSH/oh-my-zsh.sh
 # Set KEYTIMEOUT to 0.1 seconds to speed up switching between normal
 # and insert mode
 export KEYTIMEOUT=1
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
