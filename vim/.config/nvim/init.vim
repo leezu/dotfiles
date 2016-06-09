@@ -28,7 +28,6 @@ map <leader>w :w<CR>
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'lervag/vimtex'
 " Plug 'LaTeX-Box-Team/LaTeX-Box'
 " Plug 'scrooloose/nerdcommenter'
 
@@ -85,7 +84,10 @@ Plug 'vim-pandoc/vim-pandoc-syntax'
 
 
 "" LaTeX
+Plug 'lervag/vimtex'
 "{{
+"""Default to latex files
+let g:tex_flavor = "latex"
 """ Make vimtex work with neovim
 """ Requires neovim-remote package to be installed
 let g:vimtex_latexmk_progname='nvr'
