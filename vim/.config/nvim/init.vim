@@ -127,6 +127,16 @@ Plug 'honza/vim-snippets'
 let g:UltiSnipsExpandTrigger="<c-j>"
 "}}
 
+"" vim-airline
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+"Plug 'powerline/fonts', { 'do' : './install.sh' }
+"{{
+let g:airline#extensions#tabline#enabled = 1
+"let g:airline_powerline_fonts = 1
+set t_Co=256
+"}}
+
 call plug#end()
 
 " Colors
