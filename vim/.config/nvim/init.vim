@@ -50,7 +50,7 @@ let g:clang_format#auto_format_on_insert_leave = 1
 "" Autocomplete
 "" YouCompleteMe
 """ Run `/install.py --all` to enable completer support
-Plug 'Valloric/YouCompleteMe', { 'do' : './install.py' }
+Plug 'Valloric/YouCompleteMe', { 'do' : './install.py --clang-completer' }
 
 "" C++ Debugger
 Plug 'vim-scripts/Conque-GDB'
