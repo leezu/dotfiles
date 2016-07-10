@@ -56,7 +56,7 @@ Plug 'Valloric/YouCompleteMe', { 'do' : './install.py --clang-completer' }
 Plug 'vim-scripts/Conque-GDB'
 
 "" vim-sneak
-"" Provides way to move quickly and precisely to locations that would be awkward to reach with built-in Vim motions. 
+"" Provides way to move quickly and precisely to locations that would be awkward to reach with built-in Vim motions.
 "" s (sneak forward) or S (sneak backwards), followed by exactly two characters
 Plug 'justinmk/vim-sneak'
 "{{
@@ -93,9 +93,8 @@ let g:tex_flavor = "latex"
 """ Requires neovim-remote package to be installed
 let g:vimtex_latexmk_progname='nvr'
 """ Use Okular for viewing pdfs
-let g:vimtex_view_general_viewer = 'okular'
-let g:vimtex_view_general_options = '--unique @pdf\#src:@line@tex'
-let g:vimtex_view_general_options_latexmk = '--unique'
+let g:latex_view_general_viewer = 'zathura'
+let g:vimtex_view_method = 'zathura'
 let g:vimtex_quickfix_open_on_warning = 0
 """ Folding
 let g:vimtex_fold_enabled = 1

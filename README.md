@@ -12,6 +12,7 @@
 - Install `vim-plug` package manager
 - Run `:PlugInstall`
 - YouCompleteMe should be rebuilt to support autocompletion
+- For vimtex the pdf viewer zathura is used
 
 ## tmux
 - Install `tpm` plugin manager (at least 2.1)
