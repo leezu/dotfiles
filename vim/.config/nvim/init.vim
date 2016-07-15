@@ -136,6 +136,13 @@ let g:airline#extensions#tabline#enabled = 1
 set t_Co=256
 "}}
 
+"" Surround
+Plug 'tpope/vim-surround'
+
+"" vim-repeat
+""" Enables to use "." for plugins like vim-surround
+Plug 'tpope/vim-repeat'
+
 call plug#end()
 
 " Colors
