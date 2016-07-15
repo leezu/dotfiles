@@ -143,7 +143,22 @@ Plug 'tpope/vim-surround'
 """ Enables to use "." for plugins like vim-surround
 Plug 'tpope/vim-repeat'
 
+"" vim-pencil
+""" Adapts vim to work better for writing prose (e.g. in LaTeX)
+Plug 'reedes/vim-pencil'
+
+"" vim-wordy
+""" Uncover usage problems in your writing
+Plug 'reedes/vim-wordy'
+
 call plug#end()
+
+augroup writing
+  autocmd!
+  autocmd FileType markdown,mkd call pencil#init()
+  autocmd FileType text         call pencil#init()
+  autocmd FileType latex        call pencil#init()
+augroup END
 
 " Colors
 "" Support true colors
