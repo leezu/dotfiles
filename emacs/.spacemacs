@@ -245,7 +245,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   )
 
 (defun dotspacemacs/user-config ()
-  (find-file "~/Dropbox/org/TODO.org")
   "Configuration function for user code.
 This function is called at the very end of Spacemacs initialization after
 layers configuration.
@@ -265,6 +264,32 @@ you should place your code here."
   ;; auto completion
   ;;
   (global-company-mode)
+
+  ;;
+  ;; org mode config
+  ;;
+  (setq org-todo-keywords'
+        ((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED")))
+
+  ;; Parent can't be marked as done unless all children are done
+  (setq org-enforce-todo-dependencies t)
+  (defun org-summary-todo (n-done n-not-done)
+    "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+  ;; org-capture
+  (setq org-default-notes-file "~/Dropbox/org/TODO.org")
+  (setq org-capture-templates
+        (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/TODO.org" "Tasks")
+                 "* TODO %?\n  OPENED: %U\n %i")
+                ("n" "Note" entry (file "~/Dropbox/org/notes.org")
+                 "* %?\n  OPENED: %U\n %i")
+                ("j" "Journal" entry (file+datetree "~/org/journal.org")
+                 "* %?\nEntered on %U\n  %i\n  %a"))))
+
+  ;; org-refile
+  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -274,7 +299,9 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-files (quote ("~/Dropbox/org/TODO.org"))))
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/org/notes.org" "~/Dropbox/org/TODO.org"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
