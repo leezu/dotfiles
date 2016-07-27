@@ -28,7 +28,7 @@ values."
                       auto-completion-enable-help-tooltip t)
      ;; better-defaults
      emacs-lisp
-     ;; git
+     git
      ;; markdown
      org
      ;; (shell :variables
