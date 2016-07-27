@@ -252,6 +252,14 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  ;;
+  ;; keyboard shortcuts
+  ;;
+  ;; window navigation
+  (spacemacs/set-leader-keys "<left>" 'evil-window-left)
+  (spacemacs/set-leader-keys "<up>" 'evil-window-up)
+  (spacemacs/set-leader-keys "<down>" 'evil-window-down)
+  (spacemacs/set-leader-keys "<right>" 'evil-window-right)
 
   ;;
   ;; auto completion
