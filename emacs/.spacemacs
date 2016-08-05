@@ -287,7 +287,7 @@ you should place your code here."
                  "* TODO %?\n  OPENED: %U\n %i")
                 ("n" "Note" entry (file "~/Dropbox/org/notes.org")
                  "* %?\n  OPENED: %U\n %i")
-                ("j" "Journal" entry (file+datetree "~/org/journal.org")
+                ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
                  "* %?\nEntered on %U\n  %i\n  %a"))))
 
   ;; org-refile
