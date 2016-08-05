@@ -303,7 +303,9 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/notes.org" "~/Dropbox/org/TODO.org"))))
+    ("~/Dropbox/org/notes.org" "~/Dropbox/org/TODO.org")))
+ '(typescript-expr-indent-offset 0)
+ '(typescript-indent-level 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
