@@ -39,6 +39,7 @@ values."
      ;; version-control
      typescript
      html
+     javascript
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -309,6 +310,8 @@ you should place your code here."
  '(org-agenda-files
    (quote
     ("~/Dropbox/org/notes.org" "~/Dropbox/org/TODO.org")))
+ '(js2-basic-offset 2)
+ '(js-indent-level 2)
  '(typescript-expr-indent-offset 0)
  '(typescript-indent-level 2))
 (custom-set-faces
