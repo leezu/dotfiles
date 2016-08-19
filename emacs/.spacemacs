@@ -291,7 +291,7 @@ you should place your code here."
 
   (setq org-default-notes-file "~/Dropbox/org/TODO.org")
   (setq org-capture-templates
-        (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/TODO.org" "Tasks")
+        (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/inbox.org" "Tasks")
                  "* TODO %?\n  OPENED: %U\n %i")
                 ("n" "Note" entry (file "~/Dropbox/org/notes.org")
                  "* %?\n  OPENED: %U\n %i")
