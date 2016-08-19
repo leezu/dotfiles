@@ -295,6 +295,9 @@ you should place your code here."
                  "* TODO %?\n  OPENED: %U\n %i")
                 ("n" "Note" entry (file "~/Dropbox/org/notes.org")
                  "* %?\n  OPENED: %U\n %i")
+                ("s" "Code Snippet" entry (file "~/Dropbox/org/code-snippets.org")
+                 ;; Prompt for tag and language
+                 "* %?\t%^g\n#+BEGIN_SRC %^{language}\n%i\n#+END_SRC")
                 ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
                  "* %?\nEntered on %U\n  %i\n  %a"))))
 
