@@ -287,6 +287,8 @@ you should place your code here."
       (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
   ;; org-capture
+  (spacemacs/set-leader-keys "oc" 'org-capture)
+
   (setq org-default-notes-file "~/Dropbox/org/TODO.org")
   (setq org-capture-templates
         (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/TODO.org" "Tasks")
