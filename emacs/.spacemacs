@@ -312,6 +312,9 @@ you should place your code here."
     ("~/Dropbox/org/notes.org" "~/Dropbox/org/TODO.org")))
  '(js2-basic-offset 2)
  '(js-indent-level 2)
+ '(web-mode-markup-indent-offset 2)
+ '(web-mode-css-indent-offset 2)
+ '(web-mode-code-indent-offset 2)
  '(typescript-expr-indent-offset 0)
  '(typescript-indent-level 2))
 (custom-set-faces
