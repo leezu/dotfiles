@@ -31,6 +31,11 @@ values."
      git
      ;; markdown
      org
+     (deft :variables
+       deft-directory "~/Dropbox/org/deft"
+       deft-recursive t
+       deft-use-filter-string-for-filename t
+       deft-use-filename-as-title t)
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
