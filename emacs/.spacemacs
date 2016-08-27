@@ -294,6 +294,7 @@ you should place your code here."
 
   ;; org-capture
   (spacemacs/set-leader-keys "oc" 'org-capture)
+  (spacemacs/set-leader-keys "oa" 'org-agenda-list)
 
   (setq org-default-notes-file "~/Dropbox/org/TODO.org")
   (setq org-capture-templates
