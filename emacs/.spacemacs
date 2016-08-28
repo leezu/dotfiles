@@ -286,7 +286,8 @@ you should place your code here."
   ;; org mode config
   ;;
   (setq org-todo-keywords'
-        ((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED")))
+        ((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED"))
+        org-log-into-drawer t)
 
   ;; Parent can't be marked as done unless all children are done
   (setq org-enforce-todo-dependencies t)
@@ -302,14 +303,17 @@ you should place your code here."
   (setq org-default-notes-file "~/Dropbox/org/TODO.org")
   (setq org-capture-templates
         (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/organizer.org" "Inbox")
-                 "* TODO %?\n  OPENED: %U\n %i")
-                ("n" "Note" entry (file "~/Dropbox/org/notes.org")
-                 "* %?\n  OPENED: %U\n %i")
-                ("s" "Code Snippet" entry (file "~/Dropbox/org/code-snippets.org")
+                 "* TODO %?\nOPENED: %U\n %i")
+                ("w" "Waiting for" entry (file+headline "~/Dropbox/org/organizer.org" "Waiting for")
+                 "* WAITING %?\nOPENED: %U\n %i")
+                ("s" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Inbox")
+                 "* TODO %?\nOPENED: %U\n %i")
+                ("c" "Code Snippet" entry (file "~/Dropbox/org/code-snippets.org")
                  ;; Prompt for tag and language
                  "* %?\t%^g\n#+BEGIN_SRC %^{language}\n%i\n#+END_SRC")
                 ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-                 "* %?\nEntered on %U\n  %i\n  %a"))))
+                 "* %?\nEntered on %U\n"))))
+
 
   ;; org-refile
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
