@@ -30,7 +30,10 @@ values."
      emacs-lisp
      git
      ;; markdown
-     org
+     (org :variables
+          org-agenda-span 10
+          org-agenda-start-on-weekday nil
+          org-agenda-start-day "-3d")
      (deft :variables
        deft-directory "~/Dropbox/org/deft"
        deft-recursive t
@@ -310,6 +313,16 @@ you should place your code here."
 
   ;; org-refile
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+
+  ;; tracking habits
+  (setq org-modules (quote (org-habit)))
+  (require 'org-habit)
+  (setq org-habit-preceding-days 10
+        org-habit-following-days 1
+        org-habit-graph-column 80
+        org-habit-show-habits-only-for-today t
+        org-habit-show-all-today t)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
