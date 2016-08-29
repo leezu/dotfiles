@@ -299,6 +299,7 @@ you should place your code here."
   ;; org-capture
   (spacemacs/set-leader-keys "oc" 'org-capture)
   (spacemacs/set-leader-keys "oa" 'org-agenda-list)
+  (spacemacs/set-leader-keys "oo" 'org-agenda)
 
   (setq org-default-notes-file "~/Dropbox/org/TODO.org")
   (setq org-capture-templates
@@ -314,6 +315,14 @@ you should place your code here."
                 ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
                  "* %?\nEntered on %U\n"))))
 
+  ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
+  (setq org-agenda-custom-commands
+        '(("p" tags "PROJECT-MAYBE-DONE" nil)
+          ("m" tags "PROJECT&MAYBE" nil)
+          ))
+
+  (setq org-stuck-projects
+        '("+PROJECT/-MAYBE-DONE" ("TODO" "STARTED") nil "\\<IGNORE\\>"))
 
   ;; org-refile
   (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
