@@ -267,6 +267,10 @@ you should place your code here."
   ;; Golden ratio mode
   (golden-ratio-mode 1)
 
+  ;; Truncate lines
+  (spacemacs/toggle-truncate-lines-on)
+  ;; Visual line navigation for textual modes
+  (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
   ;;
   ;; keyboard shortcuts
