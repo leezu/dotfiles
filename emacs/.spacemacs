@@ -293,6 +293,8 @@ you should place your code here."
         ((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED"))
         org-log-into-drawer t)
 
+  (setq org-tags-exclude-from-inheritance '("PROJECT"))
+
   ;; Parent can't be marked as done unless all children are done
   (setq org-enforce-todo-dependencies t)
   (defun org-summary-todo (n-done n-not-done)
@@ -321,7 +323,8 @@ you should place your code here."
 
   ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
   (setq org-agenda-custom-commands
-        '(("p" tags "PROJECT-MAYBE-DONE" nil)
+        '(("i" "unscheduled tasks" tags-todo "-SCHEDULED={.+}-DEADLINE={.+}" nil)
+          ("p" tags "PROJECT-MAYBE-DONE" nil)
           ("m" tags "PROJECT&MAYBE" nil)
           ))
 
