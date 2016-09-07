@@ -13,7 +13,7 @@ values."
    dotspacemacs-distribution 'spacemacs
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/layers/")
    ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
@@ -29,6 +29,9 @@ values."
      ;; better-defaults
      emacs-lisp
      git
+     (latex :variables
+            latex-build-command "LatexMk")
+     bibtex
      ;; markdown
      (org :variables
           org-agenda-span 10
@@ -50,6 +53,7 @@ values."
      javascript
      python
      c-c++
+     ;;org-trello
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -347,6 +351,21 @@ you should place your code here."
         org-habit-graph-column 80
         org-habit-show-habits-only-for-today t
         org-habit-show-all-today t)
+
+
+  ;;
+  ;; Academic setup
+  ;;
+
+  ;; BibTeX Layer
+  (setq org-ref-default-bibliography '("~/Dropbox/Papers/references.bib")
+        org-ref-pdf-directory "~/Dropbox/Papers/"
+        org-ref-bibliography-notes "~/Dropbox/Papers/notes.org"
+        bibtex-completion-bibliography '("~/Dropbox/Papers/references.bib")
+        bibtex-completion-library-path '("~/Dropbox/Papers/")
+        bibtex-completion-notes-path "~/Dropbox/Papers/notes.org")
+
+  (spacemacs/set-leader-keys "ob" 'helm-bibtex)
 
   )
 
