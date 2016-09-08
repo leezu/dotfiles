@@ -32,6 +32,7 @@ values."
      (latex :variables
             latex-build-command "LatexMk")
      bibtex
+     pdf-tools
      ;; markdown
      (org :variables
           org-agenda-span 10
@@ -370,6 +371,8 @@ you should place your code here."
 
   (spacemacs/set-leader-keys "ob" 'helm-bibtex)
 
+  (setq pdf-misc-print-programm "/usr/bin/lp"
+        pdf-misc-print-programm-args (quote ("-d UST4215")))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
