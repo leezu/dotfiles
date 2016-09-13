@@ -298,63 +298,71 @@ you should place your code here."
   ;;
   ;; org mode config
   ;;
-  (setq org-todo-keywords'
-        ((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED"))
-        org-log-into-drawer t)
-
-  (setq org-tags-exclude-from-inheritance '("PROJECT"))
-
-  ;; Parent can't be marked as done unless all children are done
-  (setq org-enforce-todo-dependencies t)
-  (defun org-summary-todo (n-done n-not-done)
-    "Switch entry to DONE when all subentries are done, to TODO otherwise."
-    (let (org-log-done org-log-states)   ; turn off logging
-      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
   ;; org-capture
   (spacemacs/set-leader-keys "oc" 'org-capture)
   (spacemacs/set-leader-keys "oa" 'org-agenda-list)
   (spacemacs/set-leader-keys "oo" 'org-agenda)
 
-  (setq org-default-notes-file "~/Dropbox/org/TODO.org")
-  (setq org-capture-templates
-        (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/organizer.org" "Inbox")
-                 "* TODO %?\nOPENED: %U\n %i")
-                ("w" "Waiting for" entry (file+headline "~/Dropbox/org/organizer.org" "Waiting for")
-                 "* WAITING %?\nOPENED: %U\n %i")
-                ("s" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Inbox")
-                 "* TODO %?\nOPENED: %U\n %i")
-                ("c" "Code Snippet" entry (file "~/Dropbox/org/code-snippets.org")
-                 ;; Prompt for tag and language
-                 "* %?\t%^g\n#+BEGIN_SRC %^{language}\n%i\n#+END_SRC")
+  (with-eval-after-load 'org
+    (setq org-todo-keywords'
+          ((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED"))
+          org-log-into-drawer t)
 
-                ("j" "Templates for journals")
-                ("jw" "Work logbook" entry (file+datetree "~/Dropbox/org/work-journal.org")
-                 "* %?\nEntered on %U\n")
-                ("jp" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-                 "* %?\nEntered on %U\n"))))
+    (setq org-tags-exclude-from-inheritance '("PROJECT"))
 
-  ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
-  (setq org-agenda-custom-commands
-        '(("i" "unscheduled tasks" tags-todo "-SCHEDULED={.+}-DEADLINE={.+}" nil)
-          ("p" tags "PROJECT-MAYBE-DONE" nil)
-          ("m" tags "PROJECT&MAYBE" nil)
-          ))
+    ;; Parent can't be marked as done unless all children are done
+    (setq org-enforce-todo-dependencies t)
+    (defun org-summary-todo (n-done n-not-done)
+      "Switch entry to DONE when all subentries are done, to TODO otherwise."
+      (let (org-log-done org-log-states)   ; turn off logging
+        (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-  (setq org-stuck-projects
-        '("+PROJECT/-MAYBE-DONE" ("TODO" "STARTED") nil "\\<IGNORE\\>"))
+    ;; org-capture
+    (spacemacs/set-leader-keys "oc" 'org-capture)
+    (spacemacs/set-leader-keys "oa" 'org-agenda-list)
+    (spacemacs/set-leader-keys "oo" 'org-agenda)
 
-  ;; org-refile
-  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+    (setq org-default-notes-file "~/Dropbox/org/TODO.org")
+    (setq org-capture-templates
+          (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/organizer.org" "Inbox")
+                   "* TODO %?\nOPENED: %U\n %i")
+                  ("w" "Waiting for" entry (file+headline "~/Dropbox/org/organizer.org" "Waiting for")
+                   "* WAITING %?\nOPENED: %U\n %i")
+                  ("s" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Inbox")
+                   "* TODO %?\nOPENED: %U\n %i")
+                  ("c" "Code Snippet" entry (file "~/Dropbox/org/code-snippets.org")
+                   ;; Prompt for tag and language
+                   "* %?\t%^g\n#+BEGIN_SRC %^{language}\n%i\n#+END_SRC")
 
-  ;; tracking habits
-  (setq org-modules (quote (org-habit)))
-  (require 'org-habit)
-  (setq org-habit-preceding-days 10
-        org-habit-following-days 1
-        org-habit-graph-column 80
-        org-habit-show-habits-only-for-today t
-        org-habit-show-all-today t)
+                  ("j" "Templates for journals")
+                  ("jw" "Work logbook" entry (file+datetree "~/Dropbox/org/work-journal.org")
+                   "* %?\nEntered on %U\n")
+                  ("jp" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+                   "* %?\nEntered on %U\n"))))
+
+    ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
+    (setq org-agenda-custom-commands
+          '(("i" "unscheduled tasks" tags-todo "-SCHEDULED={.+}-DEADLINE={.+}" nil)
+            ("p" tags "PROJECT-MAYBE-DONE" nil)
+            ("m" tags "PROJECT&MAYBE" nil)
+            ))
+
+    (setq org-stuck-projects
+          '("+PROJECT/-MAYBE-DONE" ("TODO" "STARTED") nil "\\<IGNORE\\>"))
+
+    ;; org-refile
+    (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+
+    ;; tracking habits
+    (setq org-modules (quote (org-habit)))
+    (require 'org-habit)
+    (setq org-habit-preceding-days 10
+          org-habit-following-days 1
+          org-habit-graph-column 80
+          org-habit-show-habits-only-for-today t
+          org-habit-show-all-today t)
+    )
 
 
   ;;
