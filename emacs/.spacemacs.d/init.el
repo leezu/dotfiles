@@ -55,6 +55,7 @@ values."
      python
      c-c++
      ;;org-trello
+     finance
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -362,6 +363,9 @@ you should place your code here."
           org-habit-graph-column 80
           org-habit-show-habits-only-for-today t
           org-habit-show-all-today t)
+
+    ;; org babel
+    (add-to-list 'org-babel-load-languages '(ledger . t))
     )
 
 
@@ -381,6 +385,12 @@ you should place your code here."
 
   (setq pdf-misc-print-programm "/usr/bin/lp"
         pdf-misc-print-programm-args (quote ("-d UST4215")))
+
+  ;;
+  ;; Finance
+  ;;
+  ;;FIXME: should be a layer to load package
+  (add-to-list 'auto-mode-alist '("\\.ledger\\'" . org-mode))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
