@@ -53,7 +53,9 @@ values."
      html
      javascript
      python
-     c-c++
+     (c-c++ :variables
+            c-c++-enable-clang-support t
+            c-c++-default-mode-for-headers 'c++-mode)
      ;;org-trello
      finance
      )
@@ -391,6 +393,26 @@ you should place your code here."
   ;;
   ;;FIXME: should be a layer to load package
   (add-to-list 'auto-mode-alist '("\\.ledger\\'" . org-mode))
+
+  ;;
+  ;; C++
+  ;;
+  (with-eval-after-load 'c++
+    (spacemacs/set-leader-keys-for-major-mode 'c++-mode
+      "o=" 'clang-format-region))
+
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (unless (or (file-exists-p "makefile")
+                          (file-exists-p "Makefile"))
+                (set (make-local-variable 'compile-command)
+                     (concat "g++ -std=c++14 -Wall " buffer-file-name " && ./a.out")))
+              ;; (push 'company-semantic company-backends)
+              (setq company-clang-arguments '("-std=c++14"))
+              (setq flycheck-clang-language-standard "c++14")
+              (setq flycheck-gcc-language-standard "c++14")
+              ))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
