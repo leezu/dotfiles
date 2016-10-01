@@ -53,6 +53,8 @@ values."
      html
      javascript
      python
+     semantic
+     gtags
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
@@ -309,46 +311,51 @@ you should place your code here."
 
   (with-eval-after-load 'org
     (setq org-todo-keywords'
-          ((sequence "TODO" "STARTED" "WAITING" "|" "DONE" "CANCELLED" "DELEGATED"))
+          ((sequence "TODO" "STARTED" "|" "DONE" "CANCELLED")
+           (sequence "WAITING" "|" "CANCELLED")
+           (sequence "SOMEDAY" "|" "CANCELLED"))
           org-log-into-drawer t)
+
+    (setq org-tag-alist '(("@research" . ?r)
+                          ("@work" . ?w)
+                          ("@home" . ?h)))
 
     (setq org-tags-exclude-from-inheritance '("PROJECT"))
 
     ;; Parent can't be marked as done unless all children are done
-    (setq org-enforce-todo-dependencies t)
+    ;(setq org-enforce-todo-dependencies t)
     (defun org-summary-todo (n-done n-not-done)
       "Switch entry to DONE when all subentries are done, to TODO otherwise."
       (let (org-log-done org-log-states)   ; turn off logging
         (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
 
-    ;; org-capture
-    (spacemacs/set-leader-keys "oc" 'org-capture)
-    (spacemacs/set-leader-keys "oa" 'org-agenda-list)
-    (spacemacs/set-leader-keys "oo" 'org-agenda)
-
     (setq org-default-notes-file "~/Dropbox/org/TODO.org")
     (setq org-capture-templates
-          (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/organizer.org" "Inbox")
-                   "* TODO %?\nOPENED: %U\n %i")
-                  ("w" "Waiting for" entry (file+headline "~/Dropbox/org/organizer.org" "Waiting for")
-                   "* WAITING %?\nOPENED: %U\n %i")
-                  ("s" "Someday" entry (file+headline "~/Dropbox/org/someday.org" "Inbox")
-                   "* TODO %?\nOPENED: %U\n %i")
+          (quote (("t" "Todo" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
+                   "* TODO %? %^g \nOPENED: %U\n %i")
+                  ("w" "Waiting for" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
+                   "* WAITING %? %^g \nOPENED: %U\n %i")
+                  ("s" "Someday" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
+                   "* SOMEDAY %? %^g \nOPENED: %U\n %i")
+
+                  ;; TODO merge into journal
                   ("c" "Code Snippet" entry (file "~/Dropbox/org/code-snippets.org")
                    ;; Prompt for tag and language
                    "* %?\t%^g\n#+BEGIN_SRC %^{language}\n%i\n#+END_SRC")
 
-                  ("j" "Templates for journals")
-                  ("jw" "Work logbook" entry (file+datetree "~/Dropbox/org/work-journal.org")
-                   "* %?\nEntered on %U\n")
-                  ("jp" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-                   "* %?\nEntered on %U\n"))))
+                  ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+                   "* %?%^g\nEntered on %U\n"))))
 
     ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
     (setq org-agenda-custom-commands
           '(("i" "unscheduled tasks" tags-todo "-SCHEDULED={.+}-DEADLINE={.+}" nil)
             ("p" tags "PROJECT-MAYBE-DONE" nil)
             ("m" tags "PROJECT&MAYBE" nil)
+
+            ("g" . "GTD contexts")
+            ("gr" tags-todo "@research" nil)
+            ("gw" tags-todo "@work" nil)
+            ("gh" tags-todo "@home" nil)
             ))
 
     (setq org-stuck-projects
