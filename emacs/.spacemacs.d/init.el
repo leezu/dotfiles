@@ -52,7 +52,8 @@ values."
      typescript
      html
      javascript
-     python
+     (python :variables
+             python-enable-yapf-format-on-save t)
      semantic
      gtags
      (c-c++ :variables
