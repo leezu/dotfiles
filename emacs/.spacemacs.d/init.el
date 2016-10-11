@@ -36,6 +36,7 @@ values."
      ;; markdown
      (org :variables
           org-agenda-span 10
+          org-extend-today-until 5 ;extend 'today' to 5AM
           org-agenda-start-on-weekday nil)
      (deft :variables
        deft-directory "~/Dropbox/org/deft"
