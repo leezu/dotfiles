@@ -309,6 +309,7 @@ you should place your code here."
   (spacemacs/set-leader-keys "oa" 'org-agenda-list)
   (spacemacs/set-leader-keys "oo" 'org-agenda)
 
+  ;; org-agenda
   (with-eval-after-load 'org
     (setq org-todo-keywords'
           ((sequence "TODO" "STARTED" "|" "DONE" "CANCELLED")
@@ -362,7 +363,11 @@ you should place your code here."
           '("+PROJECT/-MAYBE-DONE" ("TODO" "STARTED") nil "\\<IGNORE\\>"))
 
     ;; org-refile
-    (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+    (setq org-refile-targets '(quote ((nil :maxlevel . 9)
+                               (org-agenda-files . (:maxlevel . 6)))))
+    (setq org-outline-path-complete-in-steps t)         ; Refile in a single go
+    (setq org-refile-use-outline-path t)                  ; Show full paths for refiling
+    (setq org-refile-allow-creating-parent-nodes (quote confirm))  ; Allow refile to create parent tasks with confirmation
 
     ;; tracking habits
     (setq org-modules (quote (org-habit)))
