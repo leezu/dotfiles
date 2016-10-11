@@ -36,8 +36,7 @@ values."
      ;; markdown
      (org :variables
           org-agenda-span 10
-          org-agenda-start-on-weekday nil
-          org-agenda-start-day "-3d")
+          org-agenda-start-on-weekday nil)
      (deft :variables
        deft-directory "~/Dropbox/org/deft"
        deft-recursive t
@@ -313,7 +312,7 @@ you should place your code here."
   ;; org-agenda
   (with-eval-after-load 'org
     (setq org-todo-keywords'
-          ((sequence "TODO" "STARTED" "|" "DONE" "CANCELLED")
+          ((sequence "TODO" "NEXT" "STARTED" "|" "DONE" "CANCELLED")
            (sequence "WAITING" "|" "CANCELLED")
            (sequence "SOMEDAY" "|" "CANCELLED"))
           org-log-into-drawer t)
@@ -350,15 +349,63 @@ you should place your code here."
 
     ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
     (setq org-agenda-custom-commands
-          '(("i" "unscheduled tasks" tags-todo "-SCHEDULED={.+}-DEADLINE={.+}" nil)
-            ("p" tags "PROJECT-MAYBE-DONE" nil)
-            ("m" tags "PROJECT&MAYBE" nil)
+          (quote (
+                  ;; The following ressources were helpful when creating the custom agenda commands
+                  ;; https://www.reddit.com/r/emacs/comments/2b9obs/org_users_what_did_it_take_you_a_long_time_to/
 
-            ("g" . "GTD contexts")
-            ("gr" tags-todo "@research" nil)
-            ("gw" tags-todo "@work" nil)
-            ("gh" tags-todo "@home" nil)
-            ))
+                  ;; Weekly review
+                  ("i" "unscheduled tasks" tags-todo "-SCHEDULED={.+}-DEADLINE={.+}" nil)
+                  ("p" tags "PROJECT-MAYBE-DONE" nil)
+                  ("m" tags "PROJECT&MAYBE" nil)
+
+                  ;; Context lists
+                  ("g" . "GTD contexts")
+                  ("gr" "Research Agenda"
+                    ((agenda ""
+                            ((org-agenda-span 'day)))
+                    (todo "NEXT"
+                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                    (todo ""
+                          ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
+                           (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
+                           (org-agenda-sorting-strategy '(deadline-up))
+                           (org-agenda-overriding-header "Upcoming deadlines"))))
+                   ((org-agenda-tag-filter-preset '("+@research"))))
+                  ("gw" "Work Agenda"
+                    ((agenda ""
+                            ((org-agenda-span 'day)))
+                    (todo "NEXT"
+                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                    (todo ""
+                          ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
+                           (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
+                           (org-agenda-sorting-strategy '(deadline-up))
+                           (org-agenda-overriding-header "Upcoming deadlines"))))
+                   ((org-agenda-tag-filter-preset '("+@work"))))
+                  ("gh" "Home Agenda"
+                    ((agenda ""
+                            ((org-agenda-span 'day)))
+                    (todo "NEXT"
+                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                    (todo ""
+                          ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
+                           (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
+                           (org-agenda-sorting-strategy '(deadline-up))
+                           (org-agenda-overriding-header "Upcoming deadlines"))))
+                   ((org-agenda-tag-filter-preset '("+@home"))))
+                  ("go" "Other Agenda"
+                    ((agenda ""
+                            ((org-agenda-span 'day)))
+                    (todo "NEXT"
+                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                    (todo ""
+                          ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
+                           (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
+                           (org-agenda-sorting-strategy '(deadline-up))
+                           (org-agenda-overriding-header "Upcoming deadlines"))))
+                   ((org-agenda-tag-filter-preset '("-@research" "-@home" "-@work"))))
+
+                  )))
 
     (setq org-stuck-projects
           '("+PROJECT/-MAYBE-DONE" ("TODO" "STARTED") nil "\\<IGNORE\\>"))
