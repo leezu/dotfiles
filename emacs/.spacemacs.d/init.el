@@ -565,7 +565,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/organizer.org" "~/Dropbox/org/deft/")))
+    ("~/Dropbox/org/organizer.org" "~/Dropbox/org/deft/" "~/Dropbox/Papers/notes.org")))
  '(js2-basic-offset 2)
  '(js-indent-level 2)
  '(web-mode-markup-indent-offset 2)
