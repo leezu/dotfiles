@@ -444,8 +444,8 @@ you should place your code here."
                   ("cr" "Research Agenda"
                     ((agenda ""
                             ((org-agenda-span 'day)))
-                    (todo "NEXT"
-                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                    (todo "NEXT|STARTED"
+                           ((org-agenda-overriding-header "Started tasks and tasks ready to be done next")))
                     (todo ""
                           ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
                            (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
@@ -455,8 +455,8 @@ you should place your code here."
                   ("cw" "Work Agenda"
                     ((agenda ""
                             ((org-agenda-span 'day)))
-                    (todo "NEXT"
-                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                     (todo "NEXT|STARTED"
+                           ((org-agenda-overriding-header "Started tasks and tasks ready to be done next")))
                     (todo ""
                           ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
                            (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
@@ -466,8 +466,8 @@ you should place your code here."
                   ("ch" "Home Agenda"
                     ((agenda ""
                             ((org-agenda-span 'day)))
-                    (todo "NEXT"
-                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                     (todo "NEXT|STARTED"
+                           ((org-agenda-overriding-header "Started tasks and tasks ready to be done next")))
                     (todo ""
                           ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
                            (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
@@ -477,8 +477,8 @@ you should place your code here."
                   ("co" "Other Agenda"
                     ((agenda ""
                             ((org-agenda-span 'day)))
-                    (todo "NEXT"
-                           ((org-agenda-overriding-header "Tasks ready to be done NEXT")))
+                     (todo "NEXT|STARTED"
+                           ((org-agenda-overriding-header "Started tasks and tasks ready to be done next")))
                     (todo ""
                           ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
                            (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
