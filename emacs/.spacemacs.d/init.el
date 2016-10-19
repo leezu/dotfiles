@@ -526,6 +526,19 @@ you should place your code here."
 
   (spacemacs/set-leader-keys "ob" 'helm-bibtex)
 
+  ;; Template for paper notes
+  (setq org-ref-note-title-format
+        "** TODO %y - %t
+:PROPERTIES:
+ :Custom_ID: %k
+:END:
+cite:%k
+")
+  (setq bibtex-completion-notes-template-one-file
+        "\n** TODO ${year} - ${title}\n:PROPERTIES:\n :Custom_ID: ${=key=}\n:END:\ncite:${=key=}"
+        )
+
+  ;; Printing
   (setq pdf-misc-print-programm "/usr/bin/lp"
         pdf-misc-print-programm-args (quote ("-d UST4215")))
 
