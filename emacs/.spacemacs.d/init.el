@@ -46,7 +46,7 @@ values."
             latex-build-command "LatexMk")
      bibtex
      pdf-tools
-     ;; markdown
+     markdown
      (org :variables
           org-agenda-span 10
           org-extend-today-until 5 ;extend 'today' to 5AM
