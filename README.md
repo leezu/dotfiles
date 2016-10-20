@@ -1,7 +1,8 @@
 # Enabling on a new server
 
 - Clone repository to `~/.dotfiles`
-- Run `stow --ignore=README.md .` in `~/.dotfiles`
+- Run `mkdir ~/.config/nvim`
+- Run `stow DIR` for all directory names in `~/.dotfiles`
 
 ## zsh
 - Install `oh-my-zsh`
@@ -17,3 +18,8 @@
 ## tmux
 - Install `tpm` plugin manager (at least 2.1)
 - Press prefix + I (capital I, as in Install) to fetch the plugins
+
+## emacs
+- Clone spacemacs repository into `~/.spacemacs.d/`
+- `mkdir ~/.spacemacs.d/layers`
+- Open emacs to install plugins
