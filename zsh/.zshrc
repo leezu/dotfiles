@@ -52,7 +52,14 @@ plugins=(git)
 bindkey '\e[A' up-line-or-search
 bindkey '\e[B' down-line-or-search
 
-# User configuration
+
+
+
+###
+### User configuration
+###
+
+# Chinese support with fcitx
 export QT_IM_MODULE=fcitx
 
 # Python virtualenvwrapper
