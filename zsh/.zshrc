@@ -55,9 +55,6 @@ bindkey '\e[B' down-line-or-search
 # User configuration
 export QT_IM_MODULE=fcitx
 
-export PATH="$HOME/.linuxbrew/bin:$HOME/bin:/usr/local/bin:$PATH"
-export MANPATH="$HOME/.linuxbrew/share/man:/usr/local/man:$MANPATH"
-export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
 
 source $ZSH/oh-my-zsh.sh
 
