@@ -627,7 +627,7 @@ cite:%k
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
    (quote
-    ("~/Dropbox/org/organizer.org" "~/Dropbox/org/deft/" "~/Dropbox/Papers/notes.org")))
+    ("~/Dropbox/org/organizer.org" "~/Dropbox/org/deft/" "~/Dropbox/Papers/notes.org" "~/Develop/leezu.github.io/posts")))
  '(js2-basic-offset 2)
  '(js-indent-level 2)
  '(web-mode-markup-indent-offset 2)
