@@ -55,6 +55,11 @@ bindkey '\e[B' down-line-or-search
 # User configuration
 export QT_IM_MODULE=fcitx
 
+# Python virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export PROJECT_HOME=$HOME/Devel
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh
+
 
 source $ZSH/oh-my-zsh.sh
 
