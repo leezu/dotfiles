@@ -59,12 +59,24 @@ bindkey '\e[B' down-line-or-search
 ### User configuration
 ###
 
+if [[ $TERM == "dumb" ]]; then	# in emacs
+    PS1='%(?..[%?])%!:%~%# '
+    # for tramp to not hang, need the following. cf:
+    # http://www.emacswiki.org/emacs/TrampMode
+    unsetopt zle
+    unsetopt prompt_cr
+    unsetopt prompt_subst
+    unfunction precmd
+    unfunction preexec
+else
+    source $ZSH/oh-my-zsh.sh
+fi
+
+
+
 # Chinese support with fcitx
 export QT_IM_MODULE=fcitx
 
-
-
-source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
