@@ -42,6 +42,7 @@ values."
      ;; better-defaults
      emacs-lisp
      git
+     shell
      (latex :variables
             latex-build-command "LatexMk")
      bibtex
