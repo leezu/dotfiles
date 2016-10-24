@@ -350,6 +350,20 @@ you should place your code here."
   ;;
   (global-company-mode)
 
+
+  ;;
+  ;; Remote work / TRAMP
+  ;;
+
+  ;; Make sure "/usr/local/bin" is first on path.
+  ;; Needed to find the correct version of git on dycpu1 / dycpu2
+  (setq tramp-remote-path
+        '(
+          "/usr/local/bin"
+          tramp-default-remote-path
+          )
+        )
+
   ;;
   ;; org mode config
   ;;
