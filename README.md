@@ -22,4 +22,5 @@
 ## emacs
 - Clone spacemacs repository into `~/.spacemacs.d/`
 - `mkdir ~/.spacemacs.d/layers`
+- Install prerequisites for pdf-tools layer
 - Open emacs to install plugins
