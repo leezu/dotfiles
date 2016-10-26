@@ -360,7 +360,7 @@ you should place your code here."
   ;; Needed to find the correct version of git on dycpu1 / dycpu2
   (setq tramp-remote-path
         '(
-          "/usr/local/bin"
+          tramp-own-remote-path
           tramp-default-remote-path
           )
         )
