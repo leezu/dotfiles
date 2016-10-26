@@ -109,3 +109,8 @@ export QT_IM_MODULE=fcitx
 export KEYTIMEOUT=1
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# load $HOST specific setting
+if [[ -f ~/.zshrc-$HOST ]]; then
+    source ~/.zshrc-$HOST
+fi
