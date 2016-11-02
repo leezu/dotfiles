@@ -24,3 +24,6 @@
 - `mkdir ~/.spacemacs.d/layers`
 - Install prerequisites for pdf-tools layer
 - Open emacs to install plugins
+
+## R
+- `mkdir -p ~/develop/R/3.2`
