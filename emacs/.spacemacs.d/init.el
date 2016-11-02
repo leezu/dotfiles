@@ -39,15 +39,11 @@ values."
      (auto-completion :variables
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip t)
-     ;; better-defaults
-     emacs-lisp
-     git
-     shell
-     (latex :variables
-            latex-build-command "LatexMk")
+     ;; Academic
      bibtex
      pdf-tools
-     markdown
+
+     ;; Org
      (org :variables
           org-agenda-span 10
           org-extend-today-until 5 ;extend 'today' to 5AM
@@ -57,6 +53,17 @@ values."
        deft-recursive t
        deft-use-filter-string-for-filename t
        deft-use-filename-as-title t)
+
+     ;; Finance
+     finance
+
+     ;; Programming
+     emacs-lisp
+     git
+     shell
+     (latex :variables
+            latex-build-command "LatexMk")
+     markdown
      syntax-checking
      typescript
      html
@@ -68,7 +75,6 @@ values."
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
-     finance
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
