@@ -57,12 +57,7 @@ values."
        deft-recursive t
        deft-use-filter-string-for-filename t
        deft-use-filename-as-title t)
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
      syntax-checking
-     ;; version-control
      typescript
      html
      javascript
@@ -73,7 +68,6 @@ values."
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
-     ;;org-trello
      finance
      )
    ;; List of additional packages that will be installed without being
