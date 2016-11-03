@@ -75,6 +75,7 @@ values."
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
+     ess
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -579,6 +580,12 @@ you should place your code here."
   ;;
   ;; Academic setup
   ;;
+
+  ;; Reproducible research
+  ;; http://emacs.stackexchange.com/questions/17063/how-to-setup-knitr-workflow-in-emacs/17065#17065
+  (setq ess-swv-pdflatex-commands '("lualatex" "make")
+        ess-swv-processor 'knitr
+        ess-pdf-viewer-pref '("emacsclient"))
 
   ;; BibTeX Layer
   (setq org-ref-default-bibliography '("~/Dropbox/Papers/references.bib")
