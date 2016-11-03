@@ -85,7 +85,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(persp-mode)
+   dotspacemacs-excluded-packages '()
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -336,6 +336,8 @@ you should place your code here."
   (spacemacs/toggle-truncate-lines-on)
   ;; Visual line navigation for textual modes
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  ;; Fix persp-mode
+  (setq persp-is-ibc-as-f-supported nil)
 
   ;;
   ;; keyboard shortcuts
