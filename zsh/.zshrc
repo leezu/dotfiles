@@ -72,7 +72,12 @@ else
     source $ZSH/oh-my-zsh.sh
 fi
 
-
+# NPM
+NPM_PACKAGES="$HOME/develop/npm-packages"
+PATH="$NPM_PACKAGES/bin:$PATH"
+unset MANPATH
+MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
 # Chinese support with fcitx
 export QT_IM_MODULE=fcitx
