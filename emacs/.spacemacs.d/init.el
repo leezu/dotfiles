@@ -600,14 +600,14 @@ you should place your code here."
 
   ;; Template for paper notes
   (setq org-ref-note-title-format
-        "** TODO %y - %t
+        "** TOSKIM %y - %t
 :PROPERTIES:
  :Custom_ID: %k
 :END:
 cite:%k
 ")
   (setq bibtex-completion-notes-template-one-file
-        "\n** TODO ${year} - ${title}\n:PROPERTIES:\n :Custom_ID: ${=key=}\n:END:\ncite:${=key=}"
+        "\n** TOSKIM ${year} - ${title}\n:PROPERTIES:\n :Custom_ID: ${=key=}\n:END:\ncite:${=key=}"
         )
 
   ;; Printing
