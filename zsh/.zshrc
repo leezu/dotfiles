@@ -59,6 +59,14 @@ bindkey '\e[B' down-line-or-search
 ### User configuration
 ###
 
+## Aliases
+# Dictionaries
+alias ddevil='dict -d devil'
+alias wn='dict -d wn'
+alias ee='dict -d moby-thesaurus'
+alias ed='dict -d fd-eng-deu'
+alias de='dict -d fd-deu-eng'
+
 # Simplify shell for emacs tramp
 if [[ $TERM == "dumb" ]]; then	# in emacs
     PS1='%(?..[%?])%!:%~%# '
