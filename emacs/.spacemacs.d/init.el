@@ -65,6 +65,7 @@ values."
             latex-enable-folding t
             latex-build-command "LatexMk")
      markdown
+     pandoc
      syntax-checking
      typescript
      html
