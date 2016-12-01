@@ -77,7 +77,6 @@ values."
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
-     ess
      octave
      )
    ;; List of additional packages that will be installed without being
@@ -598,9 +597,9 @@ you should place your code here."
 
   ;; Reproducible research
   ;; http://emacs.stackexchange.com/questions/17063/how-to-setup-knitr-workflow-in-emacs/17065#17065
-  (setq ess-swv-pdflatex-commands '("lualatex" "make")
-        ess-swv-processor 'knitr
-        ess-pdf-viewer-pref '("emacsclient"))
+  ;; (setq ess-swv-pdflatex-commands '("lualatex" "make")
+  ;;       ess-swv-processor 'knitr
+  ;;       ess-pdf-viewer-pref '("emacsclient"))
 
   ;; BibTeX Layer
   (with-eval-after-load 'org
