@@ -371,6 +371,18 @@ you should place your code here."
   ;; org mode config
   ;;
 
+  ;; Auto-fill mode for org-mode
+  (add-hook 'org-mode-hook
+            (lambda ()
+              ;; Enable fill column indicator
+              (fci-mode t)
+              ;; Turn off line numbering, it makes org so slow
+              (linum-mode -1)
+              ;; Set fill column to 79
+              ;; (setq fill-column 79)
+              ;; Enable automatic line wrapping at fill column
+              (auto-fill-mode t)))
+
   ;; org-capture
   (spacemacs/set-leader-keys "oc" 'org-capture)
   (spacemacs/set-leader-keys "oa" 'org-agenda-list)
@@ -379,9 +391,8 @@ you should place your code here."
   ;; org-agenda
   (with-eval-after-load 'org
     (setq org-todo-keywords'
-          ((sequence "TODO" "NEXT" "STARTED" "|" "DONE" "CANCELLED")
-           (sequence "WAITING" "|" "CANCELLED")
-           (sequence "SOMEDAY" "|" "CANCELLED"))
+          ((sequence "SOMEDAY" "TODO" "NEXT" "STARTED" "|" "DONE" "CANCELLED")
+           (sequence "WAITING" "|" "DONE" "CANCELLED"))
           org-log-into-drawer t)
 
     (setq org-tag-alist '(("@research" . ?r)
@@ -555,7 +566,7 @@ you should place your code here."
                   )))
 
     (setq org-stuck-projects
-          '("+PROJECT/-MAYBE-DONE" ("TODO" "STARTED") nil "\\<IGNORE\\>"))
+          '("+PROJECT/-MAYBE-DONE" ("NEXT" "STARTED") nil "\\<IGNORE\\>"))
 
     ;; org-refile
     (setq org-refile-targets '(quote ((nil :maxlevel . 9)
