@@ -62,6 +62,7 @@ values."
      git
      shell
      (latex :variables
+            latex-enable-folding t
             latex-build-command "LatexMk")
      markdown
      syntax-checking
@@ -632,8 +633,19 @@ cite:%k
   (add-to-list 'auto-mode-alist '("\\.ledger\\'" . org-mode))
 
   ;;
-  ;; C++
+  ;; Programming
   ;;
+
+  ;; LaTeX
+  ;; Use pdf-tools to open PDF files
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-start-server t)
+
+  ;; Update PDF buffers after successful LaTeX runs
+  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+            #'TeX-revert-document-buffer)
+
+  ;; C++
   (with-eval-after-load 'c++
     (spacemacs/set-leader-keys-for-major-mode 'c++-mode
       "o=" 'clang-format-region))
