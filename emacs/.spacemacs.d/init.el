@@ -373,6 +373,8 @@ you should place your code here."
   ;; org mode config
   ;;
   (with-eval-after-load 'org
+    ;; Disable indentation in org mode
+    (setq org-adapt-indentation nil)
 
     ;; Auto-fill mode for org-mode
     (add-hook 'org-mode-hook
