@@ -22,11 +22,16 @@ export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/home/data/software/opencv-2.4.
 export PYTHONUSERBASE="/home/data/lelausen/.local"
 
 ## Anaconda
-export PATH="/home/data/lelausen/software/anaconda3/bin:$PATH"
-export PYTHONPATH="/home/data/lelausen/software/anaconda3:$PYTHONPATH"
+# Unfortunately it is not directly compatible with the mxnet version I have installed
+#export PATH="/home/data/lelausen/software/anaconda3/bin:$PATH"
+#export PYTHONPATH="/home/data/lelausen/software/anaconda3:$PYTHONPATH"
 
 ## Python 3.5 site packages
 export PYTHONPATH="/home/data/lelausen/.local/lib/python3.5/site-packages:$PYTHONPATH"
 
 ## MxNet
 export PYTHONPATH="/home/data/lelausen/software/mxnet/python:$PYTHONPATH"
+
+## Matplotlib
+# Use QT5 backend as TkAgg doesn't work on dycpu
+export MPLBACKEND="Qt5Agg"
