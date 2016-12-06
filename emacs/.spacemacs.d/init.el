@@ -83,7 +83,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(git-auto-commit-mode)
+   dotspacemacs-additional-packages '(git-auto-commit-mode org-pdfview)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -373,6 +373,13 @@ you should place your code here."
   ;; org mode config
   ;;
   (with-eval-after-load 'org
+    ;; Default applications
+    (use-package org-pdfview)
+    ;; Open pdfs with pdf-tools (when called from org-ref)
+    (delete '("\\.pdf\\'" . default) org-file-apps)
+    (add-to-list 'org-file-apps '("\\.pdf\\'" . (lambda (file link) (org-pdfview-open file))))
+    (add-to-list 'org-file-apps '("\\.pdf::\\([[:digit:]]+\\)\\'" . (lambda (file link) (org-pdfview-open file))))
+
     ;; Disable indentation in org mode
     (setq org-adapt-indentation nil)
 
