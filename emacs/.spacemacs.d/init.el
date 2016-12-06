@@ -83,7 +83,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(git-auto-commit-mode org-pdfview)
+   dotspacemacs-additional-packages '(git-auto-commit-mode org-pdfview interleave)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -605,6 +605,7 @@ you should place your code here."
   ;;
 
   ;; Reproducible research
+  ;; It seems ess breaks org mode
   ;; http://emacs.stackexchange.com/questions/17063/how-to-setup-knitr-workflow-in-emacs/17065#17065
   ;; (setq ess-swv-pdflatex-commands '("lualatex" "make")
   ;;       ess-swv-processor 'knitr
@@ -625,12 +626,19 @@ you should place your code here."
     (setq org-ref-note-title-format
           "** TOSKIM %y - %t
 :PROPERTIES:
- :Custom_ID: %k
+:Custom_ID: %k
+:INTERLEAVE_PDF: %k.pdf
 :END:
 cite:%k
 ")
     (setq bibtex-completion-notes-template-one-file
-          "\n** TOSKIM ${year} - ${title}\n:PROPERTIES:\n :Custom_ID: ${=key=}\n:END:\ncite:${=key=}"
+          (concat
+           "** TOSKIM ${year} - ${title}\n"
+           ":PROPERTIES:\n"
+           ":Custom_ID: ${=key=}\n"
+           ":INTERLEAVE_PDF: ${=key=}.pdf\n"
+           ":END:\n"
+           "cite:${=key=}")
           )
     )
 
