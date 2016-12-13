@@ -332,7 +332,7 @@ you should place your code here."
   ;;
   ;; Spacemacs Configuration
   ;;
-  ;;(setq-default evil-escape-key-sequence "ea")
+  (setq-default evil-escape-key-sequence "üö")
   (display-time-mode 1)
   (golden-ratio-mode 0)
   (spacemacs/toggle-truncate-lines-on)
