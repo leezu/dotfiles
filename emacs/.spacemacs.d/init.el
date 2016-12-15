@@ -630,7 +630,7 @@ you should place your code here."
 
     ;; Template for paper notes
     (setq org-ref-note-title-format
-          "** TOSKIM %y - %t
+          "** %y - %t
 :PROPERTIES:
 :Custom_ID: %k
 :INTERLEAVE_PDF: %k.pdf
@@ -639,7 +639,7 @@ cite:%k
 ")
     (setq bibtex-completion-notes-template-one-file
           (concat
-           "** TOSKIM ${year} - ${title}\n"
+           "** ${year} - ${title}\n"
            ":PROPERTIES:\n"
            ":Custom_ID: ${=key=}\n"
            ":INTERLEAVE_PDF: ${=key=}.pdf\n"
