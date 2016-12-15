@@ -342,6 +342,12 @@ you should place your code here."
   (setq persp-is-ibc-as-f-supported nil)
 
   ;;
+  ;; Layouts and workspaces
+  ;;
+  ;; Don't clone old worspace but create a clean new one
+  (setq eyebrowse-new-workspace t)
+
+  ;;
   ;; keyboard shortcuts
   ;;
   ;; window navigation
