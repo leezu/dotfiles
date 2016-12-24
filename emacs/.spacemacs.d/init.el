@@ -598,10 +598,6 @@ you should place your code here."
           org-habit-graph-column 80
           org-habit-show-habits-only-for-today t
           org-habit-show-all-today t)
-
-    ;; org babel
-    (add-to-list 'org-babel-load-languages '(ledger . t))
-
     ;; End with-eval-after-load 'org
     )
 
@@ -655,10 +651,9 @@ cite:%k
   ;;
   ;; Finance
   ;;
-  ;;FIXME: should be a layer to load package
-  (with-eval-after-load 'org
-    (add-to-list 'auto-mode-alist '("\\.ledger\\'" . org-mode))
-  )
+  (setq ledger-reports
+      '(("cleared" "%(binary) -f %(ledger-file) cleared")))
+
 
   ;;
   ;; Programming
