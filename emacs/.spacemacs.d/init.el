@@ -423,19 +423,13 @@ you should place your code here."
 
     (setq org-capture-templates
           '(("t" "Todo" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
-             "* TODO %? %^g \nOPENED: %U\n %i")
+             "* TODO %?\nOPENED: %U\n %i")
             ("w" "Waiting for" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
-             "* WAITING %? %^g \nOPENED: %U\n %i")
+             "* WAITING %?\nOPENED: %U\n %i")
             ("s" "Someday" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
-             "* SOMEDAY %? %^g \nOPENED: %U\n %i")
-
-            ;; TODO merge into journal
-            ("c" "Code Snippet" entry (file "~/Dropbox/org/code-snippets.org")
-             ;; Prompt for tag and language
-             "* %?\t%^g\n#+BEGIN_SRC %^{language}\n%i\n#+END_SRC")
-
+             "* SOMEDAY %?\nOPENED: %U\n %i")
             ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
-             "* %?%^g\nEntered on %U\n")))
+             "* %?\nEntered on %U\n")))
 
     ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
     (setq org-agenda-custom-commands
