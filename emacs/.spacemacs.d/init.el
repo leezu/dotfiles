@@ -531,7 +531,7 @@ you should place your code here."
           "** %y - %t
 :PROPERTIES:
 :Custom_ID: %k
-:INTERLEAVE_PDF: %k.pdf
+:INTERLEAVE_PDF: ./%k.pdf
 :END:
 cite:%k
 ")
@@ -540,7 +540,7 @@ cite:%k
            "** ${year} - ${title}\n"
            ":PROPERTIES:\n"
            ":Custom_ID: ${=key=}\n"
-           ":INTERLEAVE_PDF: ${=key=}.pdf\n"
+           ":INTERLEAVE_PDF: ./${=key=}.pdf\n"
            ":END:\n"
            "cite:${=key=}")
           )
