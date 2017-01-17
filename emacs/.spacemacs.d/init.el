@@ -546,6 +546,15 @@ cite:%k
           )
     )
 
+  (with-eval-after-load 'helm-bibtex
+    (run-at-time "1 sec" nil
+                 'helm-delete-action-from-source "Edit notes" helm-source-bibtex
+     )
+    (run-at-time "2 sec" nil
+                 'helm-add-action-to-source "Edit notes" 'helm-bibtex-edit-notes helm-source-bibtex 0
+                 )
+    )
+
   ;; Printing
   (setq pdf-misc-print-programm "/usr/bin/lp"
         pdf-misc-print-programm-args (quote ("-d UST4215")))
