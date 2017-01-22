@@ -88,8 +88,6 @@ unset MANPATH
 MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
-# Chinese support with fcitx
-export QT_IM_MODULE=fcitx
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
