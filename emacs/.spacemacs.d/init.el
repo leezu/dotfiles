@@ -625,6 +625,9 @@ cite:%k
               (setq flycheck-gcc-language-standard "c++14")
               ))
 
+  ;; Python
+  (setq python-shell-interpreter "ipython3"
+        python-shell-interpreter-args "--simple-prompt --pprint")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
