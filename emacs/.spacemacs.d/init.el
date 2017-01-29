@@ -498,9 +498,8 @@ you should place your code here."
     (add-to-list 'org-modules 'org-habit)
     (setq org-habit-preceding-days 10
           org-habit-following-days 1
-          org-habit-graph-column 80
-          org-habit-show-habits-only-for-today t
-          org-habit-show-all-today t)
+          org-habit-graph-column 40
+          org-habit-show-done-always-green t)
     ;; End with-eval-after-load 'org
     )
 
