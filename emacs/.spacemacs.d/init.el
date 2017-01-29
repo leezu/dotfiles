@@ -461,8 +461,9 @@ you should place your code here."
                      (org-agenda-overriding-header "Upcoming deadlines")))))
 
             ;; Habits
-            ("h" "Habits" tags-todo "STYLE=\"habit\"+SCHEDULED<=\"<today>\""
-             ((org-agenda-overriding-header "Habits")
+            ("h" "Habits"
+             ((tags-todo "STYLE=\"habit\"+SCHEDULED<=\"<today>\"")
+              (org-agenda-overriding-header "Habits")
               (org-agenda-sorting-strategy
                '(priority-down time-down todo-state-down
                                effort-up category-keep))))
