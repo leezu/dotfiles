@@ -468,7 +468,7 @@ you should place your code here."
                '(priority-down time-down todo-state-down
                                effort-up category-keep))))
             ;; Block agenda
-            ("c" "Other Agenda"
+            ("c" "Simple agenda view"
              ((agenda ""
                       ((org-agenda-span 'day)))
               (todo "NEXT|STARTED"
@@ -500,6 +500,35 @@ you should place your code here."
           org-habit-following-days 1
           org-habit-graph-column 40
           org-habit-show-done-always-green t)
+
+    ;; Useful tweaks
+    (setq org-log-done (quote time))
+    (setq org-log-redeadline (quote time))
+    (setq org-log-reschedule (quote time))
+
+    ;; face settings
+    ;; make org level all same size
+    (custom-set-faces
+     '(org-level-1 ((t (:inherit outline-1 :height 1.0))))
+     '(org-level-2 ((t (:inherit outline-2 :height 1.0))))
+     '(org-level-3 ((t (:inherit outline-3 :height 1.0))))
+     '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
+     '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+     '(org-level-6 ((t (:inherit outline-6 :height 1.0))))
+     '(org-level-7 ((t (:inherit outline-7 :height 1.0))))
+     '(org-level-8 ((t (:inherit outline-8 :height 1.0))))
+     )
+    ;; make priority show different colors
+    (setq org-priority-faces
+          '((?A . (:foreground "red" :weight 'bold))
+            (?B . (:foreground "yellow"))
+            (?C . (:foreground "green"))))
+    ;; make agend today's font the same as others
+    (setq spacemacs-theme-org-agenda-height nil)
+    ;; make org-agenda done tasks having the same font scale
+    (custom-set-faces
+     '(org-agenda-done ((t (:foreground "#86dc2f" :height 1.0)))))
+
     ;; End with-eval-after-load 'org
     )
 
