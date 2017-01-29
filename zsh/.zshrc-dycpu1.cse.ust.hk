@@ -1,37 +1,30 @@
 alias cdproj="cd /home/data/lelausen/projects"
-alias cdproj1="cd /home/data/lelausen/projects"
-alias cdproj2="cd /home/dycpu2/lelausen/projects"
 
-### Software
-export PATH="/home/data/lelausen/.local/bin:/usr/local/bin:$PATH"
+alias cdsoftware="cd /home/data/lelausen/software"
 
-### CUDA
+# cache directory
+export XDG_CACHE_HOME="/home/data/lelausen/.cache/"
 export CUDA_CACHE_PATH="/home/data/lelausen/.nv/ComputeCache"
+## For bazel
+export TEST_TMPDIR="/home/data/lelausen/.cache/"
+
+# cuda
 export CUDA_CACHE_MAXSIZE=4096
 export CUDA_CACHE_DISABLE=0
 
-export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/usr/local/lib:/usr/local/GNU/gcc4/lib64:/home/data/software/intel/lib/intel64_lin/:/home/data/software/opencv-2.4.13/lib:$LD_LIBRARY_PATH"
-export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/usr/local/lib:/usr/local/GNU/gcc4/lib64:/home/data/software/intel/lib/intel64_lin/:/home/data/software/opencv-2.4.13/lib:$LIBRARY_PATH"
-export LD_RUN_PATH="/home/data/software/cudnn-5.1/lib64:$LD_RUN_PATH:/usr/local/lib"
-export CPATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:/home/data/software/opencv-2.4.13/include:/usr/local/include:/usr/local/GNU/gcc4/include:/usr/local/lib:$CPATH"
-export INCLUDE_PATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:/home/data/software/opencv-2.4.13/include:/usr/local/include:/usr/local/GNU/gcc4/include:$INCLUDE_PATH"
-export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/home/data/software/opencv-2.4.13/lib/pkgconfig"
+# mxnet
+export PATH="/usr/local/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/usr/local/lib:/usr/local/GNU/gcc4/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/usr/local/lib:/usr/local/GNU/gcc4/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LIBRARY_PATH"
+export LD_RUN_PATH="/home/data/software/cudnn-5.1/lib64:/usr/local/lib:$LD_RUN_PATH"
+export CPATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:/usr/local/include:/usr/local/GNU/gcc4/include:/usr/local/lib:$CPATH"
+export INCLUDE_PATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:/usr/local/include:/usr/local/GNU/gcc4/include:$INCLUDE_PATH"
+export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-### Python
-## Cache paths
+# python
+export PATH="/home/data/lelausen/.local/bin:$PATH"
 export PYTHONUSERBASE="/home/data/lelausen/.local"
-
-## Anaconda
-# Unfortunately it is not directly compatible with the mxnet version I have installed
-#export PATH="/home/data/lelausen/software/anaconda3/bin:$PATH"
-#export PYTHONPATH="/home/data/lelausen/software/anaconda3:$PYTHONPATH"
-
-## Python 3.5 site packages
-export PYTHONPATH="/home/data/lelausen/.local/lib/python3.5/site-packages:$PYTHONPATH"
-
-## MxNet
-export PYTHONPATH="/home/data/lelausen/software/mxnet/python:$PYTHONPATH"
-
+export PYTHONPATH="/home/data/lelausen/software/mxnet/python"
 ## Matplotlib
 # Use QT5 backend as TkAgg doesn't work on dycpu
 export MPLBACKEND="Qt5Agg"
