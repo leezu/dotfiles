@@ -1,0 +1,10 @@
+### CUDA
+export CUDA_CACHE_MAXSIZE=4096
+export CUDA_CACHE_DISABLE=0
+
+export PATH="/usr/local/cuda-8.0/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$LD_LIBRARY_PATH"
+
+### Python
+## MxNet
+export PYTHONPATH="/home/leonard/software/mxnet/python:$PYTHONPATH"
