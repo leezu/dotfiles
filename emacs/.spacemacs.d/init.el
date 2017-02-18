@@ -575,7 +575,7 @@ cite:%k
 
   ;; Printing
   (setq pdf-misc-print-programm "/usr/bin/lp"
-        pdf-misc-print-programm-args (quote ("-d UST4215")))
+        pdf-misc-print-programm-args (quote ("-d csl12")))
 
   ;;
   ;; Finance
