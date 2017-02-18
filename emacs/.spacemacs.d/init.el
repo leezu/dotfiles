@@ -39,6 +39,9 @@ values."
      (auto-completion :variables
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip t)
+     (spell-checking :variables
+                     =enable-flyspell-auto-completion= t
+                     spell-checking-enable-auto-dictionary t)
      ;; Academic
      bibtex
      pdf-tools
