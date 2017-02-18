@@ -376,6 +376,11 @@ you should place your code here."
   ;;
   ;; org mode config
   ;;
+  ;; org-capture
+  (spacemacs/set-leader-keys "oc" 'org-capture)
+  (spacemacs/set-leader-keys "oa" 'org-agenda-list)
+  (spacemacs/set-leader-keys "oo" 'org-agenda)
+
   (with-eval-after-load 'org
     ;; Default applications
     (use-package org-pdfview)
@@ -398,11 +403,6 @@ you should place your code here."
                 ;; (setq fill-column 79)
                 ;; Enable automatic line wrapping at fill column
                 (auto-fill-mode t)))
-
-    ;; org-capture
-    (spacemacs/set-leader-keys "oc" 'org-capture)
-    (spacemacs/set-leader-keys "oa" 'org-agenda-list)
-    (spacemacs/set-leader-keys "oo" 'org-agenda)
 
     ;; org-agenda
     (setq org-agenda-files '("~/Dropbox/org/organizer.org"
