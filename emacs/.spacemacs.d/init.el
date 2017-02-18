@@ -58,7 +58,6 @@ values."
      ;; Programming
      emacs-lisp
      git
-     shell
      (latex :variables
             latex-enable-folding t
             latex-build-command "LatexMk")
@@ -71,7 +70,6 @@ values."
      (python :variables
              python-enable-yapf-format-on-save t)
      semantic
-     gtags
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
@@ -395,8 +393,8 @@ you should place your code here."
     ;; Auto-fill mode for org-mode
     (add-hook 'org-mode-hook
               (lambda ()
-                ;; Enable fill column indicator
-                (fci-mode t)
+                ;; Never enable fill column indicator! It makes org-capture very slow.
+                ;; (fci-mode t)
                 ;; Turn off line numbering, it makes org so slow
                 (linum-mode -1)
                 ;; Set fill column to 79
