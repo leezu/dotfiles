@@ -51,11 +51,6 @@ values."
           org-agenda-span 1
           org-extend-today-until 5 ;extend 'today' to 5AM
           org-agenda-start-on-weekday nil)
-     (deft :variables
-       deft-directory "~/Dropbox/org/deft"
-       deft-recursive t
-       deft-use-filter-string-for-filename t
-       deft-use-filename-as-title t)
 
      ;; Finance
      finance
