@@ -81,6 +81,9 @@ else
     source $ZSH/oh-my-zsh.sh
 fi
 
+# Local software
+PATH="$HOME/.local/bin:$PATH"
+
 # NPM
 NPM_PACKAGES="$HOME/develop/npm-packages"
 PATH="$NPM_PACKAGES/bin:$PATH"
