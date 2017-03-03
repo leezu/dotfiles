@@ -2,6 +2,7 @@
 
 - Clone repository to `~/.dotfiles`
 - Run `mkdir ~/.config/nvim`
+- Run `mkdir ~/.local/bin`
 - Run `stow DIR` for all directory names in `~/.dotfiles`
 
 ## zsh
