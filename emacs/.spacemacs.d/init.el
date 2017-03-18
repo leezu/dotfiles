@@ -70,7 +70,7 @@ values."
      html
      javascript
      (python :variables
-             python-enable-yapf-format-on-save t)
+             python-enable-yapf-format-on-save nil)
      semantic
      (c-c++ :variables
             c-c++-enable-clang-support t
