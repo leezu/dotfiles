@@ -63,7 +63,9 @@ values."
             latex-build-command "LatexMk")
      markdown
      pandoc
-     syntax-checking
+     (syntax-checking :variables
+                      syntax-checking-enable-tooltips t
+                      syntax-checking-enable-by-default t)
      typescript
      html
      javascript
