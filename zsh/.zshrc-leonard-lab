@@ -1,0 +1,3 @@
+### Python
+## MxNet
+export PYTHONPATH="/home/leonard/software/mxnet/python:$PYTHONPATH"
