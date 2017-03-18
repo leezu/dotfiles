@@ -588,6 +588,10 @@ cite:%k
   ;; Programming
   ;;
 
+  ;; Reading documentation
+  ;; man pages
+  (setq Man-notify-method 'pushy)
+
   ;; LaTeX
   ;; Use pdf-tools to open PDF files
   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
