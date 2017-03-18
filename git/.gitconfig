@@ -1,3 +1,5 @@
 [user]
 	email = leonard@lausen.nl
 	name = Leonard Lausen
+[rebase]
+	autosquash = true
