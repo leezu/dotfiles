@@ -205,7 +205,7 @@ values."
    dotspacemacs-display-default-layout t
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
-   dotspacemacs-auto-resume-layouts t
+   dotspacemacs-auto-resume-layouts nil
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
@@ -336,14 +336,15 @@ you should place your code here."
   (spacemacs/toggle-truncate-lines-on)
   ;; Visual line navigation for textual modes
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
-  ;; Fix persp-mode
-  (setq persp-is-ibc-as-f-supported nil)
 
   ;;
   ;; Layouts and workspaces
   ;;
   ;; Don't clone old worspace but create a clean new one
   (setq eyebrowse-new-workspace t)
+  ;; Fix persp mode
+  ;; Necessary till https://github.com/syl20bnr/spacemacs/pull/8542 is merged into master
+  (setq persp-is-ibc-as-f-supported nil)
 
   ;;
   ;; keyboard shortcuts
