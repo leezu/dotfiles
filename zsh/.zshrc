@@ -66,6 +66,8 @@ alias wn='dict -d wn'
 alias ee='dict -d moby-thesaurus'
 alias ed='dict -d fd-eng-deu'
 alias de='dict -d fd-deu-eng'
+# Info pages and manuals
+alias info='info --vi-keys'
 
 # Simplify shell for emacs tramp
 if [[ $TERM == "dumb" ]]; then	# in emacs
