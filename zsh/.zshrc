@@ -100,9 +100,9 @@ PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
  if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vim'
  else
-   export EDITOR='emacsclient -nc'
+   export EDITOR='emacs'
  fi
- alias emacs="emacsclient -t"
+ alias emacs="emacsclient -c --tty --alternate-editor=''"
 
 # Set KEYTIMEOUT to 0.1 seconds to speed up switching between normal
 # and insert mode
