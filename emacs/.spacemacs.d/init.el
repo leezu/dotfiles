@@ -56,6 +56,7 @@ values."
      finance
 
      ;; Programming
+     cscope
      emacs-lisp
      git
      (latex :variables
