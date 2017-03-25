@@ -72,6 +72,7 @@ values."
      javascript
      (python :variables
              python-enable-yapf-format-on-save nil)
+     java
      semantic
      (c-c++ :variables
             c-c++-enable-clang-support t
