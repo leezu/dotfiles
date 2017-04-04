@@ -16,11 +16,11 @@ export CUDA_CACHE_DISABLE=0
 
 # mxnet
 export PATH="/usr/local/bin:$PATH"
-export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/usr/local/lib:/usr/local/GNU/gcc4/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
-export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/usr/local/lib:/usr/local/GNU/gcc4/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LIBRARY_PATH"
-export LD_RUN_PATH="/home/data/software/cudnn-5.1/lib64:/usr/local/lib:$LD_RUN_PATH"
-export CPATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:/usr/local/include:/usr/local/GNU/gcc4/include:/usr/local/lib:$CPATH"
-export INCLUDE_PATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:/usr/local/include:/usr/local/GNU/gcc4/include:$INCLUDE_PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LIBRARY_PATH"
+export LD_RUN_PATH="/home/data/software/cudnn-5.1/lib64:$LD_RUN_PATH"
+export CPATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:$CPATH"
+export INCLUDE_PATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:$INCLUDE_PATH"
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # python
