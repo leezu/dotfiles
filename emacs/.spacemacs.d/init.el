@@ -73,6 +73,7 @@ values."
      (python :variables
              python-enable-yapf-format-on-save nil)
      java
+     lua
      semantic
      (c-c++ :variables
             c-c++-enable-clang-support t
