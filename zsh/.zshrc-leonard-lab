@@ -1,3 +1,6 @@
 ### Python
 ## MxNet
 export PYTHONPATH="/home/leonard/software/mxnet/python:$PYTHONPATH"
+
+### Torch & Lua
+. /home/leonard/software/torch/install/bin/torch-activate
