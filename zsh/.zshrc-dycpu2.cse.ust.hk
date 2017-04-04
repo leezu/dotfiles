@@ -30,3 +30,6 @@ export PYTHONPATH="/home/data/lelausen/software/mxnet/python"
 ## Matplotlib
 # Use QT5 backend as TkAgg doesn't work on dycpu
 export MPLBACKEND="Qt5Agg"
+
+# torch
+. /home/data/lelausen/software/torch/install/bin/torch-activate
