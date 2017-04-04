@@ -100,7 +100,7 @@ PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
  if [[ -n $SSH_CONNECTION ]]; then
    export EDITOR='vim'
  else
-   export EDITOR='emacs'
+   export EDITOR="emacsclient -c --tty --alternate-editor=''"
  fi
  alias emacs="emacsclient -c --tty --alternate-editor=''"
 
