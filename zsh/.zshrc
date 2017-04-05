@@ -85,6 +85,9 @@ fi
 
 # Local software
 PATH="$HOME/.local/bin:$PATH"
+CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
+LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
+LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
 
 # NPM
 NPM_PACKAGES="$HOME/develop/npm-packages"
