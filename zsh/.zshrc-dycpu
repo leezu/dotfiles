@@ -1,6 +1,12 @@
 alias cdproj="cd /home/data/lelausen/projects"
 alias cdsoftware="cd /home/data/lelausen/software"
 
+# Paths
+PATH="/home/data/lelausen/.local/bin:$PATH"
+CPATH="/home/data/lelausen/.local/include:$CPATH" # cpp searches for include files here (like -I )
+LIBRARY_PATH="/home/data/lelausen/.local/lib:$LIBRARY_PATH" # link time libraries
+LD_LIBRARY_PATH="/home/data/lelausen/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+
 # cache directory
 export XDG_CACHE_HOME="/home/data/lelausen/.cache/"
 export CUDA_CACHE_PATH="/home/data/lelausen/.nv/ComputeCache"
@@ -21,7 +27,6 @@ export INCLUDE_PATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/i
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # python
-export PATH="/home/data/lelausen/.local/bin:$PATH"
 export PYTHONUSERBASE="/home/data/lelausen/.local"
 export PYTHONPATH="/home/data/lelausen/software/mxnet/python"
 export SCIKIT_LEARN_DATA="/home/data/lelausen/datasets"
