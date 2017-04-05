@@ -8,31 +8,31 @@ LIBRARY_PATH="/home/data/lelausen/.local/lib:$LIBRARY_PATH" # link time librarie
 LD_LIBRARY_PATH="/home/data/lelausen/.local/lib:$LD_LIBRARY_PATH" # run time libraries
 
 # cache directory
-export XDG_CACHE_HOME="/home/data/lelausen/.cache/"
-export CUDA_CACHE_PATH="/home/data/lelausen/.nv/ComputeCache"
+XDG_CACHE_HOME="/home/data/lelausen/.cache/"
+CUDA_CACHE_PATH="/home/data/lelausen/.nv/ComputeCache"
 ## For bazel
-export TEST_TMPDIR="/home/data/lelausen/.cache/"
+TEST_TMPDIR="/home/data/lelausen/.cache/"
 
 # cuda
-export CUDA_CACHE_MAXSIZE=4096
-export CUDA_CACHE_DISABLE=0
+CUDA_CACHE_MAXSIZE=4096
+CUDA_CACHE_DISABLE=0
 
 # mxnet
-export PATH="/usr/local/bin:$PATH"
-export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
-export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LIBRARY_PATH"
-export LD_RUN_PATH="/home/data/software/cudnn-5.1/lib64:$LD_RUN_PATH"
-export CPATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:$CPATH"
-export INCLUDE_PATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:$INCLUDE_PATH"
-export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+PATH="/usr/local/bin:$PATH"
+LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
+LIBRARY_PATH="/usr/local/cuda-8.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/lelausen/intel/lib/intel64_lin/:$LIBRARY_PATH"
+LD_RUN_PATH="/home/data/software/cudnn-5.1/lib64:$LD_RUN_PATH"
+CPATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:$CPATH"
+INCLUDE_PATH="/usr/local/cuda-8.0/include:/home/data/software/cudnn-5.1/include:$INCLUDE_PATH"
+PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # python
-export PYTHONUSERBASE="/home/data/lelausen/.local"
-export PYTHONPATH="/home/data/lelausen/software/mxnet/python"
-export SCIKIT_LEARN_DATA="/home/data/lelausen/datasets"
+PYTHONUSERBASE="/home/data/lelausen/.local"
+PYTHONPATH="/home/data/lelausen/software/mxnet/python"
+SCIKIT_LEARN_DATA="/home/data/lelausen/datasets"
 ## Matplotlib
 # Use QT5 backend as TkAgg doesn't work on dycpu
-export MPLBACKEND="Qt5Agg"
+MPLBACKEND="Qt5Agg"
 
 # torch
 . /home/data/lelausen/software/torch/install/bin/torch-activate
