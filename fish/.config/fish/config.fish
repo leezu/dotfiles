@@ -18,13 +18,13 @@ set -x LD_LIBRARY_PATH $HOME/.local/lib $LD_LIBRARY_PATH # run time libraries
 set -x NPM_PACKAGES $HOME/develop/npm-packages
 set -x PATH $NPM_PACKAGES/bin $PATH
 set -e MANPATH
-set -x MANPATH $NPM_PACKAGES/share/man $(manpath)
+set -x MANPATH $NPM_PACKAGES/share/man '(manpath)'
 set -x NODE_PATH $NPM_PACKAGES/lib/node_modules $NODE_PATH
 
 # Ruby gems
-set -e PATH /home/leonard/.gem/ruby/2.3.0/bin $PATH
+set -x PATH /home/leonard/.gem/ruby/2.3.0/bin $PATH
 
 # Preferred editor for local and remote sessions
 # TODO implement this once using fish shell on dycpu: set default to vim then
-set -e EDITOR "emacsclient -c --tty --alternate-editor=''"
+set -x EDITOR "emacsclient -c --tty --alternate-editor=''"
 alias emacs="emacsclient -c --tty --alternate-editor=''"
