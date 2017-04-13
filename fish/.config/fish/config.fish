@@ -28,3 +28,6 @@ set -x PATH /home/leonard/.gem/ruby/2.3.0/bin $PATH
 # TODO implement this once using fish shell on dycpu: set default to vim then
 set -x EDITOR "emacsclient -c --tty --alternate-editor=''"
 alias emacs="emacsclient -c --tty --alternate-editor=''"
+
+# Source host specific configuration
+source ~/.config/fish/config-(hostname).fish
