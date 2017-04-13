@@ -18,7 +18,7 @@ set -x LD_LIBRARY_PATH $HOME/.local/lib $LD_LIBRARY_PATH # run time libraries
 set -x NPM_PACKAGES $HOME/develop/npm-packages
 set -x PATH $NPM_PACKAGES/bin $PATH
 set -e MANPATH
-set -x MANPATH $NPM_PACKAGES/share/man '(manpath)'
+set -x MANPATH $NPM_PACKAGES/share/man (manpath)
 set -x NODE_PATH $NPM_PACKAGES/lib/node_modules $NODE_PATH
 
 # Ruby gems
