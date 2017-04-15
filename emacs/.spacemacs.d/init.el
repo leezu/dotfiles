@@ -43,6 +43,9 @@ values."
      (spell-checking :variables
                      =enable-flyspell-auto-completion= t
                      spell-checking-enable-auto-dictionary t)
+     (chinese :variables
+              chinese-default-input-method 'pinyin
+              chinese-enable-fcitx t)
      ;; Academic
      bibtex
      pdf-tools
@@ -611,6 +614,15 @@ cite:%k
   (setq ledger-reports
       '(("cleared" "%(binary) -f %(ledger-file) cleared")))
 
+  ;;
+  ;; Chinese
+  ;;
+  ;; Make sure the following comes before `(fcitx-aggressive-setup)'
+  (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
+  ;; Disable fcitx in minibuffer
+  (fcitx-aggressive-setup)
+  (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
+  (setq fcitx-use-dbus t)
 
   ;;
   ;; Programming
