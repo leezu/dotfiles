@@ -383,6 +383,10 @@ you should place your code here."
   ;;
   (global-company-mode)
 
+  ;;
+  ;; Shell
+  ;;
+  (setq shell-file-name "/bin/bash")
 
   ;;
   ;; Remote work / TRAMP
