@@ -50,6 +50,7 @@ source $HOME/.tcshrc.bindkey
 source $HOME/.tcshrc.complete
 
 #	local settings
+# TODO This assumes that tcsh is only used on the department cluster
 source $HOME/.tcshrc.local
 
 #        commands for interactive shells

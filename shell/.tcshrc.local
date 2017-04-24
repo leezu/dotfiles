@@ -9,3 +9,11 @@
 ##
 ## Here you add your aliases, sets, completions and bindkeys that you want
 ## to override from the default settings.
+# TODO This assumes that tcsh is only used on the department cluster
+
+alias cdproj "cd /project/dygroup2/lelausen/projects"
+alias cdsoftware "cd /project/dygroup2/lelausen/software"
+
+# Compiler
+setenv CC "/usr/local/bin/gcc4"
+setenv CXX "/usr/local/bin/g++4"
