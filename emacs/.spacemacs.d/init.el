@@ -458,6 +458,8 @@ you should place your code here."
              "* WAITING %?\nOPENED: %U\n %i")
             ("s" "Someday" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
              "* SOMEDAY %?\nOPENED: %U\n %i")
+            ("n" "Note" entry (file+headline "~/Dropbox/org/organizer.org" "Notes")
+             "* %?\nCREATED: %U\n %i")
             ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
              "* %?\nEntered on %U\n")))
 
