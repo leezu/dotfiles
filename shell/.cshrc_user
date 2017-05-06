@@ -1,3 +1,27 @@
+### This file is used on the cssystem computers and loaded by the .cshrc file.
+## Default content
+setenv PATH "${PATH}:/usr/openwin/bin:/usr/bin/X11"
+setenv MANPATH "/usr/openwin/share/man:/usr/local/share/man:${MANPATH}"
+
+# For cxterm users
+
+setenv ChinDir /usr/local/CHINESE
+
+# Start openwin if logon at sun console
+
+if  ( $arch == sun4 ) then
+    if  ( $console && $TERM == sun ) then
+	if  ( -x /usr/openwin/bin/openwin ) then
+	    echo -n "Starting OpenWindows ... " 
+            /usr/openwin/bin/openwin
+	    clear_colormap
+	    clear
+            logout
+	endif
+    endif
+endif
+
+## Recommended tcshrc adaptions
 #############################################################################
 ##
 ## .tcshrc
@@ -15,23 +39,23 @@
 #    paths with lower priority than system paths like /bin /sbin,,,
 # Thanks to Spencer White <spencer@nexthost.com> for "if root" condition
 
-#         "root" environment (basic)
-if ($LOGNAME == "root") then
-	set -f path = ( $path /sbin )
-	set -f path = ( $path /usr/sbin )
-	set -l path = ( $path /usr/local/sbin )
-endif
+# #         "root" environment (basic)
+# if ($LOGNAME == "root") then
+# 	set -f path = ( $path /sbin )
+# 	set -f path = ( $path /usr/sbin )
+# 	set -l path = ( $path /usr/local/sbin )
+# endif
 
-#         "user" + "root" environment (basic)
-set -f path = ( $path /bin )
-set -f path = ( $path /usr/bin )
-set -l path = ( $path /usr/local/bin )
+# #         "user" + "root" environment (basic)
+# set -f path = ( $path /bin )
+# set -f path = ( $path /usr/bin )
+# set -l path = ( $path /usr/local/bin )
 
-#         "user" + "root" environment (misc)
-set -l path = ( $path /usr/local/ssl/bin )
-set -l path = ( $path /usr/local/samba/bin )
-set -l path = ( $path /usr/local/java/bin )
-set -l path = ( $path /usr/games )
+# #         "user" + "root" environment (misc)
+# set -l path = ( $path /usr/local/ssl/bin )
+# set -l path = ( $path /usr/local/samba/bin )
+# set -l path = ( $path /usr/local/java/bin )
+# set -l path = ( $path /usr/games )
 
 ########################################################################
 #         skip remaining setup if not an interactive shell
@@ -57,4 +81,3 @@ source $HOME/.tcshrc.local
 ## FIXME this is an example, shows date and current directory
 date
 pwd
-
