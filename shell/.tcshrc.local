@@ -19,30 +19,45 @@ alias cdproj "cd /project/dygroup2/lelausen/projects"
 alias cdsoftware "cd /project/dygroup2/lelausen/software"
 
 # Paths
-setenv PATH "/csprojet/dygroup2/lelausen/.local/bin:$PATH"
-setenv CPATH "/csprojet/dygroup2/lelausen/.local/include" # cpp searches for include files here (like -I )
-setenv LIBRARY_PATH "/csprojet/dygroup2/lelausen/.local/lib" # link time libraries
-setenv LD_LIBRARY_PATH "/csprojet/dygroup2/lelausen/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+setenv PATH "/csproject/dygroup2/lelausen/.local/bin:$PATH"
+setenv CPATH "/csproject/dygroup2/lelausen/.local/include" # cpp searches for include files here (like -I )
+setenv LIBRARY_PATH "/csproject/dygroup2/lelausen/.local/lib" # link time libraries
+setenv LD_LIBRARY_PATH "/csproject/dygroup2/lelausen/.local/lib:$LD_LIBRARY_PATH" # run time libraries
 
 # cache directory
-setenv XDG_CACHE_HOME "/csprojet/dygroup2/lelausen/.cache/"
-setenv CUDA_CACHE_PATH "/csprojet/dygroup2/lelausen/.nv/ComputeCache"
+setenv XDG_CACHE_HOME "/csproject/dygroup2/lelausen/.cache/"
+setenv CUDA_CACHE_PATH "/csproject/dygroup2/lelausen/.nv/ComputeCache"
 ## For bazel
-setenv TEST_TMPDIR "/csprojet/dygroup2/lelausen/.cache/"
+setenv TEST_TMPDIR "/csproject/dygroup2/lelausen/.cache/"
 
 # Compiler
 setenv CC "/usr/local/bin/gcc4"
 setenv CXX "/usr/local/bin/g++4"
+setenv LD_LIBRARY_PATH "/usr/local/GNU/gcc4/lib64/:$LD_LIBRARY_PATH" # run time libraries
 
 ### CUDA
 setenv PATH "/usr/local/cuda-8.0/bin:$PATH"
-setenv LD_LIBRARY_PATH "/usr/local/cuda-8.0/lib64:/csproject/dygroup2/software/cudnn-6.0/lib64:/csproject/dygroup2/software/intel/lib64:$LD_LIBRARY_PATH"
-setenv LIBRARY_PATH "/usr/local/cuda-8.0/lib64:/csproject/dygroup2/software/cudnn-6.0/lib64:/csproject/dygroup2/software/intel/lib64:/usr/local/software/opencv-3.1.0/share/OpenCV/3rdparty/lib:$LIBRARY_PATH"
+setenv LD_LIBRARY_PATH "/usr/local/cuda-8.0/lib64:/csproject/dygroup2/software/cudnn-6.0/lib64:$LD_LIBRARY_PATH"
+setenv LIBRARY_PATH "/usr/local/cuda-8.0/lib64:/csproject/dygroup2/software/cudnn-6.0/lib64:$LIBRARY_PATH"
 setenv LD_RUN_PATH "/usr/local/cuda-8.0/lib64:/csproject/dygroup2/software/cudnn-6.0/lib64"
 setenv CPATH "/usr/local/cuda-8.0/include:/csproject/dygroup2/software/cudnn-6.0/include:$CPATH"
 setenv INCLUDE_PATH "/usr/local/cuda-8.0/include:/csproject/dygroup2/software/cudnn-6.0/include"
-setenv PKG_CONFIG_PATH "/usr/local/lib/pkgconfig:/usr/local/software/opencv-3.1.0/lib/pkgconfig"
+setenv PKG_CONFIG_PATH "/usr/local/lib/pkgconfig"
+
+### Intel MKL
+setenv LD_LIBRARY_PATH "/csproject/dygroup2/software/intel/lib/intel64:$LD_LIBRARY_PATH"
+setenv LIBRARY_PATH "/csproject/dygroup2/software/intel/lib/intel64:$LIBRARY_PATH"
+
+### OpenCV
+setenv LIBRARY_PATH "/csproject/dygroup2/software/opencv-3.2.0/lib:$LIBRARY_PATH"
+setenv LD_LIBRARY_PATH "/csproject/dygroup2/software/opencv-3.2.0/lib:$LD_LIBRARY_PATH"
+setenv PKG_CONFIG_PATH "/csproject/dygroup2/software/opencv-3.2.0/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 ### Python
+setenv PYTHONUSERBASE "/csproject/dygroup2/lelausen/.local"
+setenv SCIKIT_LEARN_DATA "/csproject/dygroup2/lelausen/datasets"
+setenv MPLBACKEND "Qt5Agg"
 ## MxNet
-setenv PYTHONPATH "/csprojet/dygroup2/lelausen/software/mxnet/python:$PYTHONPATH"
+setenv PYTHONPATH "/csproject/dygroup2/lelausen/software/mxnet/python"
+
+# Last line in file is not executed!
