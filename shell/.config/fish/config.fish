@@ -5,6 +5,16 @@ alias wn='dict -d wn'
 alias ee='dict -d moby-thesaurus'
 alias ed='dict -d fd-eng-deu'
 alias de='dict -d fd-deu-eng'
+function ze
+  grep $argv ~/.cedict.txt
+end
+function zes --description 'Search for single-character simplified Chinese phrase'
+  grep '^. '$argv ~/.cedict.txt
+end
+function zed --description 'Search for two-character simplified Chinese phrase'
+  grep '^.. '$argv ~/.cedict.txt
+end
+
 # Info pages and manuals
 alias info='info --vi-keys'
 # Toggle capslock
