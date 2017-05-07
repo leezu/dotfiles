@@ -57,6 +57,14 @@ endif
 # set -l path = ( $path /usr/local/java/bin )
 # set -l path = ( $path /usr/games )
 
+
+
+# Local settings
+# (paths, etc.)
+# TODO This assumes that tcsh is only used on the department cluster
+source $HOME/.tcshrc.local
+
+
 ########################################################################
 #         skip remaining setup if not an interactive shell
 if ($?USER == 0 || $?prompt == 0) exit
@@ -72,10 +80,6 @@ source $HOME/.tcshrc.bindkey
 
 #        completions for interactive shells
 source $HOME/.tcshrc.complete
-
-#	local settings
-# TODO This assumes that tcsh is only used on the department cluster
-source $HOME/.tcshrc.local
 
 #        commands for interactive shells
 ## FIXME this is an example, shows date and current directory
