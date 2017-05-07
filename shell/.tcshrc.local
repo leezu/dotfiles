@@ -22,7 +22,7 @@ alias cdsoftware "cd /project/dygroup2/lelausen/software"
 setenv PATH "/csproject/dygroup2/lelausen/.local/bin:$PATH"
 setenv CPATH "/csproject/dygroup2/lelausen/.local/include" # cpp searches for include files here (like -I )
 setenv LIBRARY_PATH "/csproject/dygroup2/lelausen/.local/lib" # link time libraries
-setenv LD_LIBRARY_PATH "/csproject/dygroup2/lelausen/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+setenv LD_LIBRARY_PATH "/csproject/dygroup2/lelausen/.local/lib" # run time libraries
 
 # cache directory
 setenv XDG_CACHE_HOME "/csproject/dygroup2/lelausen/.cache/"
