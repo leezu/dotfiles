@@ -59,6 +59,9 @@ values."
      ;; Finance
      finance
 
+     ;; Documentation
+     dash
+
      ;; Programming
      cscope
      emacs-lisp
