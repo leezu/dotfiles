@@ -443,7 +443,7 @@ you should place your code here."
     (setq org-agenda-files '("~/Dropbox/org/organizer.org"
                              "~/Dropbox/org/deft/"
                              "~/Dropbox/Papers/notes.org"
-                             "~/develop/leezu.github.io/posts")
+                             "~/projects/leezu.github.io/posts")
           org-todo-keywords '((sequence "SOMEDAY" "TODO" "NEXT" "STARTED" "|" "DONE" "CANCELLED")
                               (sequence "WAITING" "|" "DONE" "CANCELLED"))
           org-log-into-drawer t
