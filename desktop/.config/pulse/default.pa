@@ -13,19 +13,10 @@
 # General Public License for more details.
 #
 # You should have received a copy of the GNU Lesser General Public License
-# along with PulseAudio; if not, write to the Free Software Foundation,
-# Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+# along with PulseAudio; if not, see <http://www.gnu.org/licenses/>.
 
 # This startup script is used only if PulseAudio is started per-user
 # (i.e. not in system mode)
-
-.nofail
-
-### Load something into the sample cache
-#load-sample-lazy x11-bell /usr/share/sounds/gtk-events/activate.wav
-#load-sample-lazy pulse-hotplug /usr/share/sounds/startup3.wav
-#load-sample-lazy pulse-coldplug /usr/share/sounds/startup3.wav
-#load-sample-lazy pulse-access /usr/share/sounds/generic.wav
 
 .fail
 
@@ -46,8 +37,6 @@ load-module module-switch-on-port-available
 ### use module-udev-detect -- see below -- for doing this automatically)
 #load-module module-alsa-sink
 #load-module module-alsa-source device=hw:1,0
-#load-module module-oss device="/dev/dsp" sink_name=output source_name=input
-#load-module module-oss-mmap device="/dev/dsp" sink_name=output source_name=input
 #load-module module-null-sink
 #load-module module-pipe-sink
 
@@ -57,10 +46,6 @@ load-module module-udev-detect
 .else
 ### Use the static hardware detection module (for systems that lack udev support)
 load-module module-detect
-.endif
-
-.ifexists module-android-audio-hal.so
-load-module module-android-audio-hal
 .endif
 
 ### Automatically connect sink and source if JACK server is present
@@ -89,7 +74,7 @@ load-module module-native-protocol-unix
 ### here if you plan to use paprefs)
 #load-module module-esound-protocol-tcp
 #load-module module-native-protocol-tcp
-#load-module module-zeroconf-publish
+load-module module-zeroconf-publish
 
 ### Load the RTP receiver module (also configured via paprefs, see above)
 #load-module module-rtp-recv
@@ -139,7 +124,7 @@ load-module module-systemd-login
 load-module module-position-event-sounds
 
 ### Cork music/video streams when a phone stream is active
-#load-module module-role-cork
+load-module module-role-cork
 
 ### Modules to allow autoloading of filters (such as echo cancellation)
 ### on demand. module-filter-heuristics tries to determine what filters
@@ -147,22 +132,6 @@ load-module module-position-event-sounds
 ### loading modules and rerouting streams.
 load-module module-filter-heuristics
 load-module module-filter-apply
-
-# X11 modules should not be started from default.pa so that one daemon
-# can be shared by multiple sessions.
-
-### Load X11 bell module
-#load-module module-x11-bell sample=bell-windowing-system
-
-### Register ourselves in the X11 session manager
-#load-module module-x11-xsmp
-
-### Publish connection data in the X11 root window
-#.ifexists module-x11-publish.so
-#.nofail
-#load-module module-x11-publish
-#.fail
-#.endif
 
 ### Make some devices default
 #set-default-sink output
