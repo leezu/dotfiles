@@ -28,7 +28,7 @@ export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # python
 export PYTHONUSERBASE="/home/data/lelausen/.local"
-export PYTHONPATH="/home/data/lelausen/software/mxnet/python"
+export PYTHONPATH="/home/data/lelausen/software/mxnet/python:/home/data/lelausen/projects/mphil"
 export SCIKIT_LEARN_DATA="/home/data/lelausen/datasets"
 ## Matplotlib
 # Use QT5 backend as TkAgg doesn't work on dycpu
