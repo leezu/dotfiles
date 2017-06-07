@@ -1,0 +1,5 @@
+# MxNet
+export CPATH="/opt/intel/compilers_and_libraries_2016.2.181/linux/mkl/include:$INCLUDE_PATH"
+export LD_LIBRARY_PATH="/opt/intel/compilers_and_libraries_2016.2.181/linux/mkl/lib/intel64:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="/opt/intel/compilers_and_libraries_2016.2.181/linux/mkl/lib/intel64:$LIBRARY_PATH"
+export PYTHONPATH="/home/leonard/software/mxnet/python:$PYTHONPATH"
