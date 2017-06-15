@@ -1,0 +1,16 @@
+alias cdproj="cd $HOME/projects"
+alias cdsoftware="cd $HOME/software"
+alias cddata="cd $HOME/datasets"
+
+# Paths
+PATH="$HOME/.local/bin:$PATH"
+CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
+LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
+LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+
+# mxnet
+export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
+export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LIBRARY_PATH"
+
+# python
+export PYTHONPATH="$HOME/software/mxnet/python:$HOME/projects/mphil"

@@ -1,0 +1,32 @@
+## Aliases
+# Dictionaries
+alias ddevil='dict -d devil'
+alias wn='dict -d wn'
+alias ee='dict -d moby-thesaurus'
+alias ed='dict -d fd-eng-deu'
+alias de='dict -d fd-deu-eng'
+function ze() {
+    grep $argv ~/.cedict.txt
+}
+function zes() {
+    grep '^. '$argv ~/.cedict.txt
+}
+function zed() {
+    grep '^.. '$argv ~/.cedict.txt
+}
+
+# Info pages and manuals
+alias info='info --vi-keys'
+
+# Local software
+export PATH="$HOME/.local/bin:$PATH"
+export CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
+export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+
+
+# load $HOST specific setting
+export HOST=`hostname`
+if [[ -f ~/.bashrc-$HOST ]]; then
+    source ~/.bashrc-$HOST
+fi
