@@ -1,0 +1,7 @@
+# via https://euer.krebsco.de/make-screen-behave-more-like-tmux.html
+# use ctrl-b as escape
+escape ^Bb
+# change title with ctrl-b - ,  (tmux-style)
+bind , title
+# sweet status bar
+caption always "%{= wk} %-w%{= KW} [% %t] %{-}%+w %= | @%H | %l | %Y-%m-%d %c "
