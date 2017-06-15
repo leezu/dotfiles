@@ -24,6 +24,10 @@ export CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here
 export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
 export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
 
+# Create directories
+if [[ ! ( -d ~/.local/bin || -d ~/.local/lib || -d ~/./local/include ) ]]; then
+    mkdir -p ~/.local/{bin,lib,include}
+fi
 
 # load $HOST specific setting
 export HOST=`hostname`
