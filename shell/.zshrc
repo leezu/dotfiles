@@ -94,20 +94,20 @@ else
 fi
 
 # Local software
-PATH="$HOME/.local/bin:$PATH"
-CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
-LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
-LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+export PATH="$HOME/.local/bin:$PATH"
+export CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
+export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
 
 # NPM
-NPM_PACKAGES="$HOME/develop/npm-packages"
-PATH="$NPM_PACKAGES/bin:$PATH"
+export NPM_PACKAGES="$HOME/develop/npm-packages"
+export PATH="$NPM_PACKAGES/bin:$PATH"
 unset MANPATH
-MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
-NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
 # Ruby gems
-PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
+export PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
