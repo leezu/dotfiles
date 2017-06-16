@@ -124,7 +124,7 @@ values."
    ;; (default t)
    dotspacemacs-elpa-https t
    ;; Maximum allowed time in seconds to contact an ELPA repository.
-   dotspacemacs-elpa-timeout 5
+   dotspacemacs-elpa-timeout 1
    ;; If non nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
@@ -360,7 +360,6 @@ you should place your code here."
   ;;
   ;; Spacemacs Configuration
   ;;
-  (setq-default evil-escape-key-sequence "üö")
   (display-time-mode 1)
   (golden-ratio-mode 0)
   (spacemacs/toggle-truncate-lines-on)
@@ -372,9 +371,6 @@ you should place your code here."
   ;;
   ;; Don't clone old worspace but create a clean new one
   (setq eyebrowse-new-workspace t)
-  ;; Fix persp mode
-  ;; Necessary till https://github.com/syl20bnr/spacemacs/pull/8542 is merged into master
-  (setq persp-is-ibc-as-f-supported nil)
 
   ;;
   ;; keyboard shortcuts
