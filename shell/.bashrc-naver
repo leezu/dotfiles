@@ -7,6 +7,14 @@ alias cddata="cd $HOME/datasets"
 # user sessions of other people
 export SCREENDIR=$HOME/.screen
 
+# Python pyenv
+if [[ ! -r ~/.pyenv ]]; then
+    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+fi
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
 # Paths
 PATH="$HOME/.local/bin:$PATH"
 CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
@@ -16,6 +24,4 @@ LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
 # mxnet
 export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
 export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LIBRARY_PATH"
-
-# python
 export PYTHONPATH="$HOME/software/mxnet/python:$HOME/projects/mphil"
