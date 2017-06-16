@@ -382,11 +382,6 @@ you should place your code here."
   (spacemacs/set-leader-keys "<right>" 'evil-window-right)
 
   ;;
-  ;; auto completion
-  ;;
-  (global-company-mode)
-
-  ;;
   ;; Shell
   ;;
   (setq shell-file-name "/bin/bash")
