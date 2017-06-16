@@ -2,6 +2,11 @@ alias cdproj="cd $HOME/projects"
 alias cdsoftware="cd $HOME/software"
 alias cddata="cd $HOME/datasets"
 
+# Screen
+# Use a private screen session directory, so that they don't get mixed up with
+# user sessions of other people
+export SCREENDIR=$HOME/.screen
+
 # Paths
 PATH="$HOME/.local/bin:$PATH"
 CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
