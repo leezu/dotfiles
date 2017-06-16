@@ -5,6 +5,11 @@ shopt -s histappend
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # Aliases
+# Directories
+export PROJECTDIR="$HOME/projects"
+export SOFTWAREDIR="$HOME/software"
+export DATASETSDIR="$HOME/datasets"
+
 # Dictionaries
 alias ddevil='dict -d devil'
 alias wn='dict -d wn'
@@ -36,7 +41,20 @@ if [[ ! ( -d ~/.local/bin || -d ~/.local/lib || -d ~/./local/include ) ]]; then
 fi
 
 # load $HOST specific setting
+# This may change the path to some of the default directories that we have
+# specified above. So after this call all variables are considered "final" and
+# we can go forward to create missing directories or clone missing software
 export HOST=`hostname`
 if [[ -f ~/.bashrc-$HOST ]]; then
     source ~/.bashrc-$HOST
 fi
+
+alias cdproj="cd $PROJECTDIR"
+alias cdsoftware="cd $SOFTWAREDIR"
+alias cddata="cd $DATASETDIR"
+# Create directories
+for dir in $PROJECTDIR $SOFTWAREDIR $DATASETDIR; do
+    if [[ ! -d $dir ]]; then
+        mkdir -p $dir
+    fi
+done

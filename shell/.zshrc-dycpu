@@ -1,5 +1,6 @@
-alias cdproj="cd /home/data/lelausen/projects"
-alias cdsoftware="cd /home/data/lelausen/software"
+export PROJECTDIR="/home/data/lelausen/projects"
+export SOFTWAREDIR="/home/data/lelausen/software"
+export DATASETSDIR="/home/data/lelausen/datasets"
 
 # Paths
 PATH="/home/data/lelausen/.local/bin:$PATH"

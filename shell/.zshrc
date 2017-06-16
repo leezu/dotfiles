@@ -1,5 +1,8 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
+if [[ ! -d $ZSH ]]; then
+    git clone https://github.com/robbyrussell/oh-my-zsh.git $ZSH
+fi
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -59,7 +62,12 @@ bindkey '\e[B' down-line-or-search
 ### User configuration
 ###
 
-## Aliases
+# Aliases
+# Directories
+export PROJECTDIR="$HOME/projects"
+export SOFTWAREDIR="$HOME/software"
+export DATASETSDIR="$HOME/datasets"
+
 # Dictionaries
 alias ddevil='dict -d devil'
 alias wn='dict -d wn'
@@ -124,6 +132,21 @@ export KEYTIMEOUT=1
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # load $HOST specific setting
+# This may change the path to some of the default directories that we have
+# specified above. So after this call all variables are considered "final" and
+# we can go forward to create missing directories or clone missing software
 if [[ -f ~/.zshrc-$HOST ]]; then
     source ~/.zshrc-$HOST
 fi
+
+# Aliases
+alias cdproj="cd $PROJECTDIR"
+alias cdsoftware="cd $SOFTWAREDIR"
+alias cddata="cd $DATASETDIR"
+
+# Create directories
+for dir in $PROJECTDIR $SOFTWAREDIR $DATASETDIR; do
+    if [[ ! -d $dir ]]; then
+        mkdir -p $dir
+    fi
+done
