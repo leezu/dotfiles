@@ -1,4 +1,10 @@
-## Aliases
+# History configuration via https://www.digitalocean.com/community/tutorials/how-to-use-bash-history-commands-and-expansions-on-a-linux-vps
+# Don't overwrite history file
+shopt -s histappend
+# Write history after every command
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+# Aliases
 # Dictionaries
 alias ddevil='dict -d devil'
 alias wn='dict -d wn'
