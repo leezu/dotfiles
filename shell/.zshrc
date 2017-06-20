@@ -111,6 +111,7 @@ export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
 export NPM_PACKAGES="$HOME/develop/npm-packages"
 export PATH="$NPM_PACKAGES/bin:$PATH"
 unset MANPATH
+# $(manpath): /home/leonard/.local/share/man:/usr/share/man
 export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
