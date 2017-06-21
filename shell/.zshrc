@@ -143,7 +143,7 @@ fi
 # Aliases
 alias cdproj="cd $PROJECTDIR"
 alias cdsoftware="cd $SOFTWAREDIR"
-alias cddata="cd $DATASETDIR"
+alias cddata="cd $DATASETSDIR"
 
 # Create directories
 for dir in $PROJECTDIR $SOFTWAREDIR $DATASETDIR; do
