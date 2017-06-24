@@ -55,38 +55,6 @@ plugins=(git)
 bindkey '\e[A' up-line-or-search
 bindkey '\e[B' down-line-or-search
 
-
-
-
-###
-### User configuration
-###
-
-# Aliases
-# Directories
-export PROJECTDIR="$HOME/projects"
-export SOFTWAREDIR="$HOME/software"
-export DATASETSDIR="$HOME/datasets"
-
-# Dictionaries
-alias ddevil='dict -d devil'
-alias wn='dict -d wn'
-alias ee='dict -d moby-thesaurus'
-alias ed='dict -d fd-eng-deu'
-alias de='dict -d fd-deu-eng'
-function ze() {
-    grep $argv ~/.cedict.txt
-}
-function zes() {
-    grep '^. '$argv ~/.cedict.txt
-}
-function zed() {
-    grep '^.. '$argv ~/.cedict.txt
-}
-
-# Info pages and manuals
-alias info='info --vi-keys'
-
 # Simplify shell for emacs tramp
 if [[ $TERM == "dumb" ]]; then	# in emacs
     PS1='%(?..[%?])%!:%~%# '
@@ -101,22 +69,19 @@ else
     source $ZSH/oh-my-zsh.sh
 fi
 
-# Local software
-export PATH="$HOME/.local/bin:$PATH"
-export CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
-export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
-export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+###
+### User configuration
+###
+# load shared settings
+if [[ -f ~/.sharedshellrc ]]; then
+    source ~/.sharedshellrc
+fi
 
-# NPM
-export NPM_PACKAGES="$HOME/develop/npm-packages"
-export PATH="$NPM_PACKAGES/bin:$PATH"
-unset MANPATH
-# $(manpath): /home/leonard/.local/share/man:/usr/share/man
-export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
-export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+# load $HOST specific setting
+if [[ -f ~/.zshrc-$HOST ]]; then
+    source ~/.zshrc-$HOST
+fi
 
-# Ruby gems
-export PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
@@ -131,23 +96,3 @@ export PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
 export KEYTIMEOUT=1
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# load $HOST specific setting
-# This may change the path to some of the default directories that we have
-# specified above. So after this call all variables are considered "final" and
-# we can go forward to create missing directories or clone missing software
-if [[ -f ~/.zshrc-$HOST ]]; then
-    source ~/.zshrc-$HOST
-fi
-
-# Aliases
-alias cdproj="cd $PROJECTDIR"
-alias cdsoftware="cd $SOFTWAREDIR"
-alias cddata="cd $DATASETSDIR"
-
-# Create directories
-for dir in $PROJECTDIR $SOFTWAREDIR $DATASETDIR; do
-    if [[ ! -d $dir ]]; then
-        mkdir -p $dir
-    fi
-done

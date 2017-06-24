@@ -1,0 +1,62 @@
+# Load host specific settings
+export HOST=`hostname`
+if [[ -f ~/.sharedshellrc-$HOST ]]; then
+    source ~/.sharedshellrc-$HOST
+fi
+
+# Local software
+export PATH="$HOME/.local/bin:$PATH"
+export CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
+export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
+export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+
+# NPM
+export NPM_PACKAGES="$HOME/develop/npm-packages"
+export PATH="$NPM_PACKAGES/bin:$PATH"
+unset MANPATH
+# $(manpath): /home/leonard/.local/share/man:/usr/share/man
+export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+
+# Ruby gems
+export PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
+
+# Aliases
+# Directories
+export PROJECTDIR="$HOME/projects"
+export SOFTWAREDIR="$HOME/software"
+export DATASETSDIR="$HOME/datasets"
+
+# Dictionaries
+alias ddevil='dict -d devil'
+alias wn='dict -d wn'
+alias ee='dict -d moby-thesaurus'
+alias ed='dict -d fd-eng-deu'
+alias de='dict -d fd-deu-eng'
+function ze() {
+    grep $argv ~/.cedict.txt
+}
+function zes() {
+    grep '^. '$argv ~/.cedict.txt
+}
+function zed() {
+    grep '^.. '$argv ~/.cedict.txt
+}
+
+# Info pages and manuals
+alias info='info --vi-keys'
+
+# Create directories
+if [[ ! ( -d ~/.local/bin || -d ~/.local/lib || -d ~/./local/include ) ]]; then
+    mkdir -p ~/.local/{bin,lib,include}
+fi
+
+alias cdproj="cd $PROJECTDIR"
+alias cdsoftware="cd $SOFTWAREDIR"
+alias cddata="cd $DATASETSDIR"
+# Create directories
+for dir in $PROJECTDIR $SOFTWAREDIR $DATASETDIR; do
+    if [[ ! -d $dir ]]; then
+        mkdir -p $dir
+    fi
+done
