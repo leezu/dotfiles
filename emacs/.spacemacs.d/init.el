@@ -41,7 +41,7 @@ values."
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip t)
      (spell-checking :variables
-                     =enable-flyspell-auto-completion= t
+                     enable-flyspell-auto-completion t
                      spell-checking-enable-auto-dictionary t)
      (chinese :variables
               chinese-default-input-method 'pinyin
@@ -71,9 +71,7 @@ values."
             latex-build-command "LatexMk")
      markdown
      pandoc
-     (syntax-checking :variables
-                      syntax-checking-enable-tooltips t
-                      syntax-checking-enable-by-default t)
+     syntax-checking
      typescript
      html
      javascript
