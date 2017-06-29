@@ -15,3 +15,38 @@ eval "$(pyenv init -)"
 export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
 export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LIBRARY_PATH"
 export PYTHONPATH="$HOME/software/mxnet/python:$HOME/projects/mphil"
+
+# Data transfer
+# From GPU to DATA
+# Make sure to call nc_transfer_gpu_data first
+function nc_transfer_gpu_data() {
+    tar -cf - "$1" | nc -l 10101
+}
+function nc_receive_data_gpu3() {
+    nc 10.110.225.146 10101 | tar -xvf -
+}
+function nc_receive_data_gpu4() {
+    nc 10.110.225.142 10101 | tar -xvf -
+}
+function nc_receive_data_gpu5() {
+    nc 10.110.225.143 10101 | tar -xvf -
+}
+function nc_receive_data_datasets() {
+    nc 10.20.126.35 10101 | tar -xvf -
+}
+# From DATA to GPU
+function nc_transfer_data_gpu3() {
+    tar -cf - "$1" | nc 10.110.225.146 10101
+}
+function nc_transfer_data_gpu4() {
+    tar -cf - "$1" | nc 10.110.225.142 10101
+}
+function nc_transfer_data_gpu5() {
+    tar -cf - "$1" | nc 10.110.225.143 10101
+}
+function nc_transfer_data_datasets() {
+    tar -cf - "$1" | nc 10.20.126.35 10101
+}
+function nc_receive_gpu_data() {
+    nc -l 10101 | tar -xvf -
+}
