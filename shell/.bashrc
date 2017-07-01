@@ -4,6 +4,11 @@ shopt -s histappend
 # Write history after every command
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
+# load shared settings
+if [[ -f ~/.sharedshellrc ]]; then
+    source ~/.sharedshellrc
+fi
+
 # load $HOST specific setting
 export HOST=`hostname`
 if [[ -f ~/.bashrc-$HOST ]]; then
