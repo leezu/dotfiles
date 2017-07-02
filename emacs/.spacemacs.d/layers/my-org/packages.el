@@ -148,12 +148,6 @@
                   ((org-agenda-overriding-header "Started tasks and tasks ready to be done next")))
             (tags "WAITING"
                   ((org-agenda-overriding-header "Waiting for something")))
-            ;; Upcoming deadline
-            (todo ""
-                  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
-                   (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
-                   (org-agenda-sorting-strategy '(deadline-up))
-                   (org-agenda-overriding-header "Upcoming deadlines")))
             ;; All TODO items
             (todo "TODO"
                   ((org-agenda-overriding-header "Task list")
