@@ -19,7 +19,6 @@
     helm-bibtex
     ;; Extra packages
     org-pdfview
-    (org-habit :location built-in)
     interleave
     ))
 
@@ -74,16 +73,6 @@
   ;; make org-agenda done tasks having the same font scale
   (custom-set-faces
    '(org-agenda-done ((t (:foreground "#86dc2f" :height 1.0)))))
-  )
-
-(defun my-org/init-org-habit ()
-  ;; tracking habits
-  (use-package org-habit)
-  (add-to-list 'org-modules 'org-habit)
-  (setq org-habit-preceding-days 10
-        org-habit-following-days 1
-        org-habit-graph-column 40
-        org-habit-show-done-always-green t)
   )
 
 (defun my-org/post-init-org-agenda ()
@@ -144,13 +133,6 @@
                    (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
                    (org-agenda-sorting-strategy '(deadline-up))
                    (org-agenda-overriding-header "Upcoming deadlines")))))
-          ;; Habits
-          ("h" "Habits"
-           ((tags-todo "STYLE=\"habit\"+SCHEDULED<=\"<today>\"")
-            (org-agenda-overriding-header "Habits")
-            (org-agenda-sorting-strategy
-             '(priority-down time-down todo-state-down
-                             effort-up category-keep))))
           ;; Block agenda
           (" " "Agenda"
            ((agenda ""
