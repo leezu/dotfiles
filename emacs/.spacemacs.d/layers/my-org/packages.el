@@ -94,9 +94,9 @@
         org-todo-keywords '((sequence "SOMEDAY" "TODO" "NEXT" "STARTED" "|" "DONE" "CANCELLED")
                             (sequence "WAITING" "|" "DONE" "CANCELLED"))
         org-log-into-drawer t
-        org-tag-alist '(("@research" . ?r)
-                        ("@work" . ?w)
-                        ("@home" . ?h))
+        org-tag-alist '(("@office" . ?o)
+                        ("@home" . ?h)
+                        ("@errand" . ?e))
         org-tags-exclude-from-inheritance '("PROJECT")
         org-default-notes-file "~/Dropbox/org/organizer.org"
         )
@@ -116,7 +116,8 @@
   ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
   (setq org-agenda-custom-commands
         '(
-          ;; The following ressources were helpful when creating the custom agenda commands
+          ;; The following ressources were helpful when creating the custom
+          ;; agenda commands
           ;; https://www.reddit.com/r/emacs/comments/2b9obs/org_users_what_did_it_take_you_a_long_time_to/
 
           ;; Weekly review
@@ -164,6 +165,31 @@
 
   (setq org-stuck-projects
         '("+PROJECT/-MAYBE-DONE" ("NEXT" "STARTED") nil "\\<IGNORE\\>"))
+
+  ;; Auto-exclude
+  (defun leezu/weekday-p ()
+    (let ((wday (nth 6 (decode-time))))
+      (and (< wday 6)
+           (> wday 0))))
+
+  (defun leezu/working-p ()
+    (let ((hour (nth 2 (decode-time))))
+      (and (leezu/weekday-p)
+           (or (and (>= hour 10) (<= hour 12))
+               (and (>= hour 12) (<= hour 19))))))
+
+  (defun leezu/org-auto-exclude-function (tag)
+    (and (cond
+          ((string= tag "@home")
+           (leezu/working-p))
+          ((string= tag "@office")
+           (not (leezu/working-p)))
+          ((or (string= tag "@errand") (string= tag "PHONE"))
+           (let ((hour (nth 2 (decode-time))))
+             (or (< hour 8) (> hour 21)))))
+         (concat "-" tag)))
+
+  (setq org-agenda-auto-exclude-function 'leezu/org-auto-exclude-function)
   )
 
 
