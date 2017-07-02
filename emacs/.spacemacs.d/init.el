@@ -55,6 +55,8 @@ values."
           org-agenda-span 1
           org-extend-today-until 5 ;extend 'today' to 5AM
           org-agenda-start-on-weekday nil)
+     (clip2org :variables
+                clip2org-clippings-file "~/Dropbox/Books/My Clippings.txt")
 
      ;; Finance
      finance
