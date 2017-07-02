@@ -87,28 +87,30 @@
   )
 
 (defun my-org/post-init-org-agenda ()
-  (setq org-agenda-files '("~/Dropbox/org/organizer.org"
+  (setq org-agenda-files '("~/Dropbox/org/refile.org"
+                           "~/Dropbox/org/organizer.org"
                            "~/Dropbox/org/deft/"
                            "~/Dropbox/Papers/notes.org"
                            "~/projects/leezu.github.io/posts")
-        org-todo-keywords '((sequence "SOMEDAY" "TODO" "NEXT" "STARTED" "|" "DONE" "CANCELLED")
-                            (sequence "WAITING" "|" "DONE" "CANCELLED"))
+        org-todo-keywords '((sequence "SOMEDAY" "TODO" "NEXT" "INPROGRESS" "|" "DONE" "CANCELLED")
+                            (sequence "WAITING" "|" "DONE" "CANCELLED")
+                            (sequence "HOLD" "|" "DONE" "CANCELLED"))
         org-log-into-drawer t
         org-tag-alist '(("@office" . ?o)
                         ("@home" . ?h)
                         ("@errand" . ?e))
         org-tags-exclude-from-inheritance '("PROJECT")
-        org-default-notes-file "~/Dropbox/org/organizer.org"
+        org-default-notes-file "~/Dropbox/org/refile.org"
         )
 
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
+        '(("t" "Todo" entry (file+headline "~/Dropbox/org/refile.org" "Tasks")
            "* TODO %?\nOPENED: %U\n %i")
-          ("w" "Waiting for" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
+          ("w" "Waiting for" entry (file+headline "~/Dropbox/org/refile.org" "Tasks")
            "* WAITING %?\nOPENED: %U\n %i")
-          ("s" "Someday" entry (file+headline "~/Dropbox/org/organizer.org" "Tasks")
+          ("s" "Someday" entry (file+headline "~/Dropbox/org/refile.org" "Tasks")
            "* SOMEDAY %?\nOPENED: %U\n %i")
-          ("n" "Note" entry (file+headline "~/Dropbox/org/organizer.org" "Notes")
+          ("n" "Note" entry (file+headline "~/Dropbox/org/refile.org" "Notes")
            "* %?\nCREATED: %U\n %i")
           ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
            "* %?\nEntered on %U\n")))
@@ -142,7 +144,6 @@
                    (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
                    (org-agenda-sorting-strategy '(deadline-up))
                    (org-agenda-overriding-header "Upcoming deadlines")))))
-
           ;; Habits
           ("h" "Habits"
            ((tags-todo "STYLE=\"habit\"+SCHEDULED<=\"<today>\"")
@@ -151,16 +152,39 @@
              '(priority-down time-down todo-state-down
                              effort-up category-keep))))
           ;; Block agenda
-          ("c" "Simple agenda view"
+          (" " "Agenda"
            ((agenda ""
                     ((org-agenda-span 'day)))
-            (todo "NEXT|STARTED"
+            ;; All items with the "REFILE" tag, everything in refile.org
+            ;; automatically gets that applied
+            (tags "REFILE"
+                  ((org-agenda-overriding-header "Tasks to Refile")))
+            ;; All "INPROGRESS" todo items
+            (todo "INPROGRESS"
+                  ((org-agenda-overriding-header "Current work")))
+            (todo "NEXT"
                   ((org-agenda-overriding-header "Started tasks and tasks ready to be done next")))
+            (tags "WAITING"
+                  ((org-agenda-overriding-header "Waiting for something")))
+            ;; Upcoming deadline
             (todo ""
                   ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
                    (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
                    (org-agenda-sorting-strategy '(deadline-up))
-                   (org-agenda-overriding-header "Upcoming deadlines")))))
+                   (org-agenda-overriding-header "Upcoming deadlines")))
+            ;; All TODO items
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Task list")
+                   ;; sort by time, priority, and category
+                   (org-agenda-sorting-strategy
+                    '(time-up priority-down category-keep))))
+            ;; Everything on hold
+            (todo "HOLD"
+                  ((org-agenda-overriding-header "On-hold")))
+            ;; All headings with the "recurring" tag
+            (tags "recurring/!"
+                  ((org-agenda-overriding-header "Recurring")))
+            ))
           ))
 
   (setq org-stuck-projects
