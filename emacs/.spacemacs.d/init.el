@@ -67,6 +67,7 @@ values."
      ;; Programming
      cscope
      emacs-lisp
+     package-lint ;; for emacs package development
      git
      (latex :variables
             latex-enable-folding t
