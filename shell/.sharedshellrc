@@ -1,4 +1,10 @@
-# Load host specific settings
+# Aliases
+# Directories
+export PROJECTDIR="$HOME/projects"
+export SOFTWAREDIR="$HOME/software"
+export DATASETSDIR="$HOME/datasets"
+
+# Load host specific settings. May override above base dirs.
 export HOST=`hostname`
 if [[ -f ~/.sharedshellrc-$HOST ]]; then
     source ~/.sharedshellrc-$HOST
@@ -20,12 +26,6 @@ export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
 
 # Ruby gems
 export PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
-
-# Aliases
-# Directories
-export PROJECTDIR="$HOME/projects"
-export SOFTWAREDIR="$HOME/software"
-export DATASETSDIR="$HOME/datasets"
 
 # Dictionaries
 alias ddevil='dict -d devil'
