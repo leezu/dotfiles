@@ -14,6 +14,16 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# tmux
+if [[ ! -r ~/software/tmux ]]; then
+    git clone https://github.com/tmux/tmux/ ~/software/tmux;
+    cd ~/software/tmux;
+    sh autogen.sh;
+    ./configure --prefix=$HOME/.local;
+    make;
+    make install;
+fi
+
 # mxnet
 export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
 export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LIBRARY_PATH"
