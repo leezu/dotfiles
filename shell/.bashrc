@@ -1,8 +1,13 @@
-# History configuration via https://www.digitalocean.com/community/tutorials/how-to-use-bash-history-commands-and-expansions-on-a-linux-vps
+# History configuration via https://unix.stackexchange.com/a/18443
+# No duplicates
+export HISTCONTROL=ignoredups:erasedups
 # Don't overwrite history file
 shopt -s histappend
 # Write history after every command
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+if [[ ! $PROMPT_COMMAND =~ .*history.*$ ]]; then
+    # Adapt PROMPT_COMMAND only if it does not yet contain history.
+    export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+fi
 
 # load shared settings
 if [[ -f ~/.sharedshellrc ]]; then

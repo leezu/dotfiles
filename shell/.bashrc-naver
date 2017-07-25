@@ -1,7 +1,12 @@
-# Screen
+# Profile script quirks
+# 1) Screen
 # Use a private screen session directory, so that they don't get mixed up with
 # user sessions of other people
 export SCREENDIR=$HOME/.screen
+
+# 2) Reset $HISTFILE
+export HISTFILE=$HOME/.bash_history
+
 
 # Python pyenv
 if [[ ! -r ~/.pyenv ]]; then
