@@ -70,6 +70,7 @@ values."
      emacs-lisp
      package-lint ;; for emacs package development
      git
+     github
      (latex :variables
             latex-enable-folding t
             latex-build-command "LatexMk")
