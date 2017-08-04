@@ -3,6 +3,18 @@
 # user sessions of other people
 export SCREENDIR=$HOME/.screen
 
+# Pkgsrc
+if [[ ! -r ~/build/pkgsrc ]]; then
+    mkdir ~/build
+    cd ~/build
+    wget http://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc.tar.gz
+    tar -xzf pkgsrc.tar.gz -C ~/build
+    cd ~/build/pkgsrc/bootstrap
+    ./bootstrap --unprivileged
+fi
+export PATH="/home1/irteam/users/leonard/pkg/bin:/home1/irteam/users/leonard/pkg/sbin${PATH:+:${PATH}}"
+export MANPATH="/home1/irteam/users/leonard/pkg/man${MANPATH:+:${MANPATH}}"
+
 # Python pyenv
 if [[ ! -r ~/.pyenv ]]; then
     git clone https://github.com/pyenv/pyenv.git ~/.pyenv
