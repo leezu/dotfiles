@@ -445,6 +445,16 @@ you should place your code here."
   ;; Programming
   ;;
 
+  ;; Copy git rev-parse "HEAD" result
+  ;; via https://unix.stackexchange.com/a/24287
+  (defun leezu-eval-to-kill-ring ()
+    (interactive)
+    (kill-new (with-output-to-string (princ (call-interactively 'eval-expression)))))
+  (defun leezu-git-rev-parse-head ()
+    (interactive)
+    (kill-new (with-output-to-string (princ (vc-git--rev-parse "HEAD")))))
+
+
   ;; Reading documentation
   ;; man pages
   (setq Man-notify-method 'pushy)
