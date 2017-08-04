@@ -11,24 +11,24 @@ if [[ -f ~/.sharedshellrc-$HOST ]]; then
 fi
 
 # Local software
-export PATH="$HOME/.local/bin:$PATH"
-export CPATH="$HOME/.local/include:$CPATH" # cpp searches for include files here (like -I )
-export LIBRARY_PATH="$HOME/.local/lib:$LIBRARY_PATH" # link time libraries
-export LD_LIBRARY_PATH="$HOME/.local/lib:$LD_LIBRARY_PATH" # run time libraries
+export PATH="$HOME/.local/bin${PATH:+:${PATH}}"
+export CPATH="$HOME/.local/include${CPATH:+:${CPATH}}" # cpp searches for include files here (like -I )
+export LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}" # link time libraries
+export LD_LIBRARY_PATH="$HOME/.local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" # run time libraries
 
 # Research data
 export NLTK_DATA="$DATASETSDIR/nltk_data"
 
 # NPM
 export NPM_PACKAGES="$HOME/.npm"
-export PATH="$NPM_PACKAGES/bin:$PATH"
+export PATH="$NPM_PACKAGES/bin${PATH:+:${PATH}}"
 unset MANPATH
 # $(manpath): /home/leonard/.local/share/man:/usr/share/man
 export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
-export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
+export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:${NODE_PATH}}"
 
 # Ruby gems
-export PATH="/home/leonard/.gem/ruby/2.3.0/bin:$PATH"
+export PATH="/home/leonard/.gem/ruby/2.3.0/bin${PATH:+:${PATH}}"
 
 # Dictionaries
 alias ddevil='dict -d devil'

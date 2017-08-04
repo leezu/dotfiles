@@ -25,8 +25,8 @@ if [[ ! -r ~/software/tmux ]]; then
 fi
 
 # mxnet
-export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LD_LIBRARY_PATH"
-export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/:$LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/${LIBRARY_PATH:+:${LIBRARY_PATH}}"
 export PYTHONPATH="$HOME/software/mxnet/python:$HOME/projects/mphil"
 
 # Data transfer
