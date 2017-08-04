@@ -14,14 +14,17 @@
     ;; Packages already in org layer
     org
     org-agenda
+    org-pomodoro
     ;; Packages already in bibtex layer
     org-ref
     helm-bibtex
     ;; Extra packages
     org-pdfview
     interleave
+    org-alert
     ))
 
+;; Configuration of packages already present in other layers
 (defun my-org/post-init-org ()
   ;; Disable indentation in org mode
   (setq org-adapt-indentation nil)
@@ -227,6 +230,11 @@ cite:%k
         )
   )
 
+(defun my-org/post-init-org-pomodoro ()
+  (setq alert-default-style 'libnotify)
+  )
+
+;; Configuration of newly introduced packages
 (defun my-org/init-org-pdfview ()
   (use-package org-pdfview)
 
