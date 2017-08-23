@@ -57,7 +57,5 @@ setenv PKG_CONFIG_PATH "/csproject/dygroup2/software/opencv-3.2.0/lib/pkgconfig:
 setenv PYTHONUSERBASE "/csproject/dygroup2/lelausen/.local"
 setenv SCIKIT_LEARN_DATA "/csproject/dygroup2/lelausen/datasets"
 setenv MPLBACKEND "Qt5Agg"
-## MxNet
-setenv PYTHONPATH "/csproject/dygroup2/lelausen/software/mxnet/python"
 
 # Last line in file is not executed!

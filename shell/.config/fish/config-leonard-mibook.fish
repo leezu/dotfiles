@@ -6,7 +6,3 @@ set -x LD_RUN_PATH "/usr/local/cuda-8.0/lib64:/usr/local/cudnn-5.1/lib64:$LD_RUN
 set -x CPATH "/usr/local/cuda-8.0/include:/usr/local/cudnn-5.1/include:$CPATH"
 set -x INCLUDE_PATH "/usr/local/cuda-8.0/include:/usr/local/cudnn-5.1/include:$INCLUDE_PATH"
 set -x PKG_CONFIG_PATH "/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-### Python
-## MxNet
-set -x PYTHONPATH "/home/leonard/software/mxnet/python:$PYTHONPATH"
