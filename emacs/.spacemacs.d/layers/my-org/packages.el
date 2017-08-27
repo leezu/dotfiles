@@ -81,6 +81,8 @@
 (defun my-org/post-init-org-agenda ()
   (setq org-agenda-files '("~/Dropbox/org/refile.org"
                            "~/Dropbox/org/organizer.org"
+                           "~/Dropbox/org/diary.org"
+                           "~/Dropbox/org/journal.org"
                            "~/Dropbox/org/deft/"
                            "~/Dropbox/Papers/notes.org"
                            "~/projects/leezu.github.io/posts")
@@ -104,6 +106,8 @@
            "* SOMEDAY %?\nOPENED: %U\n %i")
           ("n" "Note" entry (file+headline "~/Dropbox/org/refile.org" "Notes")
            "* %?\nCREATED: %U\n %i")
+          ("d" "Diary" entry (file+datetree "~/Dropbox/org/diary.org" "Notes")
+           "* %?\nEntered on %U\n")
           ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
            "* %?\nEntered on %U\n")))
 
