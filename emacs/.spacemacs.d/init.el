@@ -82,6 +82,8 @@ values."
      javascript
      (python :variables
              python-enable-yapf-format-on-save nil)
+     ipython-notebook
+     my-ipython-notebook
      java
      yaml
      lua

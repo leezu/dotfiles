@@ -5,3 +5,11 @@ export MOZ_USE_XINPUT2=1
 export CPATH="/opt/intel/compilers_and_libraries_2016.2.181/linux/mkl/include:$INCLUDE_PATH"
 export LD_LIBRARY_PATH="/opt/intel/compilers_and_libraries_2016.2.181/linux/mkl/lib/intel64:$LD_LIBRARY_PATH"
 export LIBRARY_PATH="/opt/intel/compilers_and_libraries_2016.2.181/linux/mkl/lib/intel64:$LIBRARY_PATH"
+
+# Remote ipython sessions in emacs ipython notebook
+function mount_remote() {
+    if [[ ! -r ~/.servers/$1 ]]; then
+        mkdir -p ~/.servers/$1
+    fi
+    sshfs $1:. ~/.servers/$1
+}
