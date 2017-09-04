@@ -1,2 +1,2 @@
-.libPaths("~/develop/R/3.2")
+.libPaths("~/.R/")
 message("Using library: ", .libPaths()[1])
