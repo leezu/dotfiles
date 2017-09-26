@@ -75,6 +75,7 @@ values."
      (latex :variables
             latex-enable-folding t
             latex-build-command "LatexMk")
+     restructuredtext
      markdown
      pandoc
      syntax-checking
