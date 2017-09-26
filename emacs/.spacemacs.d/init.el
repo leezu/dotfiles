@@ -64,6 +64,7 @@ values."
 
      ;; Documentation
      dash
+     sphinx
 
      ;; Programming
      cscope
