@@ -79,11 +79,11 @@
   )
 
 (defun my-org/post-init-org-agenda ()
-  (setq org-agenda-files '("~/Dropbox/org/refile.org"
-                           "~/Dropbox/org/organizer.org"
-                           "~/Dropbox/org/diary.org"
-                           "~/Dropbox/org/journal.org"
-                           "~/Dropbox/org/deft/"
+  (setq org-agenda-files '("~/org/refile.org"
+                           "~/org/organizer.org"
+                           "~/org/diary.org"
+                           "~/org/journal.org"
+                           "~/org/deft/"
                            "~/Dropbox/Papers/notes.org"
                            "~/projects/leezu.github.io/posts")
         org-todo-keywords '((sequence "SOMEDAY" "TODO" "NEXT" "INPROGRESS" "|" "DONE" "CANCELLED")
@@ -94,21 +94,21 @@
                         ("@home" . ?h)
                         ("@errand" . ?e))
         org-tags-exclude-from-inheritance '("PROJECT")
-        org-default-notes-file "~/Dropbox/org/refile.org"
+        org-default-notes-file "~/org/refile.org"
         )
 
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/Dropbox/org/refile.org" "Tasks")
+        '(("t" "Todo" entry (file+headline "~/org/refile.org" "Tasks")
            "* TODO %?\nOPENED: %U\n %i")
-          ("w" "Waiting for" entry (file+headline "~/Dropbox/org/refile.org" "Tasks")
+          ("w" "Waiting for" entry (file+headline "~/org/refile.org" "Tasks")
            "* WAITING %?\nOPENED: %U\n %i")
-          ("s" "Someday" entry (file+headline "~/Dropbox/org/refile.org" "Tasks")
+          ("s" "Someday" entry (file+headline "~/org/refile.org" "Tasks")
            "* SOMEDAY %?\nOPENED: %U\n %i")
-          ("n" "Note" entry (file+headline "~/Dropbox/org/refile.org" "Notes")
+          ("n" "Note" entry (file+headline "~/org/refile.org" "Notes")
            "* %?\nCREATED: %U\n %i")
-          ("d" "Diary" entry (file+datetree "~/Dropbox/org/diary.org" "Notes")
+          ("d" "Diary" entry (file+datetree "~/org/diary.org" "Notes")
            "* %?\nEntered on %U\n")
-          ("j" "Journal" entry (file+datetree "~/Dropbox/org/journal.org")
+          ("j" "Journal" entry (file+datetree "~/org/journal.org")
            "* %?\nEntered on %U\n")))
 
   ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
