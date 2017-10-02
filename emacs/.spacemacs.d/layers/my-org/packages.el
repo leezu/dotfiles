@@ -104,6 +104,9 @@
            "* WAITING %?\nOPENED: %U\n %i")
           ("s" "Someday" entry (file+headline "~/org/refile.org" "Tasks")
            "* SOMEDAY %?\nOPENED: %U\n %i")
+          ("c" "Code Snippet" entry (file "~/org/snippets.org")
+           ;; Prompt for tag and language
+           "* %?\t:%^{language}:\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
           ("n" "Note" entry (file+headline "~/org/refile.org" "Notes")
            "* %?\nCREATED: %U\n %i")
           ("d" "Diary" entry (file+datetree "~/org/diary.org" "Notes")
