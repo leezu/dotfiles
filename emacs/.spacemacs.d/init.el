@@ -373,6 +373,9 @@ you should place your code here."
   ;; Visual line navigation for textual modes
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
+  ;; Multi-cursor
+  (global-evil-mc-mode  1)
+
   ;;
   ;; Layouts and workspaces
   ;;
