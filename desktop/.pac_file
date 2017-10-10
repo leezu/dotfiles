@@ -1,0 +1,13 @@
+function FindProxyForURL(url, host) {
+	// Use proxy for dycpu1/2
+	if (shExpMatch(host, "dycpu1.cse.ust.hk"))
+	{
+		return "PROXY localhost:6001";
+	}
+	if (shExpMatch(host, "dycpu2.cse.ust.hk"))
+	{
+		return "PROXY localhost:6002";
+	}
+
+	return "DIRECT";
+}
