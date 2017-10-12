@@ -3,6 +3,12 @@
 # user sessions of other people
 export SCREENDIR=$HOME/.screen
 
+# TLS Certs for curl. Needed for pyenv
+if [[ ! -e ~/.cacert.pem ]]; then
+    wget https://curl.haxx.se/ca/cacert.pem -O ~/.cacert.pem
+fi
+export CURL_CA_BUNDLE=~/.cacert.pem
+
 # Pkgsrc
 if [[ ! -r ~/build/pkgsrc ]]; then
     mkdir ~/build
