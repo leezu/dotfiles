@@ -42,6 +42,14 @@ if [[ ! -r ~/software/tmux ]]; then
     make install;
 fi
 
+# vim
+if [[ ! -r ~/.SpaceVim ]]; then
+    git clone https://github.com/SpaceVim/SpaceVim.git ~/.SpaceVim
+    rm -r ~/.vim
+    rm ~/.vimrc
+    ln -s ~/.SpaceVim ~/.vim
+fi
+
 # mxnet
 export LD_LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 export LIBRARY_PATH="/usr/local/cuda-8.0/lib64:$HOME/intel/lib/intel64_lin/${LIBRARY_PATH:+:${LIBRARY_PATH}}"
