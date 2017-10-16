@@ -41,8 +41,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-help-tooltip t)
      (spell-checking :variables
                      spell-checking-enable-by-default nil
-                     enable-flyspell-auto-completion t
-                     spell-checking-enable-auto-dictionary t)
+                     enable-flyspell-auto-completion t)
      (chinese :variables
               chinese-default-input-method 'pinyin
               chinese-enable-fcitx t)
