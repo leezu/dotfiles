@@ -109,9 +109,9 @@
            "* %?\t:%^{language}:\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
           ("n" "Note" entry (file+headline "~/org/refile.org" "Notes")
            "* %?\nCREATED: %U\n %i")
-          ("d" "Diary" entry (file+datetree "~/org/diary.org" "Notes")
+          ("d" "Diary" entry (file+olp+datetree "~/org/diary.org")
            "* %?\nEntered on %U\n")
-          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
            "* %?\nEntered on %U\n")))
 
   ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
