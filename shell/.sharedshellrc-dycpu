@@ -10,13 +10,12 @@ LD_LIBRARY_PATH="/home/data/lelausen/.local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_
 
 # cache directory
 export XDG_CACHE_HOME="/home/data/lelausen/.cache/"
-export CUDA_CACHE_PATH="/home/data/lelausen/.nv/ComputeCache"
 ## For bazel
 export TEST_TMPDIR="/home/data/lelausen/.cache/"
 
 # cuda
 export CUDA_CACHE_MAXSIZE=4096
-export CUDA_CACHE_DISABLE=0
+export CUDA_CACHE_DISABLE=1
 
 # mxnet
 export PATH="${PATH:+${PATH}:}/usr/local/bin"
