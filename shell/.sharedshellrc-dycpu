@@ -19,10 +19,9 @@ export CUDA_CACHE_DISABLE=1
 
 # mxnet
 export PATH="${PATH:+${PATH}:}/usr/local/bin"
-export LD_LIBRARY_PATH="/usr/local/cuda-9.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/software/intel/lib/intel64_lin/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
-export LIBRARY_PATH="/usr/local/cuda-9.0/lib64:/home/data/software/cudnn-5.1/lib64:/home/data/software/intel/lib/intel64_lin/${LIBRARY_PATH:+:${LIBRARY_PATH}}"
-export LD_RUN_PATH="/home/data/software/cudnn-5.1/lib64${LD_RUN_PATH:+:${LD_RUN_PATH}}"
-export CPATH="/usr/local/cuda-9.0/include:/home/data/software/cudnn-5.1/include${CPATH:+:${CPATH}}"
+export LD_LIBRARY_PATH="/usr/local/cuda-9.0/lib64:/home/data/software/intel/lib/intel64_lin/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+export LIBRARY_PATH="/usr/local/cuda-9.0/lib64:/home/data/software/intel/lib/intel64_lin/${LIBRARY_PATH:+:${LIBRARY_PATH}}"
+export CPATH="/usr/local/cuda-9.0/include${CPATH:+:${CPATH}}"
 export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
 
 # python
