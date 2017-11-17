@@ -1,1 +1,4 @@
 source ~/.sharedshellrc-dycpu
+
+export VISDOM_PORT_MIN=10001
+export VISDOM_PORT_MAX=10500

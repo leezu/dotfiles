@@ -2,3 +2,6 @@ source ~/.sharedshellrc-dycpu
 
 alias cdproj1="cd /home/dycpu1/lelausen/projects"
 alias cdproj2="cd /home/data/lelausen/projects"
+
+export VISDOM_PORT_MIN=10501
+export VISDOM_PORT_MAX=11000

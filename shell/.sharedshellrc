@@ -1,4 +1,8 @@
 # Aliases
+# Autossh port forwards
+alias dycpu1-ports="autossh -M 0 -f -T -N dycpu1-ports"
+alias dycpu2-ports="autossh -M 0 -f -T -N dycpu1-ports"
+
 # Directories
 export PROJECTDIR="$HOME/projects"
 export SOFTWAREDIR="$HOME/software"
