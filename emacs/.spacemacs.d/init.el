@@ -93,6 +93,9 @@ This function should only modify configuration layer settings."
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
      octave
+     (shell :variables
+            shell-default-term-shell "/bin/zsh"
+            shell-default-shell 'ansi-term)
      shell-scripts
      nixos
      )
