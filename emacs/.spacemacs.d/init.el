@@ -80,7 +80,9 @@ This function should only modify configuration layer settings."
      syntax-checking
      typescript
      html
-     javascript
+     (javascript :variables
+                 js2-strict-missing-semi-warning nil
+                 js2-missing-semi-one-line-override nil)
      (python :variables
              python-enable-yapf-format-on-save nil)
      ipython-notebook
