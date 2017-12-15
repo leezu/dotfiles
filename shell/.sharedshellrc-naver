@@ -1,3 +1,10 @@
+# TMP dir
+# /tmp has very limited space. Use tmp dir in home directory as workaround
+export TMPDIR=$HOME/tmp
+if [[ ! -r ~/tmp ]]; then
+    mkdir ~/tmp
+fi
+
 # Screen
 # Use a private screen session directory, so that they don't get mixed up with
 # user sessions of other people
