@@ -10,6 +10,7 @@ LD_LIBRARY_PATH="/home/data/lelausen/.local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_
 
 # cache directory
 export XDG_CACHE_HOME="/home/data/lelausen/.cache/"
+export CUDA_CACHE_PATH="/home/data/lelausen/.nv/"
 ## For bazel
 export TEST_TMPDIR="/home/data/lelausen/.cache/"
 
