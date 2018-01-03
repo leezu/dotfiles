@@ -13,3 +13,6 @@ function mount_remote() {
     fi
     sshfs $1:. ~/.servers/$1
 }
+
+# Rust & Cargo
+export PATH="$HOME/.cargo/bin:$PATH"
