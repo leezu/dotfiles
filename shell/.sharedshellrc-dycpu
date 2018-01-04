@@ -7,6 +7,7 @@ PATH="/home/data/lelausen/.local/bin${PATH:+:${PATH}}"
 CPATH="/home/data/lelausen/.local/include${CPATH:+:${CPATH}}" # cpp searches for include files here (like -I )
 LIBRARY_PATH="/home/data/lelausen/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}" # link time libraries
 LD_LIBRARY_PATH="/home/data/lelausen/.local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" # run time libraries
+ACLOCAL_PATH="/usr/share/aclocal"
 
 # cache directory
 export XDG_CACHE_HOME="/home/data/lelausen/.cache/"
