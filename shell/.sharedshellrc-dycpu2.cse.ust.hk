@@ -5,3 +5,15 @@ alias cdproj2="cd /home/data/lelausen/projects"
 
 export VISDOM_PORT_MIN=10501
 export VISDOM_PORT_MAX=11000
+
+# Pkgsrc
+if [[ ! -r /home/data/lelausen/build/pkgsrc ]]; then
+    mkdir /home/data/lelausen/build
+    cd /home/data/lelausen/build
+    wget http://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc.tar.gz
+    tar -xzf pkgsrc.tar.gz -C /home/data/lelausen/build
+    cd /home/data/lelausen/build/pkgsrc/bootstrap
+    ./bootstrap --unprivileged --prefix /home/data/lelausen/pkg
+fi
+export PATH="/home/data/lelausen/pkg/bin:/home/data/lelausen/pkg/pkg/sbin${PATH:+:${PATH}}"
+export MANPATH="/home/data/lelausen/pkg/man${MANPATH:+:${MANPATH}}"
