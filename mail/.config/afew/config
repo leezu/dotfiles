@@ -1,0 +1,46 @@
+[SpamFilter]
+# [ClassifyingFilter]
+[KillThreadsFilter]
+[ListMailsFilter]
+[ArchiveSentMailsFilter]
+sent_tag = sent
+
+# Folder based stuff for interoperability with mobile client
+[Filter.0]
+message = Remove inbox tag from all new mail in Archives folder
+query = folder:gandi/Archives
+tags = -new
+[Filter.1]
+message = Add tags for special News INBOX folders
+query = folder:gandi/INBOX.News
+tags = +news;-new;+autoinbox
+[Filter.2]
+message = Add tags for special Software INBOX folders
+query = folder:gandi/INBOX.Software
+tags = +software;-new;+autoinbox
+[Filter.3]
+message = Add tags for special Academic INBOX folders
+query = folder:gandi/INBOX.Academic
+tags = +academic;-new;+autoinbox
+[Filter.4]
+message = Remove inbox tag from all new mail in Trash folder
+query = folder:gandi/Trash
+tags = +deleted;-new
+
+# l-TAG@lausen.nl based tagging
+[HeaderMatchingFilter.0]
+message = Tagging based on address
+pattern = <l-(?P<id>[a-z0-9]+)@lausen.nl>
+header = To
+tags = -new;+{id};+autoinbox
+
+# Remove killed threads from inbox
+[Filter.4]
+message = Remove inbox tag from all new mail in Trash folder
+query = tag:killed
+tags = -inbox;-autoinbox
+
+[InboxFilter]
+[MailMover]
+folders = gandi/INBOX
+gandi/INBOX = 'tag:spam':gandi/Junk 'NOT tag:inbox':gandi/Archives 'tag:deleted':gandi/Trash

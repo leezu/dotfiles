@@ -1,0 +1,22 @@
+[general]
+accounts = gandi
+pythonfile = ~/.config/offlineimap/keyring_helper.py
+
+[Account gandi]
+localrepository = local-gandi
+remoterepository = gandi
+postsynchook = notmuch new
+
+[Repository local-gandi]
+type = Maildir
+localfolders = ~/mail/gandi
+
+[Repository gandi]
+type = IMAP
+ssl = yes
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+remotehost = mail.gandi.net
+remoteport = 993
+remoteuser = leonard@lausen.nl
+remotepasseval = keyring.get_password("offlineimap","gandi")
+folderfilter = lambda foldername: True

@@ -1,0 +1,12 @@
+#!/bin/sh
+echo
+echo
+echo Calling afew to tag new messages
+$HOME/.local/bin/afew --tag --new --verbose
+echo
+echo
+echo Calling afew to move messages from INBOX to Archive, Junk, Trash, etc.
+$HOME/.local/bin/afew --move --verbose
+echo
+echo
+echo Finished notmuch post-new hook
