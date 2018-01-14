@@ -30,12 +30,12 @@ tags = +deleted;-new
 # l-TAG@lausen.nl based tagging
 [HeaderMatchingFilter.0]
 message = Tagging based on address
-pattern = <l-(?P<id>[a-z0-9]+)@lausen.nl>
+pattern = [lL]-(?P<id>[a-z0-9]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
 header = To
 tags = -new;+{id};+autoinbox
 
 # Remove killed threads from inbox
-[Filter.4]
+[Filter.5]
 message = Remove inbox tag from all new mail in Trash folder
 query = tag:killed
 tags = -inbox;-autoinbox

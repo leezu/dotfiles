@@ -31,6 +31,20 @@
         smtpmail-smtp-service 587)
   ;; Tags
   (setq notmuch-archive-tags '("-inbox" "-autoinbox"))
+  ;; Search
+  (setq notmuch-search-oldest-first nil)
+  (setq notmuch-saved-searches '((:name "inbox"
+                                        :query "tag:inbox"
+                                        :count-query "tag:inbox and tag:unread"
+                                        :key "i")
+                                 (:name "autoinbox"
+                                        :query "tag:autoinbox"
+                                        :count-query "tag:autoinbox and tag:unread")
+                                 (:name "unread" :query "tag:unread" :key "u")
+                                 (:name "flagged" :query "tag:flagged" :key "f")
+                                 (:name "sent" :query "tag:sent" :key "t")
+                                 (:name "drafts" :query "tag:draft" :key "d")
+                                 (:name "all mail" :query "*" :key "a")))
 
   ;; Refresh mail - via https://kkatsuyuki.github.io/notmuch-conf/
   (defun notmuch-exec-offlineimap ()
@@ -82,18 +96,16 @@
                                                    ("k" ":")
                                                    ("a" "o")))
 
-    (notmuch/switch-keys notmuch-show-mode-map '(("SPC" "C-L")
-                                                 ;; ("n" "J")
-                                                 ;; ("p" "K")
-                                                 ;; ("l" "\"")
-                                                 ;; ("k" ":")
-                                                 ("a" "o")))
+    (notmuch/switch-keys notmuch-show-mode-map '(("SPC" "C-L")))
 
     (notmuch/add-key notmuch-tree-mode-map '(("d" spacemacs/notmuch-message-delete-down)
                                              ("D" spacemacs/notmuch-message-delete-up)
                                              ("M" compose-mail-other-frame)))
 
-    (notmuch/add-key notmuch-show-mode-map '(("d" leezu-notmuch/show-delete-message)))
+    (notmuch/add-key notmuch-show-mode-map '(("d" leezu-notmuch/show-delete-message)
+                                             ("J" leezu-notmuch/show-next-message)
+                                             ("K" leezu-notmuch/show-previous-message)
+                                             ))
 
     (notmuch/add-key notmuch-search-mode-map '(("a" spacemacs/notmuch-search-archive-thread-down)
                                                ("A" spacemacs/notmuch-search-archive-thread-up)

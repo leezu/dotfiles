@@ -28,6 +28,27 @@ definition"
 (defun leezu-notmuch/show-delete-message ()
   "Deletes currently shown message"
   (interactive)
-  (notmuch-show-tag '("+deleted" "-inbox" "-unread"))
+  (notmuch-show-tag '("+deleted" "-inbox" "-autoinbox" "-unread"))
   (unless (notmuch-show-next-open-message)
     (notmuch-show-next-thread t)))
+
+(defun leezu-notmuch/show-previous-message ()
+  "Show previous message, possibley in different thread."
+  (interactive)
+  (if (notmuch-show-goto-message-previous)
+      (notmuch-show-message-adjust)
+    (notmuch-show-next-thread t t)))
+
+(defun leezu-notmuch/show-next-message ()
+  "Show next message, possibley in different thread."
+  (interactive)
+  (if (notmuch-show-goto-message-next)
+      (notmuch-show-message-adjust)
+    (notmuch-show-next-thread t)))
+
+(defun leezu-notmuch/message-delete (go-next)
+  "Delete message and select GO-NEXT message."
+  (notmuch-search-tag '("+deleted" "-inbox" "-unread"))
+  (if (eq 'up go-next )
+      (notmuch-search-previous-thread)
+    (notmuch-search-next-thread)))
