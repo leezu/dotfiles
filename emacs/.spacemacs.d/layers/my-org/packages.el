@@ -100,20 +100,20 @@
 
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/org/refile.org" "Tasks")
-           "* TODO %?\nOPENED: %U\n %i")
+           "* TODO [#A]%?\nOPENED: %U\n%a\n\n%i")
           ("w" "Waiting for" entry (file+headline "~/org/refile.org" "Tasks")
-           "* WAITING %?\nOPENED: %U\n %i")
+           "* WAITING %?\nOPENED: %U\n%a\n\n%i")
           ("s" "Someday" entry (file+headline "~/org/refile.org" "Tasks")
-           "* SOMEDAY %?\nOPENED: %U\n %i")
+           "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
           ("c" "Code Snippet" entry (file "~/org/snippets.org")
            ;; Prompt for tag and language
            "* %?\t:%^{language}:\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
           ("n" "Note" entry (file+headline "~/org/refile.org" "Notes")
-           "* %?\nCREATED: %U\n %i")
+           "* %?\nCREATED: %U\n%a\n\n%i")
           ("d" "Diary" entry (file+olp+datetree "~/org/diary.org")
-           "* %?\nEntered on %U\n")
+           "* %?\nEntered on %U\n%a\n")
           ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
-           "* %?\nEntered on %U\n")))
+           "* %?\nEntered on %U\n%a\n")))
 
   ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
   (setq org-agenda-custom-commands
