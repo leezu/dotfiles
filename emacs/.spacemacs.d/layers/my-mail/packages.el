@@ -16,6 +16,8 @@
 
 ;; Configuration of packages already present in other layers
 (defun my-mail/post-init-notmuch ()
+  ;; display
+  (setq notmuch-wash-wrap-lines-length 80)
   ;; setup the mail address and use name
   (setq user-mail-address "leonard@lausen.nl"
         user-full-name "Leonard Lausen")
