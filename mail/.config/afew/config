@@ -40,6 +40,13 @@ message = Remove inbox tag from all new mail in Trash folder
 query = tag:killed
 tags = -inbox;-autoinbox
 
+# OSS mail
+[HeaderMatchingFilter.1]
+message = Finding mail from OSS
+pattern = <oss@navercorp.com>
+header = From
+tags = +naver
+
 [InboxFilter]
 [MailMover]
 folders = gandi/INBOX
