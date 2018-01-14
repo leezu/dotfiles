@@ -126,8 +126,6 @@
                  (define-key evil-motion-state-map (kbd "RET")
                  'widget-field-activate))
                 ((and (or is-normal is-insert) (not editable))
-                 (evil-evilified-state))))) nil t)))
->>>>>>> 19d628f... fixup! emacs: add mail configuration
-  )
+                 (evil-evilified-state))))) nil t))))
 
 ;;; packages.el ends here
