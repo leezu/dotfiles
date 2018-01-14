@@ -21,14 +21,14 @@
         user-full-name "Leonard Lausen")
   ;; add Cc and Bcc headers to the message buffer
   (setq message-default-mail-headers "Cc: \nBcc: \n")
-  ;; postponed message is put in the following draft directory
+  ;; Directories
   (setq message-directory "~/mail/gandi"
         message-auto-save-directory "~/mail/gandi/Drafts"
         message-kill-buffer-on-exit t)
   ;; Sending mail
-  (setq send-mail-function 'smtpmail-send-it
-        smtpmail-smtp-server "mail.gandi.net"
-        smtpmail-smtp-service 587)
+  (setq send-mail-function 'sendmail-send-it
+        message-send-mail-function 'message-send-mail-with-sendmail
+        sendmail-program "~/.local/bin/msmtpq")
   ;; Tags
   (setq notmuch-archive-tags '("-inbox" "-autoinbox"))
   ;; Search
