@@ -30,7 +30,8 @@
   ;; Sending mail
   (setq send-mail-function 'sendmail-send-it
         message-send-mail-function 'message-send-mail-with-sendmail
-        sendmail-program "~/.local/bin/msmtpq")
+        sendmail-program "~/.local/bin/msmtpq"
+        notmuch-fcc-dirs "gandi/Sent")
   ;; Tags
   (setq notmuch-archive-tags '("-inbox" "-autoinbox"))
   ;; Search
