@@ -22,6 +22,7 @@
     org-pdfview
     interleave
     org-alert
+    org-super-agenda
     ))
 
 ;; Configuration of packages already present in other layers
@@ -143,34 +144,6 @@
                    (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
                    (org-agenda-sorting-strategy '(deadline-up))
                    (org-agenda-overriding-header "Upcoming deadlines")))))
-          ;; Block agenda
-          (" " "Agenda"
-           ((agenda ""
-                    ((org-agenda-span 'day)))
-            ;; All items with the "REFILE" tag, everything in refile.org
-            ;; automatically gets that applied
-            (tags "REFILE"
-                  ((org-agenda-overriding-header "Tasks to Refile")))
-            ;; All "INPROGRESS" todo items
-            (todo "INPROGRESS"
-                  ((org-agenda-overriding-header "Current work")))
-            (todo "NEXT"
-                  ((org-agenda-overriding-header "Started tasks and tasks ready to be done next")))
-            (tags "WAITING"
-                  ((org-agenda-overriding-header "Waiting for something")))
-            ;; All TODO items
-            (todo "TODO"
-                  ((org-agenda-overriding-header "Task list")
-                   ;; sort by time, priority, and category
-                   (org-agenda-sorting-strategy
-                    '(time-up priority-down category-keep))))
-            ;; Everything on hold
-            (todo "HOLD"
-                  ((org-agenda-overriding-header "On-hold")))
-            ;; All headings with the "recurring" tag
-            (tags "recurring/!"
-                  ((org-agenda-overriding-header "Recurring")))
-            ))
           ))
 
   (setq org-stuck-projects
@@ -239,4 +212,37 @@ cite:%k
   (use-package interleave)
   )
 
+(defun my-org/init-org-super-agenda ()
+  (use-package org-super-agenda
+    :config (org-super-agenda-mode))
+
+  (setq org-super-agenda-groups
+        '(;; Each group has an implicit boolean OR operator between its selectors.
+          (:name "Today"  ; Optionally specify section name
+                 :time-grid t  ; Items that appear on the time grid
+                 :todo "TODAY"  ; Items that have this TODO keyword
+                 :order 1)
+          (:name "Important"
+                 :tag "bills"
+                 :priority "A"
+                 :order 2)
+          (:priority<= "B"
+                       :order 3)
+          (:name "In progress"
+                 :tag "INPROGRESS"
+                 :order 4)
+          (:name "Next"
+                 :tag "NEXT"
+                 :order 4)
+          (:name "Refile"
+                 :tag "REFILE"
+                 :order 5)
+          (:name "Waiting"
+                 :tag "WAITING"
+                 :order 6)
+          (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+                 :order 9)
+          ;; After the last group, the agenda will display items that didn't
+          ;; match any of these groups, with the default order position of 99
+          )))
 ;;; packages.el ends here
