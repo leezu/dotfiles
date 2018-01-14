@@ -39,7 +39,8 @@
                                         :key "i")
                                  (:name "autoinbox"
                                         :query "tag:autoinbox"
-                                        :count-query "tag:autoinbox and tag:unread")
+                                        :count-query "tag:autoinbox and tag:unread"
+                                        :key "I")
                                  (:name "unread" :query "tag:unread" :key "u")
                                  (:name "flagged" :query "tag:flagged" :key "f")
                                  (:name "sent" :query "tag:sent" :key "t")

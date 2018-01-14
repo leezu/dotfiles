@@ -105,6 +105,9 @@ This function should only modify configuration layer settings."
             shell-default-shell 'ansi-term)
      shell-scripts
      nixos
+
+     ;; Others
+     spotify
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
