@@ -9,6 +9,7 @@ echo Manually tagging non-new messages that were moved to Archive, Junk, Trash, 
 notmuch tag -inbox -autoinbox +deleted "folder:gandi/Trash AND (tag:inbox OR tag:autoinbox)"
 notmuch tag -inbox -autoinbox +spam "folder:gandi/Junk AND (tag:inbox OR tag:autoinbox)"
 notmuch tag -inbox -autoinbox "folder:gandi/Archives AND (tag:inbox OR tag:autoinbox)"
+notmuch tag +sent "folder:gandi/Sent AND (NOT tag:sent)"
 echo
 echo
 echo Calling afew to move messages from INBOX to Archive, Junk, Trash, etc.
