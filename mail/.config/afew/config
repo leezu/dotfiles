@@ -43,12 +43,12 @@ tags = -inbox;-autoinbox
 # OSS mail
 [HeaderMatchingFilter.1]
 message = Finding mail from OSS
-pattern = <oss@navercorp.com>
+pattern = oss@navercorp.com
 header = From
 tags = +naver
 
 [InboxFilter]
 [MailMover]
 folders = gandi/INBOX gandi/AUTOINBOX
-gandi/INBOX = 'tag:spam':gandi/Junk 'NOT tag:inbox':gandi/Archives 'tag:deleted':gandi/Trash 'tag:autoinbox':gandi/AUTOINBOX
-gandi/AUTOINBOX = 'tag:spam':gandi/Junk 'NOT tag:autoinbox':gandi/Archives 'tag:deleted':gandi/Trash
+gandi/INBOX = 'tag:spam':gandi/Junk  'tag:deleted':gandi/Trash 'tag:autoinbox':gandi/AUTOINBOX 'NOT tag:inbox':gandi/Archives
+gandi/AUTOINBOX = 'tag:spam':gandi/Junk 'tag:deleted':gandi/Trash 'NOT tag:autoinbox':gandi/Archives
