@@ -49,5 +49,6 @@ tags = +naver
 
 [InboxFilter]
 [MailMover]
-folders = gandi/INBOX
-gandi/INBOX = 'tag:spam':gandi/Junk 'NOT tag:inbox':gandi/Archives 'tag:deleted':gandi/Trash
+folders = gandi/INBOX gandi/AUTOINBOX
+gandi/INBOX = 'tag:spam':gandi/Junk 'NOT tag:inbox':gandi/Archives 'tag:deleted':gandi/Trash 'tag:autoinbox':gandi/AUTOINBOX
+gandi/AUTOINBOX = 'tag:spam':gandi/Junk 'NOT tag:autoinbox':gandi/Archives 'tag:deleted':gandi/Trash
