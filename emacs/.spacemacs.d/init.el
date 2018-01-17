@@ -59,8 +59,6 @@ This function should only modify configuration layer settings."
      my-org
 
      ;; Mail
-     (notmuch :variables
-              notmuch-spacemacs-delete-tags '("+deleted" "-inbox" "-autoinbox" "-unread"))
      my-mail
 
      ;; Finance
