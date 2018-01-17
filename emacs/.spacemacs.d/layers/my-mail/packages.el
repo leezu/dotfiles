@@ -43,7 +43,8 @@
       (setq notmuch-wash-wrap-lines-length 80)
       ;; setup the mail address and use name
       (setq user-mail-address "leonard@lausen.nl"
-            user-full-name "Leonard Lausen")
+            user-full-name "Leonard Lausen"
+            message-sendmail-envelope-from 'header)
       ;; add Cc and Bcc headers to the message buffer
       (setq message-default-mail-headers "Cc: \nBcc: \n")
       ;; Directories
