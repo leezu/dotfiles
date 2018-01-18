@@ -77,17 +77,25 @@
       (evil-set-initial-state 'notmuch-tree-mode 'emacs)
 
       (evil-add-hjkl-bindings notmuch-search-mode-map 'emacs
+        "d" 'leezu/notmuch-search-delete-thread
+        "S" 'leezu/notmuch-search-spam-thread
         "J" 'notmuch-jump-search
         "K" 'notmuch-tag-jump
         "L" 'notmuch-search-filter)
 
       (evil-add-hjkl-bindings notmuch-show-mode-map 'emacs
+        "d" 'leezu/notmuch-show-delete-message-then-next-or-exit
+        "D" 'leezu/notmuch-show-delete-thread-then-next
+        "S" 'leezu/notmuch-show-spam-thread-then-next
         "H" 'notmuch-show-toggle-visibility-headers
         "J" 'notmuch-jump-search
         "K" 'notmuch-tag-jump
         "L" 'notmuch-show-filter-thread)
 
       (evil-add-hjkl-bindings notmuch-tree-mode-map 'emacs
+        "d" 'leezu/notmuch-tree-delete-message-then-next
+        "D" 'leezu/notmuch-tree-delete-thread
+        "S" 'leezu/notmuch-spam-delete-thread
         "J" 'notmuch-jump-search
         "K" 'notmuch-tag-jump))))
 
