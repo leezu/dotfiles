@@ -31,7 +31,7 @@ tags = +deleted;-new
 [HeaderMatchingFilter.0]
 message = Tagging based on address
 pattern = [lL]-(?P<id>[a-z0-9]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
-header = To
+header = Received
 tags = -new;+{id};+autoinbox
 
 # Remove killed threads from inbox
