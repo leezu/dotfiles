@@ -27,10 +27,10 @@
     (progn
       (spacemacs/declare-prefix "aN" "notmuch")
       (spacemacs/set-leader-keys
-        "aNN" 'notmuch
-        "aNi" 'leezu/notmuch-inbox
-        "aNj" 'notmuch-jump-search
-        "aNs" 'notmuch-search))
+        "oN" 'notmuch
+        "on" 'leezu/notmuch-inbox
+        "oj" 'notmuch-jump-search
+        "os" 'notmuch-search))
     :config
     (progn
       (dolist (prefix '(("ms" . "stash")
@@ -62,12 +62,16 @@
       (setq notmuch-search-oldest-first nil)
       (setq notmuch-saved-searches '((:name "inbox"
                                             :query "tag:inbox"
-                                            :count-query "tag:inbox and tag:unread"
+                                            :count-query "tag:inbox tag:unread"
                                             :key "i")
                                      (:name "autoinbox"
                                             :query "tag:autoinbox"
-                                            :count-query "tag:autoinbox and tag:unread"
+                                            :count-query "tag:autoinbox tag:unread"
                                             :key "I")
+                                     (:name "lists"
+                                            :query "tag:lists date:1M.."
+                                            :count-query "tag:lists tag:unread date:1M.."
+                                            :key "l")
                                      (:name "unread" :query "tag:unread" :key "u")
                                      (:name "flagged" :query "tag:flagged" :key "f")
                                      (:name "sent" :query "tag:sent" :key "t")
