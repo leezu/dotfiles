@@ -84,7 +84,8 @@
         "d" 'leezu/notmuch-search-delete-thread
         "S" 'leezu/notmuch-search-spam-thread
         "J" 'notmuch-jump-search
-        "K" 'notmuch-tag-jump
+        "K" 'leezu/notmuch-search-kill-thread
+        "T" 'notmuch-tag-jump
         "L" 'notmuch-search-filter)
 
       (evil-add-hjkl-bindings notmuch-show-mode-map 'emacs
@@ -93,7 +94,8 @@
         "S" 'leezu/notmuch-show-spam-thread-then-next
         "H" 'notmuch-show-toggle-visibility-headers
         "J" 'notmuch-jump-search
-        "K" 'notmuch-tag-jump
+        "K" 'leezu/notmuch-show-kill-thread-then-next
+        "T" 'notmuch-tag-jump
         "L" 'notmuch-show-filter-thread)
 
       (evil-add-hjkl-bindings notmuch-tree-mode-map 'emacs
@@ -101,7 +103,8 @@
         "D" 'leezu/notmuch-tree-delete-thread
         "S" 'leezu/notmuch-spam-delete-thread
         "J" 'notmuch-jump-search
-        "K" 'notmuch-tag-jump))))
+        "K" 'leezu/notmuch-tree-kill-thread
+        "T" 'notmuch-tag-jump))))
 
 (defun my-mail/pre-init-org ()
   (spacemacs|use-package-add-hook org

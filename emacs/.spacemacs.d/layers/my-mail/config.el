@@ -13,3 +13,6 @@
 
 (defvar notmuch-spam-tags '("+spam" "-inbox" "-unread")
   "Tags applied when marking a message as spam.")
+
+(defvar notmuch-kill-tags '("+killed" "-inbox" "-unread")
+  "Tags applied when marking a message as killed.")
