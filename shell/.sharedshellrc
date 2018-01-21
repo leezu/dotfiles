@@ -2,6 +2,8 @@
 # Autossh port forwards
 alias dycpu1-ports="autossh -M 0 -f -T -N dycpu1-ports"
 alias dycpu2-ports="autossh -M 0 -f -T -N dycpu2-ports"
+# Always use --no-folding for stow
+alias stow="stow --no-folding"
 
 # Directories
 export PROJECTDIR="$HOME/projects"
