@@ -47,6 +47,14 @@ pattern = oss@navercorp.com
 header = From
 tags = +naver
 
+# AEGEE Lists
+[HeaderMatchingFilter.2]:
+message = AGEE Lists
+query = NOT tag:lists
+pattern = LISTS.AEGEE.ORG
+header = To
+tags = +lists;+lists/aegee
+
 [InboxFilter]
 [MailMover]
 folders = gandi/INBOX gandi/AUTOINBOX
