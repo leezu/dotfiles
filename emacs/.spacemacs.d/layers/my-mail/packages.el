@@ -65,18 +65,38 @@
                                             :count-query "tag:inbox tag:unread"
                                             :key "i")
                                      (:name "autoinbox"
-                                            :query "tag:autoinbox"
-                                            :count-query "tag:autoinbox tag:unread"
+                                            :query "tag:autoinbox and -tag:feeds and -tag:academic and -tag:chinese and -tag:news and -tag:software"
+                                            :count-query "tag:autoinbox and tag:unread and -tag:feeds and -tag:academic and -tag:chinese and -tag:news and -tag:software"
                                             :key "I")
+                                     (:name "academic"
+                                            :query "tag:autoinbox and tag:academic"
+                                            :count-query "tag:autoinbox and tag:academic and tag:unread"
+                                            :key "a")
+                                     (:name "chinese"
+                                            :query "tag:autoinbox and tag:chinese"
+                                            :count-query "tag:autoinbox and tag:chinese and tag:unread"
+                                            :key "c")
+                                     (:name "news"
+                                            :query "tag:autoinbox and tag:news"
+                                            :count-query "tag:autoinbox and tag:news and tag:unread"
+                                            :key "n")
+                                     (:name "feeds"
+                                            :query "tag:autoinbox and tag:feeds"
+                                            :count-query "tag:autoinbox and tag:feeds and tag:unread"
+                                            :key "f")
+                                     (:name "software"
+                                            :query "tag:autoinbox and tag:software"
+                                            :count-query "tag:autoinbox and tag:software and tag:unread"
+                                            :key "s")
                                      (:name "lists"
-                                            :query "tag:lists date:1M.."
-                                            :count-query "tag:lists tag:unread date:1M.."
+                                            :query "tag:lists and tag:unread and date:1M.."
+                                            :count-query "tag:lists and tag:unread and date:1M.."
                                             :key "l")
                                      (:name "unread" :query "tag:unread" :key "u")
-                                     (:name "flagged" :query "tag:flagged" :key "f")
+                                     (:name "flagged" :query "tag:flagged" :key "F")
                                      (:name "sent" :query "tag:sent" :key "t")
                                      (:name "drafts" :query "tag:draft" :key "d")
-                                     (:name "all mail" :query "*" :key "a")))
+                                     (:name "all mail" :query "*" :key "A")))
 
       (evil-set-initial-state 'notmuch-tree-mode 'emacs)
 
