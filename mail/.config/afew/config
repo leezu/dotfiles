@@ -30,8 +30,9 @@ tags = +deleted;-new
 # l-TAG@lausen.nl based tagging
 [HeaderMatchingFilter.0]
 message = Tagging based on address
-pattern = [lL]-(?P<id>[a-z0-9]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
+pattern = [lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
 header = Received
+splitmatch = -
 tags = -new;+{id};+autoinbox
 
 # Remove killed threads from inbox
