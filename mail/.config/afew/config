@@ -5,56 +5,56 @@
 [ArchiveSentMailsFilter]
 sent_tag = sent
 
-# Folder based stuff for interoperability with mobile client
+# Remove killed threads from inbox
 [Filter.0]
-message = Remove inbox tag from all new mail in Archives folder
-query = folder:gandi/Archives
-tags = -new
-[Filter.1]
-message = Add tags for special News INBOX folders
-query = folder:gandi/INBOX.News
-tags = +news;-new;+autoinbox
-[Filter.2]
-message = Add tags for special Software INBOX folders
-query = folder:gandi/INBOX.Software
-tags = +software;-new;+autoinbox
-[Filter.3]
-message = Add tags for special Academic INBOX folders
-query = folder:gandi/INBOX.Academic
-tags = +academic;-new;+autoinbox
-[Filter.4]
-message = Remove inbox tag from all new mail in Trash folder
-query = folder:gandi/Trash
-tags = +deleted;-new
+message = Killed
+query = tag:killed
+tags = -inbox;-autoinbox
 
-# l-TAG@lausen.nl based tagging
+# Auto-tagging
 [HeaderMatchingFilter.0]
-message = Tagging based on address
+message = Auto-tagging
+pattern = [lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
+header = To
+splitmatch = -
+tags = -new;+{id};+autoinbox
+[HeaderMatchingFilter.1]
+message = Auto-tagging
 pattern = [lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
 header = Received
 splitmatch = -
 tags = -new;+{id};+autoinbox
 
-# Remove killed threads from inbox
-[Filter.5]
-message = Remove inbox tag from all new mail in Trash folder
-query = tag:killed
-tags = -inbox;-autoinbox
-
 # OSS mail
-[HeaderMatchingFilter.1]
-message = Finding mail from OSS
+[HeaderMatchingFilter.2]
+message = OSS
 pattern = oss@navercorp.com
 header = From
 tags = +naver
 
 # AEGEE Lists
-[HeaderMatchingFilter.2]:
-message = AGEE Lists
+[HeaderMatchingFilter.3]:
+message = AEGEE
 query = NOT tag:lists
 pattern = LISTS.AEGEE.ORG
 header = To
 tags = +lists;+lists/aegee
+
+# Folder based stuff for interoperability with mobile client
+# May need to overwrite some of the previously added autoinbox tags
+[Filter.1]
+message = gandi/Archives
+query = folder:gandi/Archives
+tags = -new;-autoinbox;-inbox
+[Filter.2]
+message = gandi/Trash
+query = folder:gandi/Trash
+tags = +deleted;-new;-autoinbox;-inbox
+[Filter.3]
+message = gandi/Junk
+query = folder:gandi/Junk
+tags = +spam;-new;-autoinbox;-inbox
+
 
 [InboxFilter]
 [MailMover]
