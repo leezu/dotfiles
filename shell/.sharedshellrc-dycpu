@@ -3,10 +3,10 @@ export SOFTWAREDIR="/home/data/lelausen/software"
 export DATASETSDIR="/home/data/lelausen/datasets"
 
 # Paths
-PATH="/home/data/lelausen/.local/bin${PATH:+:${PATH}}"
-CPATH="/home/data/lelausen/.local/include${CPATH:+:${CPATH}}" # cpp searches for include files here (like -I )
-LIBRARY_PATH="/home/data/lelausen/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}" # link time libraries
-LD_LIBRARY_PATH="/home/data/lelausen/.local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" # run time libraries
+PATH="/home/data/lelausen/.local/bin"
+CPATH="/home/data/lelausen/.local/include" # cpp searches for include files here (like -I )
+LIBRARY_PATH="/home/data/lelausen/.local/lib" # link time libraries
+LD_LIBRARY_PATH="/home/data/lelausen/.local/lib" # run time libraries
 ACLOCAL_PATH="/usr/share/aclocal"
 
 # cache directory
@@ -20,11 +20,14 @@ export CUDA_CACHE_MAXSIZE=4096
 export CUDA_CACHE_DISABLE=1
 
 # mxnet
-export PATH="${PATH:+${PATH}:}/usr/local/bin"
+export PATH="${PATH:+${PATH}:}/usr/local/bin:/usr/local/cuda-9.0/bin:/usr/local/cuda-9.0/nvvm/bin:/usr/lib64/qt-3.3/bin:/homes/lelausen/perl5/bin:/usr/bin:/homes/lelausen/bin:/usr/local/sbin:/usr/sbin"
 export LD_LIBRARY_PATH="/usr/local/cuda-9.0/lib64:/home/data/software/intel/lib/intel64_lin/${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 export LIBRARY_PATH="/usr/local/cuda-9.0/lib64:/home/data/software/intel/lib/intel64_lin/${LIBRARY_PATH:+:${LIBRARY_PATH}}"
 export CPATH="/usr/local/cuda-9.0/include${CPATH:+:${CPATH}}"
 export PKG_CONFIG_PATH="/usr/local/software/python-3.6.2/lib/pkgconfig:/usr/local/lib/pkgconfig${PKG_CONFIG_PATH:+:${PKG_CONFIG_PATH}}"
+export JEMALLOC_ROOT=/home/data/lelausen/.local
+alias cmake_mxnet="cmake .. -DUSE_GPERFTOOLS='OFF' -DUSE_OPENCV='OFF'"
+export CUDA_ARCH="-gencode arch=compute_61,code=sm_61"
 
 # python
 export PYTHONUSERBASE="/home/data/lelausen/.local"
