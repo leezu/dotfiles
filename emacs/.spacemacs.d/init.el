@@ -91,8 +91,6 @@ This function should only modify configuration layer settings."
                  js2-missing-semi-one-line-override nil)
      (python :variables
              python-enable-yapf-format-on-save nil)
-     ipython-notebook
-     my-ipython-notebook
      java
      yaml
      lua
@@ -118,7 +116,7 @@ This function should only modify configuration layer settings."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(ein-org)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and deletes any unused
