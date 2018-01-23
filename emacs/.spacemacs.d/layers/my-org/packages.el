@@ -80,10 +80,13 @@
   )
 
 (defun my-org/post-init-org-agenda ()
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+
   (setq org-agenda-files '("~/org/refile.org"
                            "~/org/organizer.org"
-                           "~/org/diary.org"
-                           "~/org/journal.org"
+                           "~/org/diary.org.gpg"
+                           "~/org/journal.org.gpg"
+                           "~/org/work-journal.org.gpg"
                            "~/org/deft/"
                            "~/Dropbox/Papers/notes.org"
                            "~/projects/leezu.github.io/posts")
@@ -99,8 +102,13 @@
         )
 
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/refile.org" "Tasks")
-           "* TODO [#A]%?\nOPENED: %U\n%a\n\n%i")
+        '(("t" "Task templates")
+          ("tt" "Office task" entry (file+headline "~/org/refile.org" "Tasks")
+           "* TODO [#A]%?\t:@office:\nOPENED: %U\n%a\n\n%i")
+          ("th" "Home task" entry (file+headline "~/org/refile.org" "Tasks")
+           "* TODO [#A]%?\t:@home:\nOPENED: %U\n%a\n\n%i")
+          ("te" "Errand task" entry (file+headline "~/org/refile.org" "Tasks")
+           "* TODO [#A]%?\t:@errand:\nOPENED: %U\n%a\n\n%i")
           ("w" "Waiting for" entry (file+headline "~/org/refile.org" "Tasks")
            "* WAITING %?\nOPENED: %U\n%a\n\n%i")
           ("s" "Someday" entry (file+headline "~/org/refile.org" "Tasks")
@@ -110,40 +118,47 @@
            "* %?\t:%^{language}:\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
           ("n" "Note" entry (file+headline "~/org/refile.org" "Notes")
            "* %?\nCREATED: %U\n%a\n\n%i")
-          ("d" "Diary" entry (file+olp+datetree "~/org/diary.org")
+          ("d" "Diary" entry (file+olp+datetree "~/org/diary.org.gpg")
            "* %?\nEntered on %U\n%a\n")
-          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org")
+          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org.gpg")
            "* %?\nEntered on %U\n%a\n")))
 
-  ;; GTD Projects ( http://sachachua.com/blog/2008/01/projects-in-emacs-org/ )
   (setq org-agenda-custom-commands
         '(
-          ;; The following ressources were helpful when creating the custom
-          ;; agenda commands
-          ;; https://www.reddit.com/r/emacs/comments/2b9obs/org_users_what_did_it_take_you_a_long_time_to/
-
-          ;; Weekly review
-          ("r" "GTD review"
-           ((tags "REFILE"
-                  ((org-agenda-overriding-header "Tasks to Refile")))
-            (tags-todo "-PROJECTS"
+          ;; Filtered agendas
+          ("w" "Work"
+           ((agenda "" ((org-agenda-tag-filter-preset '("+@office"))))))
+          ("h" "Home"
+           ((agenda "" ((org-agenda-tag-filter-preset '("+@home"))))))
+          ("e" "Errand"
+           ((agenda "" ((org-agenda-tag-filter-preset '("+@errand"))))))
+          ;; Review
+          ("rr" "Review"
+           ((agenda "" ((org-super-agenda-groups
+                         (butlast org-super-agenda-groups 1))))))
+          ("rw" "Work"
+           ((agenda "" ((org-agenda-tag-filter-preset '("+@office"))
+                        (org-super-agenda-groups
+                         (butlast org-super-agenda-groups 1))))))
+          ("rw" "Home"
+           ((agenda "" ((org-agenda-tag-filter-preset '("+@home"))
+                        (org-super-agenda-groups
+                         (butlast org-super-agenda-groups 1))))))
+          ("rw" "Errand"
+           ((agenda "" ((org-agenda-tag-filter-preset '("+@errand"))
+                        (org-super-agenda-groups
+                         (butlast org-super-agenda-groups 1))))))
+          ("rg" "GTD review"
+           ((tags-todo "-PROJECTS"
                        ((org-agenda-overriding-header "Assign to PROJECT")))
             (tags "PROJECT-MAYBE-DONE"
                   ((org-agenda-overriding-header "Projects")))
             (tags "PROJECT&MAYBE"
                   ((org-agenda-overriding-header "Maybe projects")))
             (stuck "" ())
-            ;; (tags-todo "-SCHEDULED={.+}-DEADLINE={.+}"
-            ;;            ((org-agenda-overriding-header "Unscheduled tasks")))
-            ;; (todo "SOMEDAY"
-            ;;       ((org-agenda-overriding-header "Someday list")))
             (todo "WAITING"
                   ((org-agenda-overriding-header "Waiting list")))
-            (todo ""
-                  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
-                   (org-agenda-prefix-format '((todo . " %i %-22(org-entry-get nil \"DEADLINE\") %-12:c %s")))
-                   (org-agenda-sorting-strategy '(deadline-up))
-                   (org-agenda-overriding-header "Upcoming deadlines")))))
+            ))
           ))
 
   (setq org-stuck-projects
@@ -218,9 +233,9 @@ cite:%k
 
   (setq org-super-agenda-groups
         '(;; Each group has an implicit boolean OR operator between its selectors.
-          (:name "Today"  ; Optionally specify section name
-                 :time-grid t  ; Items that appear on the time grid
-                 :todo "TODAY"  ; Items that have this TODO keyword
+          (:name "Today"
+                 :time-grid t
+                 :todo "TODAY"
                  :order 1)
           (:name "Important"
                  :tag "bills"
@@ -242,7 +257,6 @@ cite:%k
                  :order 6)
           (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
                  :order 9)
-          ;; After the last group, the agenda will display items that didn't
-          ;; match any of these groups, with the default order position of 99
+          (:discard (:anything t))  ;; discard must be the last entry due to butlast above
           )))
 ;;; packages.el ends here
