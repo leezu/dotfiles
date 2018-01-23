@@ -29,17 +29,7 @@
 (defun my-org/post-init-org ()
   ;; Disable indentation in org mode
   (setq org-adapt-indentation nil)
-  ;; Auto-fill mode for org-mode
-  (add-hook 'org-mode-hook
-            (lambda ()
-              ;; Never enable fill column indicator! It makes org-capture very slow.
-              ;; (fci-mode t)
-              ;; Turn off line numbering, it makes org so slow
-              (linum-mode -1)
-              ;; Set fill column to 79
-              ;; (setq fill-column 79)
-              ;; Enable automatic line wrapping at fill column
-              (auto-fill-mode t)))
+
   ;; org-refile
   (setq org-refile-targets '((nil . (:maxlevel . 9))
                              (org-agenda-files . (:maxlevel . 9)))
@@ -48,35 +38,12 @@
         ;; Do not complete in steps
         org-outline-path-complete-in-steps nil
         ;; Allow refile to create parent tasks with confirmation
-        org-refile-allow-creating-parent-nodes '(confirm))
+        org-refile-allow-creating-parent-nodes 'confirm)
 
   ;; Useful tweaks
   (setq org-log-done (quote time))
   (setq org-log-redeadline (quote time))
   (setq org-log-reschedule (quote time))
-
-  ;; face settings
-  ;; make org level all same size
-  (custom-set-faces
-   '(org-level-1 ((t (:inherit outline-1 :height 1.0))))
-   '(org-level-2 ((t (:inherit outline-2 :height 1.0))))
-   '(org-level-3 ((t (:inherit outline-3 :height 1.0))))
-   '(org-level-4 ((t (:inherit outline-4 :height 1.0))))
-   '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
-   '(org-level-6 ((t (:inherit outline-6 :height 1.0))))
-   '(org-level-7 ((t (:inherit outline-7 :height 1.0))))
-   '(org-level-8 ((t (:inherit outline-8 :height 1.0))))
-   )
-  ;; make priority show different colors
-  (setq org-priority-faces
-        '((?A . (:foreground "red" :weight 'bold))
-          (?B . (:foreground "yellow"))
-          (?C . (:foreground "green"))))
-  ;; make agend today's font the same as others
-  (setq spacemacs-theme-org-agenda-height nil)
-  ;; make org-agenda done tasks having the same font scale
-  (custom-set-faces
-   '(org-agenda-done ((t (:foreground "#86dc2f" :height 1.0)))))
   )
 
 (defun my-org/post-init-org-agenda ()
