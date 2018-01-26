@@ -46,6 +46,9 @@
             notmuch-multipart/alternative-discouraged
             '("text/plain" "text/html" "multipart/related"))
 
+      ;; crypto
+      (setq notmuch-crypto-process-mime nil)
+
       ;; display
       (setq notmuch-wash-wrap-lines-length 80)
       ;; setup the mail address and use name
