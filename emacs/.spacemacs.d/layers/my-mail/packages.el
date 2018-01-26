@@ -39,6 +39,13 @@
         (spacemacs/declare-prefix-for-mode 'notmuch-show-mode
           (car prefix) (cdr prefix)))
 
+      ;; html emails
+      (setq mm-text-html-renderer 'shr
+            shr-width 80
+            shr-use-colors nil
+            notmuch-multipart/alternative-discouraged
+            '("text/plain" "text/html" "multipart/related"))
+
       ;; display
       (setq notmuch-wash-wrap-lines-length 80)
       ;; setup the mail address and use name
