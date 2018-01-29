@@ -1,0 +1,3 @@
+.header on -- show column names
+.mode column -- show results in column format
+.timer on -- show execution time after each query
