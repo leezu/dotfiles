@@ -2,8 +2,8 @@
 	email = leonard@lausen.nl
 	name = Leonard Lausen
 	attributesfile = ~/.gitattributes_global
-[push]
-	default = simple
+[receive]
+	denyCurrentBranch = updateInstead
 [rebase]
 	autosquash = true
 [filter "nbstrip_full"]  # via http://timstaley.co.uk/posts/making-git-and-jupyter-notebooks-play-nice/
@@ -13,5 +13,5 @@
           | .metadata = {\"language_info\": {\"name\": \"python\", \"pygments_lexer\": \"ipython3\"}} \
           | .cells[].metadata = {} \
           '"
-  smudge = cat
-  required = true
+	smudge = cat
+	required = true
