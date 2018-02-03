@@ -31,7 +31,7 @@ path=/home/leonard/mail
 [user]
 name=Leonard Lausen
 primary_email=leonard@lausen.nl
-other_email=lelausen@connect.ust.hk;lelausen@cse.ust.hk;
+other_email=lelausen@connect.ust.hk;lelausen@cse.ust.hk;l@lausen.nl
 
 # Configuration for "notmuch new"
 #
