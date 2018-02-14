@@ -40,4 +40,5 @@ endif
 let g:clang2_placeholder_next = ''
 let g:clang2_placeholder_prev = ''
 
-
+" Change some keybindings
+let g:spacevim_unite_leader = 'au'
