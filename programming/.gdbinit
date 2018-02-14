@@ -1,3 +1,5 @@
+set auto-load safe-path /
+
 # -*- ksh -*-
 #
 # If you use the GNU debugger gdb to debug the Python C runtime, you
