@@ -36,6 +36,7 @@ export SCIKIT_LEARN_DATA="/home/data/lelausen/datasets"
 ## Matplotlib
 # Use QT5 backend as TkAgg doesn't work on dycpu
 export MPLBACKEND="Qt5Agg"
+export QT_QPA_PLATFORM="offscreen"
 
 # torch
 . /home/data/lelausen/software/torch/install/bin/torch-activate
