@@ -31,12 +31,15 @@ export CUDA_ARCH="-gencode arch=compute_61,code=sm_61"
 
 # python
 export PYTHONUSERBASE="/home/data/lelausen/.local"
-export PYTHONPATH="/home/data/lelausen/.local/lib/python3.6/site-packages/"
 export SCIKIT_LEARN_DATA="/home/data/lelausen/datasets"
 ## Matplotlib
 # Use QT5 backend as TkAgg doesn't work on dycpu
 export MPLBACKEND="Qt5Agg"
 export QT_QPA_PLATFORM="offscreen"
+
+# conda
+export PATH=/home/data/lelausen/software/anaconda3/bin:$PATH
+alias pip3=pip
 
 # torch
 . /home/data/lelausen/software/torch/install/bin/torch-activate
