@@ -547,6 +547,11 @@ you should place your code here."
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
             #'TeX-revert-document-buffer)
 
+  ;; Easy math mode
+  (setq TeX-electric-math (cons "\\(" "\\)"))
+  (sp-local-pair #'latex-mode "\\(" "\\)" :actions nil)
+  (sp-local-pair #'latex-mode "(" ")" :actions nil)
+
   ;; C++
   (with-eval-after-load 'c++
     (spacemacs/set-leader-keys-for-major-mode 'c++-mode
