@@ -19,7 +19,6 @@
     org-ref
     helm-bibtex
     ;; Extra packages
-    org-pdfview
     interleave
     org-alert
     org-super-agenda
@@ -176,18 +175,6 @@ cite:%k
   )
 
 ;; Configuration of newly introduced packages
-(defun my-org/init-org-pdfview ()
-  (use-package org-pdfview)
-
-  ;; Open pdfs with pdf-tools (when called from org-ref)
-  (delete '("\\.pdf\\'" . default)
-          org-file-apps)
-  (add-to-list 'org-file-apps
-               '("\\.pdf\\'" . (lambda (file link)
-                                 (org-pdfview-open file))))
-  (add-to-list 'org-file-apps
-               '("\\.pdf::\\([[:digit:]]+\\)\\'" . (lambda (file link)
-                                                     (org-pdfview-open file))))
   )
 
 (defun my-org/init-interleave ()
