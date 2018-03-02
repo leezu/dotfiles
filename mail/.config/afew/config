@@ -35,10 +35,9 @@ tags = +naver
 # AEGEE Lists
 [HeaderMatchingFilter.3]:
 message = AEGEE
-query = NOT tag:lists
-pattern = LISTS.AEGEE.ORG
-header = To
-tags = +lists;+lists/aegee
+pattern = AEGEE
+header = List-Id
+tags = +lists/aegee;-new
 
 # Folder based stuff for interoperability with mobile client
 # May need to overwrite some of the previously added autoinbox tags
