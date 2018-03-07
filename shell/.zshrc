@@ -9,6 +9,11 @@ if [[ -f ~/.sharedshellrc ]]; then
     source ~/.sharedshellrc
 fi
 
+# load OS specific settings
+if [[ "$OSTYPE" == darwin* ]]; then
+    source ~/.zshrc-osx
+fi
+
 # load $HOST specific setting
 if [[ -f ~/.zshrc-$HOST ]]; then
     source ~/.zshrc-$HOST
