@@ -1,5 +1,5 @@
 # GUI emacs does not work with neo2 keyboard layout on OS X
-alias emacs="emacs -nw"
+alias emacs="emacsclient -c -nw"
 
 # Anaconda
 export PATH="/Users/lllausen/anaconda3/bin/:$PATH"
