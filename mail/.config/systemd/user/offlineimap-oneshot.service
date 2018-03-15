@@ -5,8 +5,8 @@ Documentation=man:offlineimap(1)
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/offlineimap -o -u basic
-# Give 120 seconds for offlineimap to gracefully stop before hard killing it:
-TimeoutStopSec=120
+# Give 10 minutes for offlineimap to gracefully stop before hard killing it:
+TimeoutSec=10m
 
 [Install]
 WantedBy=mail.target
