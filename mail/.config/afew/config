@@ -11,33 +11,34 @@ message = Killed
 query = tag:killed
 tags = -inbox;-autoinbox
 
-# Auto-tagging
+# OSS mail
 [HeaderMatchingFilter.0]
+message = OSS
+pattern = <oss@navercorp.com>
+header = Return-Path
+tags = +naver;-new
+
+# AEGEE Lists
+[HeaderMatchingFilter.1]:
+message = AEGEE
+pattern = AEGEE
+header = List-Id
+tags = +lists/aegee;-new
+
+# Auto-tagging
+# These filters remove the new tag, so subsequent filters won't be applied
+[HeaderMatchingFilter.2]
 message = Auto-tagging
 pattern = [lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
 header = To
 splitmatch = -
 tags = -new;+{id};+autoinbox
-[HeaderMatchingFilter.1]
+[HeaderMatchingFilter.3]
 message = Auto-tagging
 pattern = [lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
 header = Received
 splitmatch = -
 tags = -new;+{id};+autoinbox
-
-# OSS mail
-[HeaderMatchingFilter.2]
-message = OSS
-pattern = oss@navercorp.com
-header = From
-tags = +naver
-
-# AEGEE Lists
-[HeaderMatchingFilter.3]:
-message = AEGEE
-pattern = AEGEE
-header = List-Id
-tags = +lists/aegee;-new
 
 # Folder based stuff for interoperability with mobile client
 # May need to overwrite some of the previously added autoinbox tags
