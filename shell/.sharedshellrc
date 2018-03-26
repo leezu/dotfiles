@@ -15,6 +15,9 @@ export HOST=`hostname`
 if [[ -f ~/.sharedshellrc-$HOST ]]; then
     source ~/.sharedshellrc-$HOST
 fi
+if [[ "$OSTYPE" == linux-gnu ]] && grep -q amazon /sys/devices/virtual/dmi/id/bios_version; then
+    source ~/.sharedshellrc-aws
+fi
 
 # Local software
 export PATH="$HOME/.local/bin${PATH:+:${PATH}}"
