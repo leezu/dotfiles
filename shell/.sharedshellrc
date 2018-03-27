@@ -82,3 +82,7 @@ for dir in $PROJECTDIR $SOFTWAREDIR $DATASETDIR; do
         mkdir -p $dir
     fi
 done
+
+
+# Configuration
+export MXNET_CUDNN_AUTOTUNE_DEFAULT=0
