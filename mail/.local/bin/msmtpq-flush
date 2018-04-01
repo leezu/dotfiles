@@ -5,15 +5,6 @@ shopt -s nullglob
 
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/msmtp/config"
 QUEUE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/mail.queue"
-LOG="${XDG_LOG_HOME:-$HOME/.local/log}/msmtp.log"
-
-if [[ ! -r ~/.local/log ]]; then
-    mkdir ~/.local/log
-fi
-
-exec {stdout}>&1
-coproc logger {(while read line; do echo "$(date -Iseconds) $line"; done >>"$LOG";); }
-exec >&${logger[1]} 2>&1
 
 lock() {
     local lock_fd
