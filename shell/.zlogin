@@ -14,6 +14,13 @@
   fi
 } &!
 
+if [ -d "$HOME/.local/share/mail.queue" ]; then
+    mailcount=$(ls -1 ~/.local/share/mail.queue | wc -l)
+    if [ $mailcount -gt 0 ] ; then
+        echo -e "\e[31m$mailcount unsent mails"
+    fi
+fi
+
 # Execute code only if STDERR is bound to a TTY.
 [[ -o INTERACTIVE && -t 2 ]] && {
 
