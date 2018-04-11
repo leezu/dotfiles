@@ -62,7 +62,7 @@ This function should only modify configuration layer settings."
      (my-mail :variables
               notmuch-delete-tags '("+deleted" "-inbox" "-autoinbox")
               notmuch-spam-tags '("+spam" "-inbox" "-autoinbox")
-              notmuch-kill-tags '("+killed" "-inbox" "-autoinbox"))
+              notmuch-kill-tags '("+autoarchive" "-inbox" "-autoinbox"))
 
      ;; Finance
      finance

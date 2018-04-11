@@ -8,8 +8,8 @@ sent_tag = sent
 # Remove killed threads from inbox
 [Filter.0]
 message = Killed
-query = tag:killed
-tags = -inbox;-autoinbox
+query = tag:autoarchive
+tags = -new
 
 # OSS mail
 [HeaderMatchingFilter.0]

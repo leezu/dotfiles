@@ -14,5 +14,5 @@
 (defvar notmuch-spam-tags '("+spam" "-inbox")
   "Tags applied when marking a message as spam.")
 
-(defvar notmuch-kill-tags '("+killed" "-inbox")
+(defvar notmuch-kill-tags '("+autoarchive" "-inbox")
   "Tags applied when marking a message as killed.")

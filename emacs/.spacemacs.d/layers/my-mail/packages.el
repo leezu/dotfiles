@@ -114,6 +114,7 @@
         "d" 'leezu/notmuch-search-delete-thread
         "S" 'leezu/notmuch-search-spam-thread
         "J" 'notmuch-jump-search
+        "A" 'leezu/notmuch-search-kill-thread
         "K" 'leezu/notmuch-search-kill-thread
         "T" 'notmuch-tag-jump
         "L" 'notmuch-search-filter)
