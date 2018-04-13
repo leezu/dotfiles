@@ -39,6 +39,9 @@ export NODE_PATH="$NPM_PACKAGES/lib/node_modules${NODE_PATH:+:${NODE_PATH}}"
 # Ruby gems
 export PATH="/home/leonard/.gem/ruby/2.3.0/bin${PATH:+:${PATH}}"
 
+# Use UTC instead of local time (eg. git AuthorDate and CommitDate)
+export TZ=UTC
+
 # Dictionaries
 alias ddevil='dict -d devil'
 alias wn='dict -d wn'
