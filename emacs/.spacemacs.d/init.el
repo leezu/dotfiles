@@ -76,7 +76,6 @@ This function should only modify configuration layer settings."
      emacs-lisp
      package-lint ;; for emacs package development
      git
-     github
      (latex :variables
             latex-enable-folding t
             latex-build-command "LatexMk")
@@ -112,7 +111,7 @@ This function should only modify configuration layer settings."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(git-auto-commit-mode pydoc cuda-mode)
+   dotspacemacs-additional-packages '(git-auto-commit-mode pydoc cuda-mode magithub)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
