@@ -15,3 +15,5 @@
           '"
 	smudge = cat
 	required = true
+[github]
+	user = leezu
