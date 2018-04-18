@@ -444,9 +444,6 @@ you should place your code here."
   ;; Multi-cursor
   (global-evil-mc-mode  1)
 
-  ;; Persistent scratch buffer
-  (persistent-scratch-setup-default)
-
   ;;
   ;; Layouts and workspaces
   ;;
