@@ -175,7 +175,6 @@ cite:%k
   )
 
 ;; Configuration of newly introduced packages
-  )
 
 (defun my-org/init-interleave ()
   (use-package interleave)

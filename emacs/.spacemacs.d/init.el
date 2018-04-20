@@ -35,6 +35,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     ;; Spacemacs
      helm
      (auto-completion :variables
                       auto-completion-enable-sort-by-usage t
@@ -42,20 +43,21 @@ This function should only modify configuration layer settings."
      (spell-checking :variables
                      spell-checking-enable-by-default nil
                      enable-flyspell-auto-completion t)
-     (chinese :variables
-              chinese-default-input-method 'pinyin
-              chinese-enable-fcitx t)
+     vinegar
+
      ;; Academic
      bibtex
      pdf-tools
 
      ;; Org
      (org :variables
+          org-projectile-file "~/org/projectile.org"
+          org-want-todo-bindings t
           org-agenda-span 1
           org-extend-today-until 5 ;extend 'today' to 5AM
           org-agenda-start-on-weekday nil)
      (clip2org :variables
-                clip2org-clippings-file "~/Dropbox/Books/My Clippings.txt")
+               clip2org-clippings-file "~/Dropbox/Books/My Clippings.txt")
      my-org
 
      ;; Mail
@@ -98,12 +100,15 @@ This function should only modify configuration layer settings."
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
+     cmake
+     gtags
      octave
      (shell :variables
             shell-default-term-shell "/bin/zsh"
             shell-default-shell 'ansi-term)
      shell-scripts
      nixos
+     csv
 
      ;; Others
      spotify
@@ -124,7 +129,28 @@ This function should only modify configuration layer settings."
    ;; installs only the used packages but won't delete unused ones. `all'
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
-   dotspacemacs-install-packages 'used-only))
+   dotspacemacs-install-packages 'used-only)
+
+  ;; System specific layers
+  (when (eq system-type 'darwin)
+    (setq dotspacemacs-configuration-layers
+          (append
+           '(
+             os-x
+             )
+           dotspacemacs-configuration-layers))
+    )
+  (when (eq system-type 'gnu/linux)
+    (setq dotspacemacs-configuration-layers
+          (append
+           '(
+             (chinese :variables
+                      chinese-default-input-method 'pinyin
+                      chinese-enable-fcitx t)
+             )
+           dotspacemacs-configuration-layers))
+    )
+  )
 
 (defun dotspacemacs/init ()
   "Initialization:
@@ -345,13 +371,13 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-line-numbers
    '(:relative t
-     :disabled-for-modes dired-mode
-                         doc-view-mode
-                         markdown-mode
-                         org-mode
-                         pdf-view-mode
-                         text-mode
-     :size-limit-kb 1000)
+               :disabled-for-modes dired-mode
+               doc-view-mode
+               markdown-mode
+               org-mode
+               pdf-view-mode
+               text-mode
+               :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -368,7 +394,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-highlight-delimiters 'all
    ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
-   dotspacemacs-persistent-server t
+   dotspacemacs-persistent-server nil
    ;; List of search tool executable names. Spacemacs uses the first installed
    ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
    ;; (default '("rg" "ag" "pt" "ack" "grep"))
@@ -410,7 +436,7 @@ It should only modify the values of Spacemacs settings."
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
-   dotspacemacs-pretty-docs nil
+   dotspacemacs-pretty-docs t
    ))
 
 (defun dotspacemacs/user-init ()
@@ -419,10 +445,9 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (setq configuration-layer--elpa-archives
-        '(("melpa"    . "melpa.org/packages/")
-          ("org"      . "orgmode.org/elpa/")
-          ("gnu"      . "elpa.gnu.org/packages/")))
+  (setq configuration-layer-elpa-archives '(("melpa" . "melpa.org/packages/")
+                                            ("org" . "orgmode.org/elpa/")
+                                            ("gnu" . "elpa.gnu.org/packages/")))
   )
 
 (defun dotspacemacs/user-config ()
@@ -443,7 +468,7 @@ you should place your code here."
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
 
   ;; Multi-cursor
-  (global-evil-mc-mode  1)
+  (global-evil-mc-mode 1)
 
   ;;
   ;; Layouts and workspaces
@@ -505,17 +530,21 @@ you should place your code here."
   ;; Finance
   ;;
   (setq ledger-reports
-      '(("cleared" "%(binary) -f %(ledger-file) cleared")))
+        '(("cleared" "%(binary) -f %(ledger-file) cleared")))
+
 
   ;;
-  ;; Chinese
-  ;;
-  ;; Make sure the following comes before `(fcitx-aggressive-setup)'
-  (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
-  ;; Disable fcitx in minibuffer
-  (fcitx-aggressive-setup)
-  (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
-  (setq fcitx-use-dbus t)
+  ;; System specific configuration
+  ;; Linux:
+  (when (eq system-type 'gnu/linux)
+    ;; Chinese
+    ;; Make sure the following comes before `(fcitx-aggressive-setup)'
+    (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
+    ;; Disable fcitx in minibuffer
+    (fcitx-aggressive-setup)
+    (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
+    (setq fcitx-use-dbus t)
+    )
 
   ;;
   ;; Programming
