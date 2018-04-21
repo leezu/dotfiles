@@ -47,7 +47,6 @@ This function should only modify configuration layer settings."
 
      ;; Academic
      bibtex
-     pdf-tools
 
      ;; Org
      (org :variables
@@ -132,6 +131,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-install-packages 'used-only)
 
   ;; System specific layers
+  ;; OS-X
   (when (eq system-type 'darwin)
     (setq dotspacemacs-configuration-layers
           (append
@@ -140,13 +140,15 @@ This function should only modify configuration layer settings."
              )
            dotspacemacs-configuration-layers))
     )
-  (when (eq system-type 'gnu/linux)
+  ;; Gentoo Linux
+  (when (string-match-p "gentoo" operating-system-release)
     (setq dotspacemacs-configuration-layers
           (append
            '(
              (chinese :variables
                       chinese-default-input-method 'pinyin
                       chinese-enable-fcitx t)
+             pdf-tools
              )
            dotspacemacs-configuration-layers))
     )
@@ -535,8 +537,8 @@ you should place your code here."
 
   ;;
   ;; System specific configuration
-  ;; Linux:
-  (when (eq system-type 'gnu/linux)
+  ;; Gentoo Linux:
+  (when (string-match-p "gentoo" operating-system-release)
     ;; Chinese
     ;; Make sure the following comes before `(fcitx-aggressive-setup)'
     (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
@@ -544,6 +546,11 @@ you should place your code here."
     (fcitx-aggressive-setup)
     (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
     (setq fcitx-use-dbus t)
+
+    ;; LaTeX
+    ;; Use pdf-tools to open PDF files
+    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+          TeX-source-correlate-start-server t)
     )
 
   ;;
@@ -564,10 +571,6 @@ you should place your code here."
   ;; man pages
   (setq Man-notify-method 'pushy)
 
-  ;; LaTeX
-  ;; Use pdf-tools to open PDF files
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-        TeX-source-correlate-start-server t)
 
   ;; Update PDF buffers after successful LaTeX runs
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
