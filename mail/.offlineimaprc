@@ -20,5 +20,5 @@ sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remotehost = mail.gandi.net
 remoteport = 993
 remoteuser = leonard@lausen.nl
-remotepasseval = keyring.get_password("offlineimap","gandi")
+remotepasseval = get_pass("offlineimap", "gandi")
 folderfilter = lambda foldername: True
