@@ -1,11 +1,12 @@
 [general]
 accounts = gandi
 pythonfile = ~/.config/offlineimap/keyring_helper.py
-socktimeout = 10
+socktimeout = 60
 
 [Account gandi]
 localrepository = local-gandi
 remoterepository = gandi
+presynchook = afew --move --verbose
 postsynchook = notmuch new
 
 [Repository local-gandi]
