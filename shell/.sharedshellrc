@@ -86,6 +86,8 @@ for dir in $PROJECTDIR $SOFTWAREDIR $DATASETDIR; do
     fi
 done
 
-
 # Configuration
 export MXNET_CUDNN_AUTOTUNE_DEFAULT=0
+
+# GPG
+export GPG_TTY=`tty`
