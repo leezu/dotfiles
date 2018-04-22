@@ -136,7 +136,7 @@ This function should only modify configuration layer settings."
     (setq dotspacemacs-configuration-layers
           (append
            '(
-             os-x
+             osx
              )
            dotspacemacs-configuration-layers))
     )
