@@ -468,6 +468,9 @@ you should place your code here."
   (spacemacs/toggle-truncate-lines-on)
   ;; Visual line navigation for textual modes
   (add-hook 'text-mode-hook 'spacemacs/toggle-visual-line-navigation-on)
+  ;; Tweak splitting behaviour of (split-window-sensibly)
+  (setq split-height-threshold nil
+        split-width-threshold 100)
 
   ;; Multi-cursor
   (global-evil-mc-mode 1)
