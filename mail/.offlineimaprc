@@ -22,3 +22,5 @@ remoteport = 993
 remoteuser = leonard@lausen.nl
 remotepasseval = get_pass("offlineimap", "gandi")
 folderfilter = lambda foldername: True
+maxconnections = 1
+
