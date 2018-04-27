@@ -11,6 +11,7 @@ if [ -d "$HOME/.local/share/mail.queue" ]; then
 fi
 
 # Set theme
+PROMPT_LEAN_TMUX=""  # Disable tmux prompt
 fpath=( "$HOME/.zfunctions" $fpath )
 autoload -U promptinit; promptinit
 prompt lean
