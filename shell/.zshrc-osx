@@ -1,7 +1,7 @@
 export SHELL="/usr/local/bin/zsh"
 
 # GUI emacs does not work with neo2 keyboard layout on OS X
-alias emacs="emacsclient -c -nw"
+alias emacs="emacs -nw"
 
 # Anaconda
 export PATH="/Users/lllausen/anaconda3/bin/:$PATH"

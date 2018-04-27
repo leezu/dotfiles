@@ -28,7 +28,7 @@ if [[ "$OSTYPE" == darwin* ]]; then
     source ~/.zshrc-osx
 fi
 
-# # load $HOST specific setting
+# load $HOST specific setting
 if [[ -f ~/.zshrc-$HOST ]]; then
     source ~/.zshrc-$HOST
 fi

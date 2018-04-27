@@ -1,15 +1,3 @@
-# Aliases
-# Autossh port forwards
-alias dycpu1-ports="autossh -M 0 -f -T -N dycpu1-ports"
-alias dycpu2-ports="autossh -M 0 -f -T -N dycpu2-ports"
-# Always use --no-folding for stow
-alias stow="stow --no-folding"
-
-# Directories
-export PROJECTDIR="$HOME/projects"
-export SOFTWAREDIR="$HOME/software"
-export DATASETSDIR="$HOME/datasets"
-
 # Load host specific settings. May override above base dirs.
 export HOST=`hostname`
 if [[ -f ~/.sharedshellrc-$HOST ]]; then
@@ -18,18 +6,6 @@ fi
 if [[ "$OSTYPE" == linux-gnu ]] && grep -q amazon /sys/devices/virtual/dmi/id/bios_version; then
     source ~/.sharedshellrc-aws
 fi
-
-# Local software
-export PATH="$HOME/.local/bin${PATH:+:${PATH}}"
-export CPATH="$HOME/.local/include${CPATH:+:${CPATH}}" # cpp searches for include files here (like -I )
-export LIBRARY_PATH="$HOME/.local/lib${LIBRARY_PATH:+:${LIBRARY_PATH}}" # link time libraries
-export LD_LIBRARY_PATH="$HOME/.local/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" # run time libraries
-
-# Research data
-export NLTK_DATA="$DATASETSDIR/nltk_data"
-
-# Use UTC instead of local time (eg. git AuthorDate and CommitDate)
-export TZ=UTC
 
 # Dictionaries
 alias ddevil='dict -d devil'
