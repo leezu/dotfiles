@@ -40,8 +40,10 @@ export KEYTIMEOUT=1
 # History & highlighting
 source ~/.shell/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.shell/zsh-history-substring-search/zsh-history-substring-search.zsh
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+bindkey '\e[A' history-substring-search-up
+bindkey '\e[B' history-substring-search-down
+bindkey -s '\eOA' '\e[A'  # Some terminals send '\eOA' instead of '\e[A'
+bindkey -s '\eOB' '\e[B'  # Some terminals send '\eOB' instead of '\e[B'
 
 ## History file configuration
 [ -z "$HISTFILE" ] && HISTFILE="$HOME/.zhistory"
