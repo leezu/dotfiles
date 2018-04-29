@@ -1,0 +1,10 @@
+[Unit]
+Description=Muchsync Service (oneshot)
+
+[Service]
+Type=oneshot
+ExecStart=/home/leonard/.local/bin/muchsync -r /home/leonard/.local/bin/muchsync leonard@freiburg 
+TimeoutSec=10m
+
+[Install]
+WantedBy=default.target
