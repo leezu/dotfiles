@@ -22,6 +22,7 @@
     interleave
     org-alert
     org-super-agenda
+    git-auto-commit-mode
     ))
 
 ;; Configuration of packages already present in other layers
@@ -212,4 +213,8 @@ cite:%k
                  :order 9)
           (:discard (:anything t))  ;; discard must be the last entry due to butlast above
           )))
+
+(defun my-org/init-git-auto-commit-mode ()
+  (use-package git-auto-commit-mode
+    :init (setq gac-automatically-push-p 1)))
 ;;; packages.el ends here
