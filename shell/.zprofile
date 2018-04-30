@@ -16,7 +16,6 @@ alias stow="stow --no-folding"
 ###############################################################################
 # Assure MANPATH is set up
 if [[ -z "${MANPATH}" ]]; then
-    echo "WARNING: $MANPATH not defined. Setting to `manpath`."
     export MANPATH="$(manpath)"
 fi
 
