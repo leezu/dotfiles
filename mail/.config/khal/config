@@ -1,0 +1,16 @@
+[calendars]
+  [[home]]
+    path = ~/.calendars/personal/
+    color = dark green
+
+  [[contacts]]
+    path = ~/.contacts/personal/
+    type = birthdays
+    color = light red
+
+[locale]
+timeformat = %H:%M
+dateformat = %Y-%m-%d
+longdateformat = %Y-%m-%d
+datetimeformat = %Y-%m-%d %H:%M
+longdatetimeformat = %Y-%m-%d %H:%M

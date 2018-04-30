@@ -12,7 +12,9 @@
 (defconst my-mail-packages
   '((helm-notmuch :requires helm)
     notmuch
-    org))
+    org
+    vdirel
+    ))
 
 (defun my-mail/init-helm-notmuch ()
   (use-package helm-notmuch
@@ -141,4 +143,9 @@
   (spacemacs|use-package-add-hook org
     :post-config (require 'org-notmuch)))
 
+(defun my-mail/init-vdirel ()
+  (use-package vdirel
+    :init (setq vdirel-repository "~/.contacts/personal")
+    :defer t)
+  )
 ;;; packages.el ends here
