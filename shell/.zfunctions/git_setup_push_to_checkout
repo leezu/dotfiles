@@ -1,0 +1,5 @@
+# Setup git push_to_checkout on a remote server
+
+ssh -t $1 "cd $2; git config receive.denyCurrentBranch updateInstead"
+ssh -t $1 "cd $2; echo 'git read-tree -u -m HEAD \"\$1\"' > .git/hooks/push-to-checkout"
+ssh -t $1 "cd $2; chmod +x .git/hooks/push-to-checkout"
