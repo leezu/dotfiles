@@ -98,9 +98,9 @@ This function should only modify configuration layer settings."
      semantic
      (c-c++ :variables
             c-c++-enable-clang-support t
+            c-c++-enable-rtags-support t
             c-c++-default-mode-for-headers 'c++-mode)
      cmake
-     gtags
      octave
      (shell :variables
             shell-default-term-shell "/bin/zsh"
