@@ -1,19 +1,10 @@
 #!/bin/sh
-echo
-echo
-echo Calling afew to tag new messages
 $HOME/.local/bin/afew --tag --new --verbose
-echo
-echo
-echo Manually tagging non-new messages that were moved to Archive, Junk, Trash, etc. on other client.
-notmuch tag -inbox -autoinbox +deleted "folder:gandi/Trash AND (tag:inbox OR tag:autoinbox)"
-notmuch tag -inbox -autoinbox +spam "folder:gandi/Junk AND (tag:inbox OR tag:autoinbox)"
+
+# 'notmuch tag' auto-excludes messages tagged with exclude_tags (deleted or spam)
+notmuch tag -inbox -autoinbox +deleted "folder:gandi/Trash"
+notmuch tag -inbox -autoinbox +spam "folder:gandi/Junk"
 notmuch tag -inbox -autoinbox "folder:gandi/Archives AND (tag:inbox OR tag:autoinbox)"
 notmuch tag +sent "folder:gandi/Sent AND (NOT tag:sent)"
-echo
-echo
-echo Calling afew to move messages from INBOX to Archive, Junk, Trash, etc.
+
 $HOME/.local/bin/afew --move --verbose
-echo
-echo
-echo Finished notmuch post-new hook

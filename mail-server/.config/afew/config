@@ -1,5 +1,3 @@
-# [SpamFilter]
-# [ClassifyingFilter]
 [KillThreadsFilter]
 [ListMailsFilter]
 [ArchiveSentMailsFilter]
@@ -8,8 +6,8 @@ sent_tag = sent
 # Remove killed threads from inbox
 [Filter.0]
 message = Killed
-query = tag:autoarchive
-tags = -new
+query = tag:killed
+tags = -autoinbox;-inbox
 
 # OSS mail
 [HeaderMatchingFilter.0]
@@ -55,8 +53,15 @@ message = gandi/Junk
 query = folder:gandi/Junk
 tags = +spam;-new;-autoinbox;-inbox
 
-
 [InboxFilter]
+# Retags all messages not tagged as junk or killed as inbox
+
+# Remove new tag from killed threads
+[Filter.4]
+message = Killed
+query = tag:killed
+tags = -new
+
 [MailMover]
 folders = gandi/INBOX gandi/AUTOINBOX
 gandi/INBOX = 'tag:spam':gandi/Junk  'tag:deleted':gandi/Trash 'tag:autoinbox':gandi/AUTOINBOX 'NOT tag:inbox':gandi/Archives
