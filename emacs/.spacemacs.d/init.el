@@ -490,6 +490,17 @@ you should place your code here."
   (spacemacs/set-leader-keys "<down>" 'evil-window-down)
   (spacemacs/set-leader-keys "<right>" 'evil-window-right)
 
+  ;; set keys for Apple keyboard, for emacs in OS X
+  (setq mac-command-modifier 'meta) ; make cmd key do Meta
+  (setq mac-right-command-modifier nil) ; disable right command (for neo2)
+  (setq mac-option-modifier nil) ; make option key do Meta
+  (setq mac-right-option-modifier nil) ; disable right opt key (for neo2)
+  (setq mac-control-modifier 'control) ; make Control key do Control
+  (setq mac-function-modifier 'meta)  ; make Fn key do Meta
+  (global-set-key (kbd "<M-up>") 'scroll-down-command)
+  (global-set-key (kbd "<M-down>") 'scroll-up-command)
+  (global-set-key (kbd "M-DEL") 'delete-forward-char)  ;; emacs-mac doesn't recognize DEL key properly with neo2
+
   ;;
   ;; Shell
   ;;
