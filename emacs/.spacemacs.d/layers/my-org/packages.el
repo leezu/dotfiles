@@ -189,26 +189,29 @@ cite:%k
         '(;; Each group has an implicit boolean OR operator between its selectors.
           (:name "Today"
                  :time-grid t
-                 :todo "TODAY"
                  :order 1)
-          (:name "Important"
-                 :tag "bills"
-                 :priority "A"
-                 :order 2)
-          (:priority<= "B"
-                       :order 3)
           (:name "In progress"
-                 :tag "INPROGRESS"
-                 :order 4)
+                 :todo "INPROGRESS"
+                 :order 2)
           (:name "Next"
-                 :tag "NEXT"
+                 :todo "NEXT"
+                 :order 3)
+          (:name "Unscheduled"  ;; These are only displayed in the all TODOs agenda
+                 :and (:todo t
+                             :deadline nil
+                             :scheduled nil)
                  :order 4)
+          (:name "Important"
+                 :priority "A"
+                 :order 5)
+          (:priority<= "B"
+                       :order 6)
           (:name "Refile"
                  :tag "REFILE"
-                 :order 5)
+                 :order 7)
           (:name "Waiting"
                  :tag "WAITING"
-                 :order 6)
+                 :order 8)
           (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
                  :order 9)
           (:discard (:anything t))  ;; discard must be the last entry due to butlast above
