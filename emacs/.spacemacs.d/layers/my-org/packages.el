@@ -27,8 +27,8 @@
 
 ;; Configuration of packages already present in other layers
 (defun my-org/post-init-org ()
-  ;; Disable indentation in org mode
-  (setq org-adapt-indentation nil)
+  (setq org-adapt-indentation nil)  ;; Disable indentation in org mode
+  (setq org-catch-invisible "error")  ;; Cancel invisible edits
 
   ;; org-refile
   (setq org-refile-targets '((nil . (:maxlevel . 9))
