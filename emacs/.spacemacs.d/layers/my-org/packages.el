@@ -30,6 +30,9 @@
   (setq org-adapt-indentation nil)  ;; Disable indentation in org mode
   (setq org-catch-invisible "error")  ;; Cancel invisible edits
 
+  ;; Agenda
+  (setq org-enforce-todo-dependencies t
+        org-agenda-dim-blocked-tasks 'invisible)
   ;; org-refile
   (setq org-refile-targets '((nil . (:maxlevel . 9))
                              (org-agenda-files . (:maxlevel . 9)))
