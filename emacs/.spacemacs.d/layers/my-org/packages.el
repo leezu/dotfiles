@@ -42,6 +42,11 @@
         org-outline-path-complete-in-steps nil
         ;; Allow refile to create parent tasks with confirmation
         org-refile-allow-creating-parent-nodes 'confirm)
+  ;; Exclude completed tasks from refile targets (https://michael.englehorn.com/config.html)
+  (defun bh/verify-refile-target ()
+    "Exclude todo keywords with a done state from refile targets"
+    (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+  (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
   ;; Useful tweaks
   (setq org-log-done (quote time))
