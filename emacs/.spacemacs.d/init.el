@@ -148,7 +148,7 @@ This function should only modify configuration layer settings."
              (chinese :variables
                       chinese-default-input-method 'pinyin
                       chinese-enable-fcitx t)
-             pdf-tools
+             pdf
              )
            dotspacemacs-configuration-layers))
     )
