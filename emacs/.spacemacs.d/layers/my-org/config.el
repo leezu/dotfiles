@@ -24,3 +24,6 @@
                           (cl-union list1 list2 :test 'string=)))
   (defvar my-org-locations (cl-reduce string-cl-union my-org-location-lists))
   "List of all valid locations.")
+
+;; directory to place journal hierarchy in
+(defvar org-journal-dir "~/org/journal/")

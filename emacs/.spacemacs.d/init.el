@@ -501,6 +501,18 @@ you should place your code here."
   (global-set-key (kbd "<M-down>") 'scroll-up-command)
   (global-set-key (kbd "M-DEL") 'delete-forward-char)  ;; emacs-mac doesn't recognize DEL key properly with neo2
 
+  ;; org-mode
+  (defun my/clock-goto-narrow ()
+    (interactive)
+    (when (org-clock-is-active)
+      (org-clock-goto)
+      (org-narrow-to-subtree)))
+  (global-set-key (kbd "<f12>") 'org-agenda)
+  (global-set-key (kbd "<f9>") 'helm-org-rifle)
+  (global-set-key (kbd "<f6>") 'org-clock-in)
+  (global-set-key (kbd "<f5>") 'my/clock-goto-narrow)
+  (global-set-key (kbd "<f4>") 'org-clock-out)
+
   ;;
   ;; Shell
   ;;

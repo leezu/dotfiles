@@ -21,6 +21,7 @@
     ;; Extra packages
     interleave
     org-alert
+    helm-org-rifle
     org-super-agenda
     git-auto-commit-mode
     ))
@@ -33,25 +34,40 @@
   ;; Agenda
   (setq org-enforce-todo-dependencies t
         org-agenda-dim-blocked-tasks 'invisible)
+
   ;; org-refile
   (setq org-refile-targets '((nil . (:maxlevel . 9))
                              (org-agenda-files . (:maxlevel . 9)))
         ;; Show full "path" of refile targets
-        org-refile-use-outline-path t
+        org-refile-use-outline-path 'file
         ;; Do not complete in steps
         org-outline-path-complete-in-steps nil
         ;; Allow refile to create parent tasks with confirmation
-        org-refile-allow-creating-parent-nodes 'confirm)
+        org-refile-allow-creating-parent-nodes 'confirm
+        ;; Cache refile targets
+        org-refile-use-cache t)
+  ;; Periodically invalidate org-refile cache
+  (run-with-idle-timer 300 t (lambda ()
+                               (org-refile-cache-clear)
+                               (org-refile-get-targets)))
   ;; Exclude completed tasks from refile targets (https://michael.englehorn.com/config.html)
   (defun bh/verify-refile-target ()
     "Exclude todo keywords with a done state from refile targets"
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
   (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
+  ;; org-archive
+  (setq org-archive-location "%s_archive::datetree/")
+
+  ;; org-clock
+  ;; persist the last used clock accross emacs sessions
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+
   ;; Useful tweaks
-  (setq org-log-done (quote time))
-  (setq org-log-redeadline (quote time))
-  (setq org-log-reschedule (quote time))
+  (setq org-log-done 'time)
+  (setq org-log-redeadline 'time)
+  (setq org-log-reschedule 'time)
   )
 
 (defun my-org/post-init-org-agenda ()
@@ -59,44 +75,56 @@
 
   (setq org-agenda-files '("~/org/refile.org"
                            "~/org/organizer.org"
-                           "~/org/diary.org.gpg"
-                           "~/org/journal.org.gpg"
-                           "~/org/work-journal.org.gpg"
-                           "~/org/deft/"
-                           "~/Dropbox/Papers/notes.org"
-                           "~/projects/leezu.github.io/posts")
-        org-todo-keywords '((sequence "SOMEDAY" "TODO" "NEXT" "INPROGRESS" "|" "DONE" "CANCELLED")
-                            (sequence "WAITING" "|" "DONE" "CANCELLED")
-                            (sequence "HOLD" "|" "DONE" "CANCELLED"))
+                           "~/org/areas/"
+                           "~/org/journal/2018/")
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "|" "DONE(d!)")
+                            (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "|" "COMPLETED(c)" "CANC(k@)"))
         org-log-into-drawer t
         org-tag-alist '(("@office" . ?o)
                         ("@home" . ?h)
                         ("@errand" . ?e))
         org-tags-exclude-from-inheritance '("PROJECT")
-        org-default-notes-file "~/org/refile.org"
+        org-default-notes-file "~/org/organizer.org"
         )
 
   (setq org-capture-templates
-        '(("t" "Task templates")
-          ("tt" "Office task" entry (file+headline "~/org/refile.org" "Tasks")
-           "* TODO [#A]%?\t:@office:\nOPENED: %U\n%a\n\n%i")
-          ("th" "Home task" entry (file+headline "~/org/refile.org" "Tasks")
-           "* TODO [#A]%?\t:@home:\nOPENED: %U\n%a\n\n%i")
-          ("te" "Errand task" entry (file+headline "~/org/refile.org" "Tasks")
-           "* TODO [#A]%?\t:@errand:\nOPENED: %U\n%a\n\n%i")
-          ("w" "Waiting for" entry (file+headline "~/org/refile.org" "Tasks")
+        ;; note the backquote ` instead of normal quote '
+        `(("P" "New project" entry (file+olp "~/org/organizer.org" "Projects")
+           "* PLAN %?\nOPENED: %U\n%a\n\n%i")
+          ("b" "New project (backlog)" entry (file+olp "~/org/organizer.org" "Projects")
+           "* BACKLOG %?\nOPENED: %U\n%a\n\n%i")
+          ("t" "Task" entry (file+olp "~/org/organizer.org" "Tasks")
+           "* TODO [#A]%?\nOPENED: %U\n%a\n\n%i" :clock-in t :clock-resume t)
+          ("s" "Clocked entry subtask" entry (clock)
+           "* TODO [#A]%?\nOPENED: %U\n%a\n\n%i" :clock-in t :clock-resume t :empty-lines 1)
+          ("c" "Clocked entry checkbox" checkitem (clock) "[ ] %i")
+          ("w" "Waiting for" entry (file+olp "~/org/organizer.org" "Tasks")
            "* WAITING %?\nOPENED: %U\n%a\n\n%i")
-          ("s" "Someday" entry (file+headline "~/org/refile.org" "Tasks")
+          ("s" "Someday" entry (file+olp "~/org/organizer.org" "Someday")
            "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
+
+          ;; notes
+          ("n" "Note" entry (file+headline "~/org/organizer.org" "Notes")
+           "* %?\nCREATED: %U\n%a\n\n%i")
+
+          ;; snippets
           ("c" "Code Snippet" entry (file "~/org/snippets.org")
            ;; Prompt for tag and language
            "* %?\t:%^{language}:\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
-          ("n" "Note" entry (file+headline "~/org/refile.org" "Notes")
-           "* %?\nCREATED: %U\n%a\n\n%i")
-          ("d" "Diary" entry (file+olp+datetree "~/org/diary.org.gpg")
-           "* %?\nEntered on %U\n%a\n")
-          ("j" "Journal" entry (file+olp+datetree "~/org/journal.org.gpg")
-           "* %?\nEntered on %U\n%a\n")))
+
+          ;; journal
+          ("j" "Journal" entry (file+olp+datetree ,(get-todays-journal-file-name) "Journal")
+           "* %?\nEntered on %U\n%a\n" :clock-in t :clock-resume t)
+
+          ;; interruptions
+	        ("i" "Interrupts")
+          ("ii" "IM" entry (file+olp+datetree ,(get-todays-journal-file-name))
+           "*** IM: %^{Sender name}\t:interrupt:instantmessage:\n%a\n\n%?" :clock-in :clock-resume :empty-lines 1)
+	        ("iv" "Visitor" entry (file+datetree (get-todays-journal-file-name))
+           "*** Visit from %^{Visitor name}\t:interrupt:visitor:\n%a\n\n%?" :clock-in :clock-resume :empty-lines 1)
+	        ("im" "Meeting" entry (file+datetree (get-todays-journal-file-name))
+           "*** Meeting: %^{Meeting description}\t:interrupt:meeting:\n%a\n\n%?" :clock-in :clock-resume)
+          ))
 
   (setq org-agenda-custom-commands
         '(
@@ -137,7 +165,7 @@
           ))
 
   (setq org-stuck-projects
-        '("+PROJECT/-MAYBE-DONE" ("NEXT" "STARTED") nil "\\<IGNORE\\>"))
+        '("+LEVEL=2/!+PLAN|+READY|+ACTIVE|+REVIEW" ("NEXT" "INPROGRESS") nil ""))
 
   ;; Auto-exclude
   ;; See funcs.el
@@ -188,6 +216,16 @@ cite:%k
 (defun my-org/init-interleave ()
   (use-package interleave)
   )
+
+(defun my-org/init-helm-org-rifle ()
+  (use-package helm-org-rifle)
+  (setq helm-org-rifle-show-path t)
+
+  (spacemacs/set-leader-keys "aro" 'helm-org-rifle)
+  (spacemacs/set-leader-keys "arb" 'helm-org-rifle-current-buffer)
+  (spacemacs/set-leader-keys "ard" 'helm-org-rifle-directories)
+  (spacemacs/set-leader-keys "arf" 'helm-org-rifle-files)
+  (spacemacs/set-leader-keys "arr" 'helm-org-rifle-org-directory))
 
 (defun my-org/init-org-super-agenda ()
   (use-package org-super-agenda

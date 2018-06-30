@@ -9,6 +9,14 @@
 ;;
 ;;; License: GPLv3
 
+(defun get-todays-journal-file-name ()
+  "Gets the journal file name for today's date"
+  (expand-file-name (format-time-string "%Y/%Y-%2m.org.gpg") org-journal-dir))
+
+(defun load-todays-journal-file ()
+  "Create an load a journal entry based on today's date"
+  (interactive)
+  (find-file (get-todays-journal-file-name)))
 
 (defun leezu/weekday-p ()
   "Return t if today is a weekday."
