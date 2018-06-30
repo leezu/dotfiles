@@ -47,7 +47,35 @@
              (leezu-location-cdr)
              :test 'string=))
 
-(defun leezu/org-auto-exclude-function (tag)
+
+;; org-agenda
+(defun my/agenda-review (&args)
+  (interactive)
+  (let ((org-super-agenda-groups
+         '((:name "Unscheduled Tasks"
+                  :and (:todo ("TODO" "NEXT" "INPROGRESS")
+                              :deadline nil
+                              :scheduled nil))
+           (:name "Refile" :tag "REFILE")
+           (:name "Waiting" :tag "WAITING")
+           (:discard (:anything t)))))
+    (org-todo-list)))
+
+(defun my/agenda-workflow (&args)
+  (interactive)
+  (let ((org-super-agenda-groups
+         '((:name "Waiting on External" :todo "WAIT")
+           (:name "In Review" :todo "REVIEW")
+           (:name "In Planning" :todo "PLAN")
+           (:name "Project Backlog" :todo "BACKLOG")
+           (:name "Ready for Work" :todo "READY")
+           (:name "Active Projects" :todo "ACTIVE")
+           (:name "Completed Projects" :todo "COMPLETED")
+           (:name "Cancelled Projects" :todo "CANC")
+           (:discard (:anything t)))))
+    (org-todo-list)))
+
+(defun my/org-auto-exclude-function (tag)
   (and (cond
         ((cl-member tag my-org-locations :test 'string=) ; location tag
          (not (leezu/location-available tag)))
