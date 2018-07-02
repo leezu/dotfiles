@@ -103,10 +103,6 @@
 
 (defun my-org/post-init-org-agenda ()
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t
-        org-agenda-dim-blocked-tasks 'invisible
-        org-agenda-todo-list-sublevels nil
-        org-agenda-todo-ignore-scheduled 'all
-        org-agenda-todo-ignore-deadline 'all
 
         org-agenda-files '("~/org/refile.org"
                            "~/org/organizer.org"
