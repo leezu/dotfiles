@@ -447,10 +447,12 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (setq configuration-layer-elpa-archives '(("melpa" . "melpa.org/packages/")
-                                            ("org" . "orgmode.org/elpa/")
-                                            ("gnu" . "elpa.gnu.org/packages/")))
-  )
+  (setq configuration-layer-elpa-archives
+        '(("melpa stable" . "stable.melpa.org/packages/")
+          ("melpa" . "melpa.org/packages/")
+          ("org" . "orgmode.org/elpa/")
+          ("gnu" . "elpa.gnu.org/packages/")))
+  (push '(rtags . "melpa stable") package-pinned-packages))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
