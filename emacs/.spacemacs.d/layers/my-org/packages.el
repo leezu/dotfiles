@@ -104,8 +104,7 @@
 (defun my-org/post-init-org-agenda ()
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t
 
-        org-agenda-files '("~/org/refile.org"
-                           "~/org/organizer.org"
+        org-agenda-files '("~/org/organizer.org"
                            "~/org/areas/"
                            "~/org/journal/2018/")
 
