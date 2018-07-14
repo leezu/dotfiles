@@ -9,19 +9,12 @@ message = Killed
 query = tag:killed
 tags = -autoinbox;-inbox
 
-# OSS mail
-[HeaderMatchingFilter.0]
-message = OSS
-pattern = <oss@navercorp.com>
-header = Return-Path
-tags = +naver;-new
-
 # AEGEE Lists
 [HeaderMatchingFilter.1]:
 message = AEGEE
 pattern = AEGEE
 header = List-Id
-tags = +lists/aegee;-new
+tags = +lists/aegee;-new;+autoinbox
 
 # Auto-tagging
 # These filters remove the new tag, so subsequent filters won't be applied
