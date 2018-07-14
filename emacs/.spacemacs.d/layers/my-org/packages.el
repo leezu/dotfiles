@@ -196,6 +196,7 @@ cite:%k
           (:name "Waiting Projects"  :todo "WAIT")
           (:name "Backlog Projects"  :todo "BACKLOG")
           (:and (:priority<= "B" :todo ("TODO" "NEXT" "INPROGRESS")))
+          (:todo ("TODO" "NEXT" "INPROGRESS"))
           (:discard (:anything t))
           )))
 
