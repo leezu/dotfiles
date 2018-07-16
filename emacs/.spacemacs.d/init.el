@@ -44,6 +44,7 @@ This function should only modify configuration layer settings."
                      spell-checking-enable-by-default nil
                      enable-flyspell-auto-completion t)
      vinegar
+     my-ui
 
      ;; Academic
      bibtex
@@ -511,6 +512,7 @@ you should place your code here."
       (org-narrow-to-subtree)))
   (global-set-key (kbd "<f12>") 'org-agenda)
   (global-set-key (kbd "<f9>") 'helm-org-rifle)
+  (global-set-key (kbd "<f8>") 'org-pomodoro)
   (global-set-key (kbd "<f6>") 'org-clock-in)
   (global-set-key (kbd "<f5>") 'my/clock-goto-narrow)
   (global-set-key (kbd "<f4>") 'org-clock-out)
