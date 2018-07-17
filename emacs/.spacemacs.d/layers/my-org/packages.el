@@ -33,7 +33,9 @@
         org-enforce-todo-dependencies t
         org-agenda-window-setup 'current-window)
 
-  ;; org-capture
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Capture
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (setq org-capture-templates
         ;; note the backquote ` instead of normal quote '
         `(("P" "New project" entry (file+olp "~/org/organizer.org" "Projects")
@@ -73,7 +75,9 @@
            "*** Meeting: %^{Meeting description}\t:interrupt:meeting:\n%a\n\n%?" :clock-in :clock-resume)
           ))
 
-  ;; org-refile
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Refiling
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (setq org-refile-targets '((nil . (:maxlevel . 9))
                              (org-agenda-files . (:maxlevel . 9)))
         ;; Show full "path" of refile targets
@@ -91,15 +95,28 @@
   ;; org-archive
   (setq org-archive-location "%s_archive::datetree/")
 
-  ;; org-clock
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; Clock
+  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   ;; persist the last used clock accross emacs sessions
-  (setq org-clock-persist 'history)
+  (setq org-clock-persist t
+        org-clock-history-length 35
+        org-clock-in-resume t
+        ;; always resolve open clocks (even if a clock is running)
+        org-clock-auto-clock-resolution t
+        org-agenda-start-with-clockreport-mode t
+        org-clock-report-include-clocking-taskt t)
+  (setq org-agenda-clockreport-parameter-plist
+        '(:link t :maxlevel 4 :stepskip0 t :fileskip0 t :compact t :narrow 80))
   (org-clock-persistence-insinuate)
 
   ;; Useful tweaks
   (setq org-log-done 'time)
   (setq org-log-redeadline 'time)
   (setq org-log-reschedule 'time)
+
+  ;; Prompt for note on :clocknote tagged entries
+  (add-hook 'org-clock-out-hook 'my/check-for-clock-out-note)
 
   ;; Load extra functionality
   (with-eval-after-load 'org
@@ -129,7 +146,16 @@
 
         org-agenda-custom-commands
               '(("r" "Review" my/agenda-review)
-                ("w" "Workflow" my/agenda-workflow)))
+                ("w" "Workflow" my/agenda-workflow)
+                ("R" "Week in review" agenda ""
+                 ;; agenda settings
+                 ((org-agenda-span 'week)
+                  (org-agenda-start-on-weekday 0) ;; start on Sunday
+                  (org-agenda-overriding-header "Week in Review")
+                  (org-agenda-start-with-log-mode t)
+                  (org-agenda-log-mode-items '(clock state))
+                  (org-agenda-archives-mode t) ; include archive files
+                  ))))
   )
 
 

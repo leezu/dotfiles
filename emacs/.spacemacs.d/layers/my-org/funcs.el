@@ -48,7 +48,9 @@
              :test 'string=))
 
 
-;; org-agenda
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Agenda
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun my/agenda-review (&args)
   (interactive)
   (let ((org-super-agenda-groups
@@ -90,3 +92,15 @@
            (or (< hour 8)
                (> hour 21)))))
        (concat "-" tag)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Clock
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/check-for-clock-out-note()
+  (interactive)
+  (save-excursion
+    (org-back-to-heading)
+    (let ((tags (org-get-tags)))
+      (and tags (message "tags: %s " tags)
+           (when (member "clocknote" tags)
+             (org-add-note))))))
