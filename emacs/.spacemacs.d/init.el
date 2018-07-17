@@ -529,7 +529,7 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (spacemacs/load-spacemacs-env))
+  (spacemacs/load-spacemacs-env t))
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -617,6 +617,8 @@ before packages are loaded."
   ;; Shell
   ;;
   (setq shell-file-name "/bin/bash")
+  ;; Set TZ=UTC when invoking external processes
+  (setq process-environment (cons "TZ=UTC" process-environment))
 
   ;;
   ;; Remote work / TRAMP
