@@ -62,16 +62,16 @@
            "* %?\t:%^{language}:\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
 
           ;; journal
-          ("j" "Journal" entry (file+olp+datetree ,(get-todays-journal-file-name) "Journal")
+          ("j" "Journal" entry (file+olp+datetree ,(get-todays-journal-file-name))
            "* %?\nEntered on %U\n%a\n" :clock-in t :clock-resume t)
 
           ;; interruptions
 	        ("i" "Interrupts")
           ("ii" "IM" entry (file+olp+datetree ,(get-todays-journal-file-name))
            "*** IM: %^{Sender name}\t:interrupt:instantmessage:\n%a\n\n%?" :clock-in :clock-resume :empty-lines 1)
-	        ("iv" "Visitor" entry (file+olp+datetree (get-todays-journal-file-name))
+	        ("iv" "Visitor" entry (file+olp+datetree ,(get-todays-journal-file-name))
            "*** Visit from %^{Visitor name}\t:interrupt:visitor:\n%a\n\n%?" :clock-in :clock-resume :empty-lines 1)
-	        ("im" "Meeting" entry (file+olp+datetree (get-todays-journal-file-name))
+	        ("im" "Meeting" entry (file+olp+datetree ,(get-todays-journal-file-name))
            "*** Meeting: %^{Meeting description}\t:interrupt:meeting:\n%a\n\n%?" :clock-in :clock-resume)
           ))
 
