@@ -99,6 +99,10 @@
   (setq org-log-done 'time)
   (setq org-log-redeadline 'time)
   (setq org-log-reschedule 'time)
+
+  ;; Load extra functionality
+  (with-eval-after-load 'org
+    (require 'org-inlinetask))
   )
 
 (defun my-org/post-init-org-agenda ()

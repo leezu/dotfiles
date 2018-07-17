@@ -511,6 +511,7 @@ you should place your code here."
       (org-clock-goto)
       (org-narrow-to-subtree)))
   (global-set-key (kbd "<f12>") 'org-agenda)
+  (global-set-key (kbd "<f10>") 'org-inlinetask-insert-task)
   (global-set-key (kbd "<f9>") 'helm-org-rifle)
   (global-set-key (kbd "<f8>") 'org-pomodoro)
   (global-set-key (kbd "<f6>") 'org-clock-in)
