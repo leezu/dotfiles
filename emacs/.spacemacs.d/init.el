@@ -667,11 +667,11 @@ you should place your code here."
   ;; Python
   (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt --pprint")
-  "Configuration for user code:
-This function is called at the very end of Spacemacs startup, after layer
-configuration.
-Put your configuration code here, except for variables that should be set
-before packages are loaded."
+
+  ;; Auto-start with Org Agenda
+  (org-agenda-list)
+  (switch-to-buffer "*Org Agenda*")
+  (spacemacs/toggle-maximize-buffer)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

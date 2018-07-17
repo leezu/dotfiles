@@ -28,9 +28,10 @@
 
 ;; Configuration of packages already present in other layers
 (defun my-org/post-init-org ()
-  (setq org-adapt-indentation nil)  ;; Disable indentation in org mode
-  (setq org-catch-invisible "error")  ;; Cancel invisible edits
-  (setq org-enforce-todo-dependencies t)
+  (setq org-adapt-indentation nil  ;; Disable indentation in org mode
+        org-catch-invisible "error"  ;; Cancel invisible edits
+        org-enforce-todo-dependencies t
+        org-agenda-window-setup 'current-window)
 
   ;; org-capture
   (setq org-capture-templates
