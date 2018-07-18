@@ -9,6 +9,9 @@
 ;;
 ;;; License: GPLv3
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Inbox
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun leezu//notmuch-inbox-p (saved-search-property-item)
   "Returns non-nil if item is the inbox."
   (string-equal (plist-get saved-search-property-item :name) "inbox"))
@@ -20,11 +23,9 @@
    (plist-get (nth 0 (-filter 'leezu//notmuch-inbox-p notmuch-saved-searches))
               :query)))
 
-
-;;
-;; Add delete shortcuts
-;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Delete shortcuts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Show mode
 (defun leezu/notmuch-search-delete-thread (&optional undelete beg end)
   "Delete the currently selected thread or region.
@@ -145,10 +146,10 @@ thread from search."
   (unless (notmuch-show-next-open-message)
     (notmuch-show-next-thread t)))
 
-;;
-;; Add spam shortcuts
-;;
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Spam shortcuts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Show mode
 (defun leezu/notmuch-search-spam-thread (&optional undelete beg end)
   "Spam the currently selected thread or region.
@@ -269,10 +270,9 @@ thread from search."
   (unless (notmuch-show-next-open-message)
     (notmuch-show-next-thread t)))
 
-;;
-;; Add kill shortcuts
-;;
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Kill shortcuts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Show mode
 (defun leezu/notmuch-search-kill-thread (&optional undelete beg end)
   "Kill the currently selected thread or region.

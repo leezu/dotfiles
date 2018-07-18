@@ -63,6 +63,14 @@
       (setq message-directory "~/mail/gandi"
             message-auto-save-directory "~/mail/gandi/Drafts"
             message-kill-buffer-on-exit t)
+      ;; Composing
+      (eval-after-load "message"
+        ;; Make sure message is loaded before attempting to overwrite defun
+        '(defun message-make-date (&optional now)
+           "Make a valid data header in UTC.
+If NOW, use that time instead."
+           (let ((system-time-locale "C"))
+             (format-time-string "%a, %d %b %Y %T %z" now t))))
       ;; Sending mail
       (setq send-mail-function 'sendmail-send-it
             message-send-mail-function 'message-send-mail-with-sendmail
