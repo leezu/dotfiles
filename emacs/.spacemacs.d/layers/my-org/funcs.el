@@ -104,3 +104,46 @@
       (and tags (message "tags: %s " tags)
            (when (member "clocknote" tags)
              (org-add-note))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Time zone handling
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun my/org-global-props (&optional property buffer)
+  "Get the plists of global org properties of current buffer."
+  (unless property (setq property "PROPERTY"))
+  (with-current-buffer (or buffer (current-buffer))
+    (org-element-map (org-element-parse-buffer) 'keyword (lambda (el) (when (string-match property (org-element-property :key el)) el)))))
+
+(defun my/org-global-prop-value (key)
+  "Get global org property KEY of current buffer."
+  (org-element-property :value (car (my/org-global-props key))))
+
+(defun my/org-check-timezone-property ()
+  "Check if file TIMEZONE property matches emacs local timezone and warn otherwise"
+  ( let ((file-timezone (my/org-global-prop-value "TIMEZONE")))
+  (if (not (equal (current-time-zone nil file-timezone) (current-time-zone)))
+      (display-warning
+       '("my-org")
+       (format "File time %s and emacs time %s zone mismatch %s. \
+Consider calling my/org-change-timestamps-to-local-timezone \
+while visiting the respective file \
+and updating the TIMEZONE file property manually."
+               (current-time-zone nil file-timezone)
+               (current-time-zone)
+               (buffer-name))))))
+
+(defun my/org-change-timestamps-to-local-timezone ()
+  "Compute offset between local and file timezone, update timestamps to match local."
+  (interactive)
+  (let ((minute-offset
+         (/ (-
+             (car (current-time-zone))
+             (car (current-time-zone nil (my/org-global-prop-value "TIMEZONE"))))
+            60)))
+    (progn
+      (message (format "Applying %s hours offset." (/ minute-offset (float 60))))
+      (save-excursion
+        (goto-char (point-min))
+        (while (re-search-forward "[[<]" nil t)
+          (when (org-at-timestamp-p 'lax)
+            (org-timestamp-change minute-offset 'minute)))))))
