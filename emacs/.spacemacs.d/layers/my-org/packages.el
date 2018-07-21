@@ -133,7 +133,8 @@
 
         org-agenda-files '("~/org/organizer.org"
                            "~/org/areas/"
-                           "~/org/journal/2018/")
+                           "~/org/areas/places/"
+                           (concat "~/org/journal/" (format-time-string "%Y") "/"))
 
         org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "|" "DONE(d!)" "CANCELLED(C@)")
                             (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)"
