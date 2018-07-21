@@ -57,9 +57,9 @@
            "* %?\nCREATED: %U\n%a\n\n%i")
 
           ;; snippets
-          ("c" "Code Snippet" entry (file "~/org/snippets.org")
+          ("C" "Code Snippet" entry (file+olp+datetree "~/org/snippets.org")
            ;; Prompt for tag and language
-           "* %?\t:%^{language}:\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
+           "* %?\t:%^{language}:\nCREATED: %U\n%a\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
 
           ;; journal
           ("j" "Journal" entry (file+olp+datetree ,(get-todays-journal-file-name))
