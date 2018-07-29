@@ -131,10 +131,10 @@
 (defun my-org/post-init-org-agenda ()
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t
 
-        org-agenda-files '("~/org/organizer.org"
+        org-agenda-files `("~/org/organizer.org"
                            "~/org/areas/"
                            "~/org/areas/places/"
-                           (concat "~/org/journal/" (format-time-string "%Y") "/"))
+                           ,(concat "~/org/journal/" (format-time-string "%Y") "/"))
 
         org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "|" "DONE(d!)" "CANCELLED(C@)")
                             (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)"
