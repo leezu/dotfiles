@@ -64,11 +64,12 @@ This function should only modify configuration layer settings."
                clip2org-clippings-file "~/Dropbox/Books/My Clippings.txt")
      my-org
 
-     ;; Mail
+     ;; Communication
      (my-mail :variables
               notmuch-delete-tags '("+deleted" "-inbox" "-autoinbox")
               notmuch-spam-tags '("+spam" "-inbox" "-autoinbox")
               notmuch-kill-tags '("+killed" "-inbox" "-autoinbox"))
+     slack
 
      ;; Finance
      finance
@@ -769,6 +770,9 @@ before packages are loaded."
   (org-agenda-list)
   (switch-to-buffer "*Org Agenda*")
   (spacemacs/toggle-maximize-buffer)
+
+  ;; Secrets
+  (load-file "~/.spacemacs.secret.el")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
