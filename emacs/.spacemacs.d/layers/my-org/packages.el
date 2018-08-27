@@ -139,7 +139,7 @@
         org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "|" "DONE(d!)" "CANCELLED(C@)")
                             (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)"
                                       "BACKLOG(b)" "|" "COMPLETED(c)" "CANC(k@)"))
-        org-stuck-projects '("/!+PLAN|+READY|+ACTIVE|+REVIEW" ("NEXT" "INPROGRESS") nil "")
+        org-stuck-projects '("/!+PLAN|+READY|+ACTIVE|+REVIEW|+WAIT" nil nil "SCHEDULED:\\|DEADLINE:")
 
         org-log-into-drawer t
         org-tag-alist '(("@office" . ?o)
