@@ -1,29 +1,19 @@
-# Enabling on a new server
+# dotfiles
 
-- Clone repository to `~/.dotfiles`
-- Run `mkdir ~/.config/nvim`
-- Run `mkdir ~/.local/bin`
-- Run `stow DIR` for all directory names in `~/.dotfiles`
+Dotfiles for individual categories (directories in this repository) can be
+activated via `stow CATEGORY`.
 
-## zsh
-- Install `oh-my-zsh`
-- Make zsh default with `chsh -s PATH_TO_ZSH`
+``` bash
+git clone --recurse-submodules https://github.com/leezu/dotfiles/ ~/.dotfiles
+cd ~/.dotfiles
+```
 
-## vim
-- Make sure neovim is used and not vim
-- Install `vim-plug` package manager
-- Run `:PlugInstall`
-- YouCompleteMe should be rebuilt to support autocompletion
-- For vimtex the pdf viewer zathura is used
+## Manual steps
+- shell
+  - `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
+  - Open tmux, press `prefix + I`
+- emacs
+  - `git clone https://github.com/syl20bnr/spacemacs.git ~/.emacs.d -b develop`
+- mail
+  - Make sure `~/.msmtp-password.gpg` is present
 
-## tmux
-- Install `tpm` plugin manager (at least 2.1)
-- Press prefix + I (capital I, as in Install) to fetch the plugins
-
-## emacs
-- Clone spacemacs repository into `~/.spacemacs.d/`
-- Install prerequisites for pdf-tools layer
-- Open emacs to install plugins
-
-## R
-- `mkdir -p ~/develop/R/3.2`
