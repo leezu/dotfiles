@@ -63,6 +63,8 @@
 
           ;; journal
           ("j" "Journal" entry (file+olp+datetree ,(get-todays-journal-file-name))
+           "* %?\nEntered on %U\n%a\n")
+          ("r" "Journal (review)" entry (file+olp+datetree ,(get-todays-review-file-name))
            "* %?\nEntered on %U\n%a\n" :clock-in t :clock-resume t)
 
           ;; interruptions
