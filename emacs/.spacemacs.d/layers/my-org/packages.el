@@ -172,7 +172,7 @@
         org-ref-pdf-directory "~/Dropbox/Papers/"
         org-ref-bibliography-notes "~/Dropbox/Papers/notes.org")
 
-  (spacemacs/set-leader-keys "ob" 'helm-bibtex)
+  (spacemacs/set-leader-keys "ob" 'helm-bibtex-with-local-bibliography)
 
   ;; Template for paper notes
   (setq org-ref-note-title-format
