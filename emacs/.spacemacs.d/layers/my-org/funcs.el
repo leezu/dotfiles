@@ -151,3 +151,11 @@ and updating the TIMEZONE file property manually."
         (while (re-search-forward "[[<]" nil t)
           (when (org-at-timestamp-p 'lax)
             (org-timestamp-change minute-offset 'minute)))))))
+
+;; via https://github.com/ekaschalk/.spacemacs.d/blob/58e266097efda77366fbd7ccafa0313ff5c491b4/layers/macros/local/macros/macros.el
+(defun define-keys (keymap &rest pairs)
+  "Define alternating key-def PAIRS for KEYMAP."
+  (-each
+      (-partition 2 pairs)
+    (-lambda ((key def))
+      (define-key keymap key def))))

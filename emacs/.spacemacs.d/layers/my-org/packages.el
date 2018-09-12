@@ -9,16 +9,21 @@
 ;;
 ;;; License: GPLv3
 
+;;; list of packages
 (defconst my-org-packages
   '(
-    ;; Packages already in org layer
+    ;; Packages owned by org layer
     org
     org-agenda
     org-pomodoro
-    ;; Packages already in bibtex layer
+
+    ;; Packages owned by bibtex layer
     org-ref
     helm-bibtex
-    ;; Extra packages
+
+    ;; Owned packages
+    outshine
+    helm-navi
     interleave
     org-alert
     helm-org-rifle
@@ -26,16 +31,15 @@
     git-auto-commit-mode
     ))
 
-;; Configuration of packages already present in other layers
+;;; Packages owned by other layers
+;;;; org
 (defun my-org/post-init-org ()
   (setq org-adapt-indentation nil  ;; Disable indentation in org mode
         org-catch-invisible "error"  ;; Cancel invisible edits
         org-enforce-todo-dependencies t
         org-agenda-window-setup 'current-window)
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Capture
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Capture
   (setq org-capture-templates
         ;; note the backquote ` instead of normal quote '
         `(("P" "New project" entry (file+olp "~/org/organizer.org" "Projects")
@@ -77,9 +81,7 @@
            "*** Meeting: %^{Meeting description}\t:interrupt:meeting:\n%a\n\n%?" :clock-in :clock-resume)
           ))
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Refiling
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Refiling
   (setq org-refile-targets '((nil . (:maxlevel . 9))
                              (org-agenda-files . (:maxlevel . 9)))
         ;; Show full "path" of refile targets
@@ -97,9 +99,7 @@
   ;; org-archive
   (setq org-archive-location "%s_archive::datetree/")
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Clock
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Clock
   ;; persist the last used clock accross emacs sessions
   (setq org-clock-persist t
         org-clock-history-length 35
@@ -120,16 +120,15 @@
   ;; Prompt for note on :clocknote tagged entries
   (add-hook 'org-clock-out-hook 'my/check-for-clock-out-note)
 
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;; Time zone handling
-  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; Time zone handling
   (add-hook 'org-mode-hook 'my/org-check-timezone-property)
 
-  ;; Load extra functionality
+;;;;; Load extra functionality
   (with-eval-after-load 'org
     (require 'org-inlinetask))
   )
 
+;;;; org-agenda
 (defun my-org/post-init-org-agenda ()
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t
 
@@ -166,7 +165,7 @@
                   ))))
   )
 
-
+;;;; org-ref
 (defun my-org/post-init-org-ref ()
   (setq org-ref-default-bibliography '("~/Dropbox/Papers/references.bib")
         org-ref-pdf-directory "~/Dropbox/Papers/"
@@ -185,6 +184,7 @@ cite:%k
 ")
   )
 
+;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/Dropbox/Papers/references.bib")
         bibtex-completion-library-path '("~/Dropbox/Papers/")
@@ -201,16 +201,19 @@ cite:%k
         )
   )
 
+;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
   (setq alert-default-style 'libnotify)
   )
 
-;; Configuration of newly introduced packages
+;;; Owned packages
 
+;;;; interleave
 (defun my-org/init-interleave ()
   (use-package interleave)
   )
 
+;;;; helm-org-rifle
 (defun my-org/init-helm-org-rifle ()
   (use-package helm-org-rifle)
   (setq helm-org-rifle-show-path t)
@@ -221,6 +224,7 @@ cite:%k
   (spacemacs/set-leader-keys "arf" 'helm-org-rifle-files)
   (spacemacs/set-leader-keys "arr" 'helm-org-rifle-org-directory))
 
+;;;; org-super-agenda
 (defun my-org/init-org-super-agenda ()
   (use-package org-super-agenda
     :config (org-super-agenda-mode))
@@ -239,7 +243,42 @@ cite:%k
           (:discard (:anything t))
           )))
 
+;;;; git-auto-commit-mode
 (defun my-org/init-git-auto-commit-mode ()
   (use-package git-auto-commit-mode
     :init (setq gac-automatically-push-p 1)))
-;;; packages.el ends here
+
+;;;; outshine
+(defun my-org/init-outshine ()
+  (setq outshine-startup-folded-p t)
+
+  (defun advise-outshine-narrow-start-pos ()
+    (unless (outline-on-heading-p t)
+      (outline-previous-visible-heading 1)))
+
+  (use-package outshine
+    :init
+    (progn
+      (spacemacs/set-leader-keys
+        "nn" 'outshine-narrow-to-subtree
+        "nw" 'widen)
+      (define-keys outline-minor-mode-map
+        (kbd "M-RET") 'outshine-insert-heading
+        (kbd "<backtab>") 'outshine-cycle-buffer))
+
+    :config
+    (progn
+      ;; Narrowing works within the headline rather than requiring to be on it
+      (advice-add 'outshine-narrow-to-subtree :before
+                  'advise-outshine-narrow-start-pos)
+
+      (add-hook 'outline-minor-mode-hook 'outshine-hook-function)
+      (add-hook 'prog-mode-hook 'outline-minor-mode))))
+
+;;;; helm-navi
+(defun my-org/init-helm-navi ()
+  (use-package helm-navi
+    :init
+    (progn
+      (spacemacs/set-leader-keys
+        "sj" 'helm-navi))))
