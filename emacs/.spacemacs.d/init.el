@@ -765,6 +765,17 @@ before packages are loaded."
   (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt --pprint")
 
+  ;; lisp
+  (defun et/semantic-remove-hooks ()
+    (remove-hook 'completion-at-point-functions
+                 'semantic-analyze-completion-at-point-function)
+    (remove-hook 'completion-at-point-functions
+                 'semantic-analyze-notc-completion-at-point-function)
+    (remove-hook 'completion-at-point-functions
+                 'semantic-analyze-nolongprefix-completion-at-point-function))
+
+  (add-hook 'semantic-mode-hook #'et/semantic-remove-hooks)
+
   ;; Auto-start with Org Agenda
   (org-agenda-list)
   (switch-to-buffer "*Org Agenda*")
