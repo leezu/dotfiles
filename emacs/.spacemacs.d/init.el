@@ -604,7 +604,7 @@ before packages are loaded."
     (interactive)
     (when (org-clock-is-active)
       (org-clock-goto)
-      (org-narrow-to-subtree)))
+      (org-tree-to-indirect-buffer)))
   (global-set-key (kbd "<f12>") 'org-agenda)
   (global-set-key (kbd "<f10>") 'org-inlinetask-insert-task)
   (global-set-key (kbd "<f9>") 'helm-org-rifle)
