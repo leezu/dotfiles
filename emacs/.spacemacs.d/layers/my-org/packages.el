@@ -72,6 +72,8 @@
            "* %?\nEntered on %U\n%a\n")
           ("r" "Journal (review)" entry (file+olp+datetree ,(get-todays-review-file-name))
            "* %?\nEntered on %U\n%a\n" :clock-in t :clock-resume t)
+          ("e" "Event" entry (file+olp+datetree ,(get-todays-journal-file-name))
+           "* %?\nSCHEDULED: %t\n%a\n")
 
           ;; interruptions
 	        ("i" "Interrupts")
