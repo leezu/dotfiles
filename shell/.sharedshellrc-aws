@@ -1,3 +1,5 @@
+source /opt/intel/compilers_and_libraries_2019/linux/mkl/bin/mklvars.sh intel64
+
 # conda
 export PATH=$HOME/anaconda3/bin:$PATH
 export CPATH="$HOME/anaconda3/include" # cpp searches for include files here (like -I )
