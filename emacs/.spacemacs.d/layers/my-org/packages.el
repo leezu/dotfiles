@@ -186,7 +186,13 @@
 :END:
 cite:%k
 ")
-  )
+
+  ;; Tell org-ref to let helm-bibtex find notes for it
+  (setq org-ref-notes-function
+        (lambda (thekey)
+          (let ((bibtex-completion-bibliography (org-ref-find-bibliography)))
+            (bibtex-completion-edit-notes
+             (list (car (org-ref-get-bibtex-key-and-file thekey))))))))
 
 ;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
