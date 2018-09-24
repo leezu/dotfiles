@@ -2,9 +2,11 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+;;; layers
 (defun dotspacemacs/layers ()
   "Layer configuration:
 This function should only modify configuration layer settings."
+;;;; Config
   (setq-default
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
@@ -31,7 +33,7 @@ This function should only modify configuration layer settings."
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
 
-   ;; List of configuration layers to load.
+;;;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
      ;; ----------------------------------------------------------------
@@ -166,6 +168,7 @@ This function should only modify configuration layer settings."
     )
   )
 
+;;; init
 (defun dotspacemacs/init ()
   "Initialization:
 This function is called at the very beginning of Spacemacs startup,
@@ -523,6 +526,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-pretty-docs nil))
 
+;;; user-env
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
 This function defines the environment variables for your Emacs session. By
@@ -531,6 +535,7 @@ variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (spacemacs/load-spacemacs-env t))
 
+;;; user-init
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
@@ -544,6 +549,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
           ("gnu" . "elpa.gnu.org/packages/")))
   (push '(rtags . "melpa stable") package-pinned-packages))
 
+;;; user-load
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
@@ -551,6 +557,7 @@ This function is called only while dumping Spacemacs configuration. You can
 dump."
   )
 
+;;; user-config
 (defun dotspacemacs/user-config ()
   "Configuration for user code:
 This function is called at the very end of Spacemacs startup, after layer
