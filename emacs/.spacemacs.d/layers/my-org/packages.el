@@ -202,14 +202,46 @@ cite:%k
 
   (setq bibtex-completion-notes-template-one-file
         (concat
-         "** ${year} - ${title}\n"
+         "* ${title} (${year})\n"
          ":PROPERTIES:\n"
          ":Custom_ID: ${=key=}\n"
          ":INTERLEAVE_PDF: ./${=key=}.pdf\n"
          ":END:\n"
-         "cite:${=key=}")
+         "cite:${=key=}\n"
+         "%?")  ;; %? for org-capture
         )
-  )
+
+  ;; Overwrite bibtex-completion-edit-notes to use org-capture
+  (eval-after-load "helm-bibtex"
+    '(defun bibtex-completion-edit-notes (keys)
+       "Open the notes associated with the selected entry or create new via org-capture."
+       (require 'org-capture)
+       (dolist (key keys)
+         (let* ((entry (bibtex-completion-get-entry key))
+                (year (or (bibtex-completion-get-value "year" entry)
+                          (car (split-string (bibtex-completion-get-value "date" entry "") "-"))))
+                (entry (push (cons "year" year) entry))
+                (buffer (generate-new-buffer-name "bibtex-notes")))
+           (with-current-buffer (make-indirect-buffer  ;; TODO: buffer is never deleted
+                                 (find-file-noselect bibtex-completion-notes-path)
+                                 buffer t)  ;; clone t
+             (widen)
+             (outline-show-all)
+             (goto-char (point-min))
+             (if (re-search-forward (format bibtex-completion-notes-key-pattern (regexp-quote key)) nil t)
+                                        ; Existing entry found:
+                 (when (eq major-mode 'org-mode)
+                   (org-narrow-to-subtree)
+                   (goto-char (point-min))
+                   (outline-show-all)
+                   (switch-to-buffer-other-window buffer))
+                                        ; Create a new entry:
+               (let ((org-capture-templates
+                      '(("bibtex" "helm-bibtex"
+                         entry
+                         (file+olp+datetree bibtex-completion-notes-path)
+                         "%(s-format bibtex-completion-notes-template-one-file 'bibtex-completion-apa-get-value entry)"))))
+                 (org-capture nil "bibtex")))))))))
 
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
