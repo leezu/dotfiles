@@ -92,11 +92,6 @@ This function should only modify configuration layer settings."
      markdown
      pandoc
      syntax-checking
-     typescript
-     html
-     (javascript :variables
-                 js2-strict-missing-semi-warning nil
-                 js2-missing-semi-one-line-override nil)
      (python :variables
              python-enable-yapf-format-on-save nil)
      java
@@ -115,6 +110,20 @@ This function should only modify configuration layer settings."
      shell-scripts
      nixos
      csv
+
+     ;; Web
+     (html :variables
+           web-fmt-tool 'prettier)
+     (javascript :variables
+                 javascript-fmt-tool 'prettier
+                 js2-strict-missing-semi-warning nil
+                 js2-missing-semi-one-line-override nil)
+     (json :variables
+           json-fmt-tool 'prettier)
+     prettier
+     (typescript :variables
+                 typescript-fmt-tool 'prettier)
+
 
      ;; Others
      spotify
