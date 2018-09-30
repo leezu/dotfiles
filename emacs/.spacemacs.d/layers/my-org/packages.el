@@ -171,9 +171,9 @@
 
 ;;;; org-ref
 (defun my-org/post-init-org-ref ()
-  (setq org-ref-default-bibliography '("~/Dropbox/Papers/references.bib")
-        org-ref-pdf-directory "~/Dropbox/Papers/"
-        org-ref-bibliography-notes "~/Dropbox/Papers/notes.org")
+  (setq org-ref-default-bibliography '("~/Papers/references.bib")
+        org-ref-pdf-directory "~/Papers/"
+        org-ref-bibliography-notes "~/Papers/notes.org")
 
   (spacemacs/set-leader-keys "ob" 'helm-bibtex-with-local-bibliography)
 
@@ -196,9 +196,9 @@ cite:%k
 
 ;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
-  (setq bibtex-completion-bibliography '("~/Dropbox/Papers/references.bib")
-        bibtex-completion-library-path '("~/Dropbox/Papers/")
-        bibtex-completion-notes-path "~/Dropbox/Papers/notes.org")
+  (setq bibtex-completion-bibliography '("~/Papers/references.bib")
+        bibtex-completion-library-path '("~/Papers/")
+        bibtex-completion-notes-path "~/Papers/notes.org")
 
   (setq bibtex-completion-notes-template-one-file
         (concat
