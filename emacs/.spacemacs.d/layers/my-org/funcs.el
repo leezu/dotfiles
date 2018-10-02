@@ -15,7 +15,7 @@
 
 (defun get-todays-review-file-name ()
   "Gets the journal file name for today's date"
-  (expand-file-name (format-time-string "%Y/%Y-%2m-review.org.gpg") org-journal-dir))
+  (expand-file-name (format-time-string "%Y-review.org.gpg") org-journal-dir))
 
 (defun load-todays-journal-file ()
   "Create an load a journal entry based on today's date"
