@@ -9,6 +9,7 @@
 ;;
 ;;; License: GPLv3
 
+;;; * Misc
 (defun get-todays-journal-file-name ()
   "Gets the journal file name for today's date"
   (expand-file-name (format-time-string "%Y/%Y-%2m.org") org-journal-dir))
@@ -52,9 +53,7 @@
              :test 'string=))
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Agenda
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; * Agenda
 (defun my/agenda-review (&args)
   (interactive)
   (let ((org-super-agenda-groups
@@ -97,9 +96,7 @@
                (> hour 21)))))
        (concat "-" tag)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Clock
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; * Clock
 (defun my/check-for-clock-out-note()
   (interactive)
   (save-excursion
@@ -109,9 +106,7 @@
            (when (member "clocknote" tags)
              (org-add-note))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Time zone handling
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; * Time zone handling
 (defun my/org-global-props (&optional property buffer)
   "Get the plists of global org properties of current buffer."
   (unless property (setq property "PROPERTY"))
