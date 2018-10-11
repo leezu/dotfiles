@@ -95,6 +95,7 @@ This function should only modify configuration layer settings."
      (python :variables
              python-enable-yapf-format-on-save nil)
      java
+     go
      yaml
      lua
      semantic
@@ -121,6 +122,7 @@ This function should only modify configuration layer settings."
      (json :variables
            json-fmt-tool 'prettier)
      prettier
+     react
      (typescript :variables
                  typescript-fmt-tool 'prettier)
 
