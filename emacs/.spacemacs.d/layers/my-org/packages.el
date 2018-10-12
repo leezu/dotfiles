@@ -57,9 +57,9 @@
            "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
 
           ;; notes
-          ("n" "Note in current file" entry (file+olp+datetree "~/org/organizer.org")
+          ("n" "Note (organizer.org)" entry (file+olp+datetree "~/org/organizer.org")
            "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
-          ("l" "Note in current file" entry (file+olp+datetree buffer-file-name)
+          ("l" "Note (current file)" entry (file+olp+datetree buffer-file-name)
            "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
 
           ;; snippets
