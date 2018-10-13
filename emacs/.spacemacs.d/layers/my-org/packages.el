@@ -26,7 +26,6 @@
     helm-navi
     interleave
     org-alert
-    helm-org-rifle
     org-super-agenda
     git-auto-commit-mode
     ))
@@ -256,16 +255,6 @@ cite:%k
   (use-package interleave)
   )
 
-;;;; helm-org-rifle
-(defun my-org/init-helm-org-rifle ()
-  (use-package helm-org-rifle)
-  (setq helm-org-rifle-show-path t)
-
-  (spacemacs/set-leader-keys "aro" 'helm-org-rifle)
-  (spacemacs/set-leader-keys "arb" 'helm-org-rifle-current-buffer)
-  (spacemacs/set-leader-keys "ard" 'helm-org-rifle-directories)
-  (spacemacs/set-leader-keys "arf" 'helm-org-rifle-files)
-  (spacemacs/set-leader-keys "arr" 'helm-org-rifle-org-directory))
 
 ;;;; org-super-agenda
 (defun my-org/init-org-super-agenda ()
