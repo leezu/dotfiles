@@ -36,7 +36,9 @@
   (setq org-adapt-indentation nil  ;; Disable indentation in org mode
         org-catch-invisible "error"  ;; Cancel invisible edits
         org-enforce-todo-dependencies t
-        org-agenda-window-setup 'current-window)
+        org-agenda-window-setup 'current-window
+        org-preview-latex-default-process 'dvisvgm
+        org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 ;;;;; Capture
   (setq org-capture-templates
