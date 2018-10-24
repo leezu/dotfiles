@@ -96,6 +96,45 @@
                (> hour 21)))))
        (concat "-" tag)))
 
+;;; * Agenda bulk actions
+(defun my/org-agenda-bulk-set-priority-c ()
+  (interactive "P")
+  (let* ((marker (or (org-get-at-bol 'org-hd-marker)
+                     (org-agenda-error)))
+         (buffer (marker-buffer marker)))
+    (with-current-buffer buffer
+      (save-excursion
+        (save-restriction
+          (widen)
+          (goto-char marker)
+          (org-back-to-heading t)
+          (org-priority ?C))))))
+
+(defun my/org-agenda-bulk-set-priority-b ()
+  (interactive "P")
+  (let* ((marker (or (org-get-at-bol 'org-hd-marker)
+                     (org-agenda-error)))
+         (buffer (marker-buffer marker)))
+    (with-current-buffer buffer
+      (save-excursion
+        (save-restriction
+          (widen)
+          (goto-char marker)
+          (org-back-to-heading t)
+          (org-priority ?B))))))
+
+(defun my/org-agenda-bulk-set-priority-a ()
+  (interactive "P")
+  (let* ((marker (or (org-get-at-bol 'org-hd-marker)
+                     (org-agenda-error)))
+         (buffer (marker-buffer marker)))
+    (with-current-buffer buffer
+      (save-excursion
+        (save-restriction
+          (widen)
+          (goto-char marker)
+          (org-back-to-heading t)
+          (org-priority ?A))))))
 ;;; * Clock
 (defun my/check-for-clock-out-note()
   (interactive)
