@@ -50,6 +50,7 @@ This function should only modify configuration layer settings."
                      enable-flyspell-auto-completion t)
      vinegar
      my-ui
+     multiple-cursors
      neotree
 
      ;; Academic
