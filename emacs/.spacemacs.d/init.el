@@ -139,7 +139,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(pydoc cuda-mode cheat-sh graphql-mode)
+   dotspacemacs-additional-packages '(pydoc cuda-mode cheat-sh graphql-mode flycheck-cython)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -783,6 +783,9 @@ before packages are loaded."
   ;; Python
   (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt --pprint")
+  (require 'flycheck-cython)
+  (add-hook 'cython-mode-hook 'flycheck-mode)
+  (setq flycheck-cython-cplus t)
 
   ;; lisp
   (defun et/semantic-remove-hooks ()
