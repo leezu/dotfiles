@@ -86,6 +86,7 @@ This function should only modify configuration layer settings."
      emacs-lisp
      package-lint ;; for emacs package development
      git
+     (magit-wip-mode)
      (latex :variables
             latex-enable-folding t
             latex-build-command "LatexMk")
