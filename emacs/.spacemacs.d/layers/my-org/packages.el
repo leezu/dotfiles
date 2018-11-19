@@ -284,8 +284,6 @@ cite:%k
 
 ;;;; outshine
 (defun my-org/init-outshine ()
-  (setq outshine-startup-folded-p t)
-
   (defun advise-outshine-narrow-start-pos ()
     (unless (outline-on-heading-p t)
       (outline-previous-visible-heading 1)))
