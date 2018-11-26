@@ -51,7 +51,7 @@
            "* TODO [#B]%?\nOPENED: %U\n%a\n\n%i")
           ("s" "Clocked entry subtask" entry (clock)
            "* TODO [#B]%?\nOPENED: %U\n%a\n\n%i" :empty-lines 1)
-          ("c" "Clocked entry checkbox" checkitem (clock) "[ ] %i")
+          ("S" "Clocked entry checkbox" checkitem (clock) "[ ] %i")
           ("w" "Waiting for" entry (file+olp "~/org/organizer.org" "Tasks")
            "* WAITING %?\nOPENED: %U\n%a\n\n%i")
           ("s" "Someday" entry (file+olp "~/org/organizer.org" "Someday")
@@ -62,6 +62,8 @@
            "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
           ("l" "Note (current file)" entry (file+olp+datetree buffer-file-name)
            "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
+          ("c" "Clocked entry note" entry (clock)
+           "* %U %?\n%a\n\n%i" :empty-lines 1)
 
           ;; snippets
           ("C" "Code Snippet" entry (file+olp+datetree "~/org/snippets.org")
