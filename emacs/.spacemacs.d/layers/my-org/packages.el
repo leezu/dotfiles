@@ -302,12 +302,8 @@ cite:%k
 
     :config
     (progn
-      ;; Narrowing works within the headline rather than requiring to be on it
-      (advice-add 'outshine-narrow-to-subtree :before
-                  'advise-outshine-narrow-start-pos)
-
-      (add-hook 'outline-minor-mode-hook 'outshine-hook-function)
-      (add-hook 'prog-mode-hook 'outline-minor-mode))))
+      (add-hook 'LaTeX-mode-hook 'outshine-mode)
+      (add-hook 'prog-mode-hook 'outshine-mode))))
 
 ;;;; helm-navi
 (defun my-org/init-helm-navi ()
