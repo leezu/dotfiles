@@ -3,6 +3,8 @@ source /opt/intel/compilers_and_libraries_2018.2.199/linux/mkl/bin/mklvars.sh in
 # Firefox touchscreen support
 export MOZ_USE_XINPUT2=1
 
+export GTK_USE_PORTAL=1
+
 # Remote ipython sessions in emacs ipython notebook
 function mount_remote() {
     if [[ ! -r ~/.servers/$1 ]]; then
