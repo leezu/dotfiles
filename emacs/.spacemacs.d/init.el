@@ -81,11 +81,11 @@ This function should only modify configuration layer settings."
      sphinx
 
      ;; Programming
-     my-devel
      cscope
      emacs-lisp
      package-lint ;; for emacs package development
      git
+     github
      (magit-wip-mode)
      (latex :variables
             latex-enable-folding t
