@@ -140,7 +140,7 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(pydoc cuda-mode cheat-sh graphql-mode flycheck-cython)
+   dotspacemacs-additional-packages '(pydoc cuda-mode cheat-sh graphql-mode flycheck-cython gscholar-bibtex)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -665,6 +665,33 @@ before packages are loaded."
   ;; Academic setup
   ;;
   (setq helm-case-fold-search t)
+  (setq gscholar-bibtex-database-file "~/Papers/references.bib")
+
+  (defun gscholar-bibtex-quit-entry-window ()
+    (interactive)
+    (gscholar-bibtex-guard)
+    (let ((gscholar-window (selected-window))
+          (entry-window (get-buffer-window gscholar-bibtex-entry-buffer-name)))
+      (when entry-window
+        (select-window entry-window)
+        (kill-buffer-and-window)
+        (select-window gscholar-window))))
+
+  (defun gscholar-bibtex-quit-gscholar-window ()
+    (interactive)
+    (gscholar-bibtex-guard)
+    (let ((gscholar-window (selected-window))
+          (entry-window (get-buffer-window gscholar-bibtex-entry-buffer-name))
+          (caller-window (get-buffer-window gscholar-bibtex-caller-buffer)))
+      (gscholar-bibtex-quit-entry-window)
+      (if (or (eq caller-window gscholar-window)
+              (eq caller-window entry-window)
+              (not (buffer-live-p gscholar-bibtex-caller-buffer)))
+          (next-buffer)
+        (if caller-window
+            (progn (kill-buffer-and-window) (select-window caller-window))
+          (switch-to-buffer gscholar-bibtex-caller-buffer))))
+    (message ""))
 
   ;; Reproducible research
   ;; It seems ess breaks org mode
