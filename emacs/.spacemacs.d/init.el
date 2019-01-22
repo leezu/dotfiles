@@ -664,6 +664,7 @@ before packages are loaded."
   ;;
   ;; Academic setup
   ;;
+  (setq helm-case-fold-search t)
 
   ;; Reproducible research
   ;; It seems ess breaks org mode
