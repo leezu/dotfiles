@@ -1,0 +1,20 @@
+[Desktop Entry]
+Categories=Network;WebBrowser;
+Comment[en_US]=Web Browser
+Comment=Web Browser
+Exec=GTK_USE_PORTAL=1 firefox %u
+GenericName[en_US]=
+GenericName=
+Icon=firefox
+MimeType=text/html;application/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;
+Name[en_US]=Mozilla Firefox
+Name=Mozilla Firefox
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
