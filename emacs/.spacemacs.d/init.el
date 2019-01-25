@@ -666,6 +666,7 @@ before packages are loaded."
   ;;
   (setq helm-case-fold-search t)
   (setq gscholar-bibtex-database-file "~/Papers/references.bib")
+  (spacemacs/set-leader-keys "og" (lambda() (interactive) (gscholar-bibtex "Google Scholar")))
 
   (defun gscholar-bibtex-quit-entry-window ()
     (interactive)
