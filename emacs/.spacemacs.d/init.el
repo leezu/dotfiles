@@ -829,8 +829,6 @@ before packages are loaded."
 
   ;; Auto-start with Org Agenda
   (org-agenda-list)
-  (switch-to-buffer "*Org Agenda*")
-  (spacemacs/toggle-maximize-buffer)
 
   ;; Secrets
   (load-file "~/.spacemacs.secret.el")
