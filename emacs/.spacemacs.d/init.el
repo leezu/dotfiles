@@ -86,7 +86,6 @@ This function should only modify configuration layer settings."
      package-lint ;; for emacs package development
      git
      github
-     (magit-wip-mode)
      (latex :variables
             latex-enable-folding t
             latex-build-command "LatexMk")
@@ -733,6 +732,8 @@ before packages are loaded."
   ;;
   ;; Programming
   ;;
+  ;; Store git references to work-in-progress code:
+  (magit-wip-mode)
 
   ;; Copy git rev-parse "HEAD" result
   ;; via https://unix.stackexchange.com/a/24287
