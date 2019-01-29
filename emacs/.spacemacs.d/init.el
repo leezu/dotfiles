@@ -11,7 +11,7 @@ This function should only modify configuration layer settings."
    ;; Base distribution to use. This is a layer contained in the directory
    ;; `+distribution'. For now available distributions are `spacemacs-base'
    ;; or `spacemacs'. (default 'spacemacs)
-   dotspacemacs-distribution 'spacemacs
+   dotspacemacs-distribution 'spacemacs-base
 
    ;; Lazy installation of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
@@ -36,6 +36,24 @@ This function should only modify configuration layer settings."
 ;;;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ;; auxiliary layers to the base distribution
+     helm
+     treemacs
+     spacemacs-base
+     spacemacs-completion
+     spacemacs-layouts
+     spacemacs-editing
+     spacemacs-editing-visual
+     spacemacs-evil
+     spacemacs-language
+     spacemacs-misc
+     spacemacs-modeline
+     spacemacs-navigation
+     spacemacs-org
+     spacemacs-project
+     ;; spacemacs-purpose
+     spacemacs-visual
+
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
