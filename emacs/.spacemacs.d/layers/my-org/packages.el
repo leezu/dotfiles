@@ -29,7 +29,9 @@
     interleave
     org-alert
     org-super-agenda
-    git-auto-commit-mode
+    (git-auto-commit-mode :fetcher github
+                          :repo "leezu/git-auto-commit-mode"
+                          :branch "leezu")
     ))
 
 ;;; Packages owned by other layers
@@ -284,7 +286,9 @@ cite:%k
 ;;;; git-auto-commit-mode
 (defun my-org/init-git-auto-commit-mode ()
   (use-package git-auto-commit-mode
-    :init (setq gac-automatically-push-p 1)))
+    :init (setq gac-automatically-push-p 1
+                gac-automatically-fetch-p 1
+                gac-automatically-pull-p 1)))
 
 ;;;; outshine
 (defun my-org/init-outshine ()
