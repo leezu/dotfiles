@@ -685,32 +685,6 @@ before packages are loaded."
   (setq gscholar-bibtex-database-file "~/Papers/references.bib")
   (spacemacs/set-leader-keys "og" (lambda() (interactive) (gscholar-bibtex "Google Scholar")))
 
-  (defun gscholar-bibtex-quit-entry-window ()
-    (interactive)
-    (gscholar-bibtex-guard)
-    (let ((gscholar-window (selected-window))
-          (entry-window (get-buffer-window gscholar-bibtex-entry-buffer-name)))
-      (when entry-window
-        (select-window entry-window)
-        (kill-buffer-and-window)
-        (select-window gscholar-window))))
-
-  (defun gscholar-bibtex-quit-gscholar-window ()
-    (interactive)
-    (gscholar-bibtex-guard)
-    (let ((gscholar-window (selected-window))
-          (entry-window (get-buffer-window gscholar-bibtex-entry-buffer-name))
-          (caller-window (get-buffer-window gscholar-bibtex-caller-buffer)))
-      (gscholar-bibtex-quit-entry-window)
-      (if (or (eq caller-window gscholar-window)
-              (eq caller-window entry-window)
-              (not (buffer-live-p gscholar-bibtex-caller-buffer)))
-          (next-buffer)
-        (if caller-window
-            (progn (kill-buffer-and-window) (select-window caller-window))
-          (switch-to-buffer gscholar-bibtex-caller-buffer))))
-    (message ""))
-
   ;; Reproducible research
   ;; It seems ess breaks org mode
   ;; http://emacs.stackexchange.com/questions/17063/how-to-setup-knitr-workflow-in-emacs/17065#17065
