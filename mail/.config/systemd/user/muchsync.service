@@ -3,7 +3,7 @@ Description=Muchsync Service (oneshot)
 
 [Service]
 Type=oneshot
-ExecStart=/home/leonard/.local/bin/muchsync -r /home/leonard/.local/bin/muchsync leonard@freiburg 
+ExecStart=/usr/bin/muchsync -r /usr/bin/muchsync leonard@freiburg 
 TimeoutSec=10m
 
 [Install]
