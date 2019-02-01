@@ -34,7 +34,7 @@ fileext = ".vcf"
 
 [storage personal_contacts_remote]
 type = "carddav"
-url = "https://sogo3.gandi.net/SOGo/dav/leonard@lausen.nl/Contacts/personal/"
+url = "https://webmail.gandi.net/SOGo/dav/leonard@lausen.nl/Contacts/personal/"
 username.fetch = ["command", "pass", "vdirsyncer-username"]
 password.fetch = ["command", "pass", "vdirsyncer-password"]
 
@@ -54,6 +54,6 @@ fileext = ".ics"
 
 [storage personal_calendar_remote]
 type = "caldav"
-url = "https://sogo3.gandi.net/SOGo/dav/leonard@lausen.nl/Calendar/personal/"
+url = "https://webmail.gandi.net/SOGo/dav/leonard@lausen.nl/Calendar/personal/"
 username.fetch = ["command", "pass", "vdirsyncer-username"]
 password.fetch = ["command", "pass", "vdirsyncer-password"]
