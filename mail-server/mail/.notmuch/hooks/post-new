@@ -1,5 +1,5 @@
 #!/bin/sh
-$HOME/.local/bin/afew --tag --new --verbose
+/usr/bin/afew --tag --new --verbose
 
 # 'notmuch tag' auto-excludes messages tagged with exclude_tags (deleted or spam)
 notmuch tag -inbox -autoinbox +deleted "folder:gandi/Trash"
@@ -7,4 +7,4 @@ notmuch tag -inbox -autoinbox +spam "folder:gandi/Junk"
 notmuch tag -inbox -autoinbox "folder:gandi/Archives AND (tag:inbox OR tag:autoinbox)"
 notmuch tag +sent "folder:gandi/Sent AND (NOT tag:sent)"
 
-$HOME/.local/bin/afew --move --verbose
+/usr/bin/afew --move --verbose
