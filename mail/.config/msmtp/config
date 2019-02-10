@@ -5,8 +5,8 @@ tls on
 tls_trust_file /etc/ssl/certs/ca-certificates.crt
 
 # A freemail service
-account gandi
-host mail.gandi.net
+account uberspace
+host devico.uberspace.de
 from leonard@lausen.nl
 auth on
 user leonard@lausen.nl
@@ -36,4 +36,4 @@ passwordeval gpg --no-tty -q -d ~/.msmtp-password.gpg
 
 
 # Set a default account
-account default : gandi
+account default : uberspace
