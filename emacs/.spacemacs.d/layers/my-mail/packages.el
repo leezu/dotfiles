@@ -60,8 +60,8 @@
       ;; add Cc and Bcc headers to the message buffer
       (setq message-default-mail-headers "Cc: \nBcc: \n")
       ;; Directories
-      (setq message-directory "~/mail/gandi"
-            message-auto-save-directory "~/mail/gandi/Drafts"
+      (setq message-directory "~/mail/uberspace"
+            message-auto-save-directory "~/mail/uberspace/Drafts"
             message-kill-buffer-on-exit t)
       ;; Composing
       (eval-after-load "message"
@@ -75,7 +75,7 @@ If NOW, use that time instead."
       (setq send-mail-function 'sendmail-send-it
             message-send-mail-function 'message-send-mail-with-sendmail
             sendmail-program "~/.local/bin/msmtpq"
-            notmuch-fcc-dirs "gandi/Sent")
+            notmuch-fcc-dirs "uberspace/Sent")
       ;; Tags
       (setq notmuch-archive-tags '("-inbox" "-autoinbox"))
       ;; Search
