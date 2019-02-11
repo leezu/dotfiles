@@ -2,9 +2,9 @@
 /usr/bin/afew --tag --new --verbose
 
 # 'notmuch tag' auto-excludes messages tagged with exclude_tags (deleted or spam)
-notmuch tag -inbox -autoinbox +deleted "folder:gandi/Trash"
-notmuch tag -inbox -autoinbox +spam "folder:gandi/Junk"
-notmuch tag -inbox -autoinbox "folder:gandi/Archives AND (tag:inbox OR tag:autoinbox)"
-notmuch tag +sent "folder:gandi/Sent AND (NOT tag:sent)"
+notmuch tag -inbox -autoinbox +deleted "folder:uberspace/Trash"
+notmuch tag -inbox -autoinbox +spam "folder:uberspace/Spam"
+notmuch tag -inbox -autoinbox "folder:uberspace/Archive AND (tag:inbox OR tag:autoinbox)"
+notmuch tag +sent "folder:uberspace/Sent AND (NOT tag:sent)"
 
 /usr/bin/afew --move --verbose

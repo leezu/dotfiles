@@ -20,30 +20,24 @@ tags = +lists/aegee;-new;+autoinbox
 # These filters remove the new tag, so subsequent filters won't be applied
 [HeaderMatchingFilter.2]
 message = Auto-tagging
-pattern = [lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
-header = To
-splitmatch = -
-tags = -new;+{id};+autoinbox
-[HeaderMatchingFilter.3]
-message = Auto-tagging
-pattern = [lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
-header = Received
+pattern = l4usen-[lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
+header = Delivered-To
 splitmatch = -
 tags = -new;+{id};+autoinbox
 
 # Folder based stuff for interoperability with mobile client
 # May need to overwrite some of the previously added autoinbox tags
 [Filter.1]
-message = gandi/Archives
-query = folder:gandi/Archives
+message = uberspace Archive
+query = folder:uberspace/Archive
 tags = -new;-autoinbox;-inbox
 [Filter.2]
-message = gandi/Trash
-query = folder:gandi/Trash
+message = uberspace Trash
+query = folder:'uberspace/Trash'
 tags = +deleted;-new;-autoinbox;-inbox
 [Filter.3]
-message = gandi/Junk
-query = folder:gandi/Junk
+message = uberspace Spam
+query = folder:'uberspace/Spam'
 tags = +spam;-new;-autoinbox;-inbox
 
 [InboxFilter]
@@ -56,6 +50,6 @@ query = tag:killed
 tags = -new
 
 [MailMover]
-folders = gandi/INBOX gandi/AUTOINBOX
-gandi/INBOX = 'tag:spam':gandi/Junk  'tag:deleted':gandi/Trash 'tag:autoinbox':gandi/AUTOINBOX 'NOT tag:inbox':gandi/Archives
-gandi/AUTOINBOX = 'tag:spam':gandi/Junk 'tag:deleted':gandi/Trash 'NOT tag:autoinbox':gandi/Archives
+folders = uberspace/INBOX uberspace/TaggedInbox
+uberspace/INBOX = 'tag:spam':'uberspace/Spam'  'tag:deleted':'uberspace/Trash' 'tag:autoinbox':uberspace/TaggedInbox 'NOT tag:inbox':uberspace/Archive
+uberspace/TaggedInbox = 'tag:spam':'uberspace/Spam' 'tag:deleted':'uberspace/Trash' 'NOT tag:autoinbox':uberspace/Archive

@@ -1,26 +1,26 @@
 [general]
-accounts = gandi
+accounts = uberspace
 pythonfile = ~/.config/offlineimap/keyring_helper.py
 socktimeout = 60
 
-[Account gandi]
-localrepository = local-gandi
-remoterepository = gandi
+[Account uberspace]
+localrepository = local-uberspace
+remoterepository = uberspace
 presynchook = afew --move --verbose
 postsynchook = notmuch new
 
-[Repository local-gandi]
+[Repository local-uberspace]
 type = Maildir
-localfolders = ~/mail/gandi
+localfolders = ~/mail/uberspace
 
-[Repository gandi]
+[Repository uberspace]
 type = IMAP
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
-remotehost = mail.gandi.net
+remotehost = devico.uberspace.de
 remoteport = 993
 remoteuser = leonard@lausen.nl
-remotepasseval = get_pass("offlineimap", "gandi")
+remotepasseval = get_pass("offlineimap", "devico.uberspace.de")
 folderfilter = lambda foldername: True
 maxconnections = 1
 
