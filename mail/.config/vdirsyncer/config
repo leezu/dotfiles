@@ -9,15 +9,9 @@ status_path = "~/.vdirsyncer/status/"
 # blocks. This is similar to accounts in OfflineIMAP.
 a = "personal_contacts_local"
 b = "personal_contacts_remote"
-
-# Synchronize all collections that can be found.
-# You need to run `vdirsyncer discover` if new calendars/addressbooks are added
-# on the server.
-
-collections = ["from a", "from b"]
-
-# Synchronize the "display name" property into a local file (~/.contacts/displayname).
+collections = ["personal"]
 metadata = ["displayname"]
+conflict_resolution = "a wins"
 
 # To resolve a conflict the following values are possible:
 #   `null` - abort when collisions occur (default)
@@ -34,7 +28,7 @@ fileext = ".vcf"
 
 [storage personal_contacts_remote]
 type = "carddav"
-url = "https://webmail.gandi.net/SOGo/dav/leonard@lausen.nl/Contacts/personal/"
+url = "https://owncloud.lausen.nl/remote.php/dav/addressbooks/users/leonard/"
 username.fetch = ["command", "pass", "vdirsyncer-username"]
 password.fetch = ["command", "pass", "vdirsyncer-password"]
 
@@ -42,10 +36,16 @@ password.fetch = ["command", "pass", "vdirsyncer-password"]
 [pair personal_calendar]
 a = "personal_calendar_local"
 b = "personal_calendar_remote"
-collections = ["from a", "from b"]
-
+collections = ["personal"]
 # Calendars also have a color property
 metadata = ["displayname", "color"]
+conflict_resolution = "a wins"
+
+# To resolve a conflict the following values are possible:
+#   `null` - abort when collisions occur (default)
+#   `"a wins"` - assume a's items to be more up-to-date
+#   `"b wins"` - assume b's items to be more up-to-date
+#conflict_resolution = null
 
 [storage personal_calendar_local]
 type = "filesystem"
@@ -54,6 +54,6 @@ fileext = ".ics"
 
 [storage personal_calendar_remote]
 type = "caldav"
-url = "https://webmail.gandi.net/SOGo/dav/leonard@lausen.nl/Calendar/personal/"
+url = "https://owncloud.lausen.nl/remote.php/dav/calendars/leonard/"
 username.fetch = ["command", "pass", "vdirsyncer-username"]
 password.fetch = ["command", "pass", "vdirsyncer-password"]
