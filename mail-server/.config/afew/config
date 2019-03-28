@@ -50,6 +50,9 @@ query = tag:killed
 tags = -new
 
 [MailMover]
-folders = uberspace/INBOX uberspace/TaggedInbox
-uberspace/INBOX = 'tag:spam':'uberspace/Spam'  'tag:deleted':'uberspace/Trash' 'tag:autoinbox':uberspace/TaggedInbox 'NOT tag:inbox':uberspace/Archive
-uberspace/TaggedInbox = 'tag:spam':'uberspace/Spam' 'tag:deleted':'uberspace/Trash' 'NOT tag:autoinbox':uberspace/Archive
+# Multiple matching rules for one source folder results in copying mails to multiple target folders
+folders = uberspace/INBOX uberspace/TaggedInbox uberspace/Spam uberspace/Trash
+uberspace/INBOX = 'tag:spam AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted':uberspace/Spam 'tag:deleted AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:spam':uberspace/Trash 'tag:autoinbox AND NOT tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/TaggedInbox 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
+uberspace/TaggedInbox = 'tag:spam AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted':uberspace/Spam 'tag:deleted AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:spam':uberspace/Trash 'tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
+uberspace/Spam = 'tag:deleted AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:spam':uberspace/Trash 'tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'tag:autoinbox AND NOT tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/TaggedInbox 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
+uberspace/Trash = 'tag:spam AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted':uberspace/Spam 'tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'tag:autoinbox AND NOT tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/TaggedInbox 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
