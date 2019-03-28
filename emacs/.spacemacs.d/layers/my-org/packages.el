@@ -254,7 +254,13 @@ cite:%k
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
   (setq alert-default-style 'libnotify)
-  )
+  ;; TODO only "play" if music was "paused" in the same session
+  (add-hook 'org-pomodoro-started-hook
+            (apply-partially #'my/toggle-music "play"))
+  (add-hook 'org-pomodoro-break-finished-hook
+            (apply-partially #'my/toggle-music "play"))
+  (add-hook 'org-pomodoro-finished-hook
+            (apply-partially #'my/toggle-music "pause")))
 
 ;;; Owned packages
 

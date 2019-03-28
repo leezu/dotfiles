@@ -193,3 +193,7 @@ and updating the TIMEZONE file property manually."
       (-partition 2 pairs)
     (-lambda ((key def))
       (define-key keymap key def))))
+;;; * Pomodoro
+(defun my/toggle-music (action)
+  (let ((command (concat "playerctl --player=spotify " action)))
+    (shell-command command)))
