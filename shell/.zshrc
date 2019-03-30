@@ -10,6 +10,14 @@ if [ -d "$HOME/.local/share/mail.queue" ]; then
     fi
 fi
 
+# Warn for syncthing conflicts in ~/org
+if [ -d "$HOME/org" ]; then
+    conflictcount=$(find $HOME/org -name "*.sync-conflict-*" | wc -l)
+    if [ $conflictcount -gt 0 ] ; then
+        echo -e "\e[31m$conflictcount *.sync-conflict-* files in ~/org"
+    fi
+fi
+
 # Set theme
 PROMPT_LEAN_TMUX=""  # Disable tmux prompt
 fpath=( "$HOME/.zfunctions" $fpath )
