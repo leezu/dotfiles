@@ -45,6 +45,11 @@
         org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 ;;;;; Capture
+  (defun zd-new-file ()
+    (setq zd-last-id (format-time-string "%Y-%m-%dT%H%M")
+          zd-last-name (read-string "Zettel name: "))
+    (concat "/home/leonard/org/zettels/" zd-last-id
+            " " zd-last-name ".org"))
   (setq org-capture-templates
         ;; note the backquote ` instead of normal quote '
         `(("P" "New project" entry (file+olp "~/org/organizer.org" "Projects")
@@ -60,6 +65,15 @@
            "* WAITING %?\nOPENED: %U\n%a\n\n%i")
           ("s" "Someday" entry (file+olp "~/org/organizer.org" "Someday")
            "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
+
+          ;; zettelkasten
+          ("z" "Zettel"
+           plain
+           (file zd-new-file)
+           (concat "#+TITLE: %(concat zd-last-name)\n"
+                   "#+ID: %(concat zd-last-id)\n\n"
+                   "* %?\n%i\n\n"
+                   "* References"))
 
           ;; notes
           ("n" "Note (organizer.org)" entry (file+olp+datetree "~/org/organizer.org")
