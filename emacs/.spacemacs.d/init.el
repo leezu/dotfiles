@@ -65,6 +65,8 @@ This function should only modify configuration layer settings."
      (clip2org :variables
                clip2org-clippings-file "~/Dropbox/Books/My Clippings.txt")
      my-org
+     (deft :variables
+       deft-directory "~/org/deft")
 
      ;; Communication
      (my-mail :variables
