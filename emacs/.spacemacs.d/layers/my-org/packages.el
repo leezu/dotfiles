@@ -44,12 +44,26 @@
         org-preview-latex-default-process 'dvisvgm
         org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
+;;;;; org-id
+  ;; This makes sure that each captured entry gets a unique ID
+  (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+  (setq org-id-link-to-org-use-id 'create-if-interactive)
+  (defun my/zettel-id-targets ()
+    (directory-files-recursively "/home/leonard/org/zettels"
+                                 ".*org"))
+  (defun my/org-id-complete-link (&optional arg)
+    "Create an id: link using completion"
+    (concat "id:"
+            (org-id-get-with-outline-path-completion
+             '((my/zettel-id-targets . (:maxlevel . 1))))))
+  (org-link-set-parameters "id"
+                           :complete 'my/org-id-complete-link)
+
 ;;;;; Capture
-  (defun zd-new-file ()
-    (setq zd-last-id (format-time-string "%Y-%m-%dT%H%M")
-          zd-last-name (read-string "Zettel name: "))
-    (concat "/home/leonard/org/zettels/" zd-last-id
-            " " zd-last-name ".org"))
+  (defun new-zettel-file ()
+    (concat "/home/leonard/org/zettels/"
+            (format-time-string "%Y%m%d%H%M%S")
+            ".org"))
   (setq org-capture-templates
         ;; note the backquote ` instead of normal quote '
         `(("P" "New project" entry (file+olp "~/org/organizer.org" "Projects")
@@ -68,12 +82,9 @@
 
           ;; zettelkasten
           ("z" "Zettel"
-           plain
-           (file zd-new-file)
-           (concat "#+TITLE: %(concat zd-last-name)\n"
-                   "#+ID: %(concat zd-last-id)\n\n"
-                   "* %?\n%i\n\n"
-                   "* References"))
+           entry
+           (file new-zettel-file)
+           "* %?\nOPENED: %U\n\n%i\n")
 
           ;; notes
           ("n" "Note (organizer.org)" entry (file+olp+datetree "~/org/organizer.org")
