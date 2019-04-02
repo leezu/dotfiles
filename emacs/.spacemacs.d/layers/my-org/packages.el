@@ -49,8 +49,9 @@
   (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive)
   (defun my/zettel-id-targets ()
-    (directory-files-recursively "/home/leonard/org/zettels"
-                                 ".*org"))
+    (sort (directory-files "/home/leonard/org/zettels"
+                           t ".*org" t)
+          'string>))
   (defun my/org-id-complete-link (&optional arg)
     "Create an id: link using completion"
     (concat "id:"
