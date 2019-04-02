@@ -59,6 +59,18 @@
   (org-link-set-parameters "id"
                            :complete 'my/org-id-complete-link)
 
+;;;;; Zettelkasten
+  (defun my/helm-zettelkasten ()
+    (interactive)
+    (let ((helm-org-headings-max-depth 1))
+      (helm :sources (helm-source-org-headings-for-files (my/zettel-id-targets))
+            :candidate-number-limit 99999
+            :truncate-lines helm-org-truncate-lines
+            :maxlevel 1
+            :buffer "*helm zettelkasten*")))
+  (spacemacs/set-leader-keys
+    "oz" 'my/helm-zettelkasten)
+
 ;;;;; Capture
   (defun new-zettel-file ()
     (concat "/home/leonard/org/zettels/"
