@@ -279,7 +279,7 @@ cite:%k
         "Open the notes associated with the selected entry or create new via org-capture."
         (dolist (key keys)
           (let* ((entry (bibtex-completion-get-entry key))
-                 (id (bibtex-completion-get-value "id" entry nil))
+                 (id (bibtex-completion-get-value "IDS" entry nil))
                  (year (or (bibtex-completion-get-value "year" entry)
                            (car (split-string (bibtex-completion-get-value "date" entry
                                                                            "")
@@ -311,7 +311,7 @@ cite:%k
                         ;; associate id with bibtex entry
                         (with-current-buffer (with-temp-buffer
                                                (bibtex-completion-show-entry (list key))
-                                               (bibtex-make-field '("id" "org-id"
+                                               (bibtex-make-field '("IDS" "org-id"
                                                                     (lambda ()
                                                                       id))
                                                                   t)
@@ -358,7 +358,7 @@ cite:%k
                           entry))
                  (entry-key (cdr (assoc "=key=" entry)))
                                         ; Check for notes:
-                 (id (bibtex-completion-get-value "id" entry nil))
+                 (id (bibtex-completion-get-value "IDS" entry nil))
                  (entry (if (and id
                                  (hash-table-p org-id-locations)
                                  (gethash id org-id-locations))
