@@ -46,8 +46,10 @@
 
 ;;;;; org-id
   ;; This makes sure that each captured entry gets a unique ID
+  (require 'org-id)
   (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
-  (setq org-id-link-to-org-use-id 'create-if-interactive)
+  (setq org-id-link-to-org-use-id 'create-if-interactive
+        org-id-extra-files '("~/Papers/notes.org"))
   (defun my/zettel-id-targets ()
     (sort (directory-files "/home/leonard/org/zettels"
                            t ".*org" t)
@@ -242,7 +244,7 @@ cite:%k
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/Papers/references.bib")
         bibtex-completion-library-path '("~/Papers/")
-        bibtex-completion-notes-path "~/Papers/notes.org"
+        bibtex-completion-notes-path "~/org/zettels"
         bibtex-completion-cite-default-command "autocite"
         bibtex-completion-cite-prompt-for-optional-arguments nil)
 
@@ -253,43 +255,95 @@ cite:%k
          "* ${title} (${year})\n"
          ":PROPERTIES:\n"
          ":Custom_ID: ${=key=}\n"
-         ":INTERLEAVE_PDF: ./${=key=}.pdf\n"
+         ":END:\n"
+         "cite:${=key=}\n"
+         "%?")  ;; %? for org-capture
+        bibtex-completion-notes-template-multiple-files
+        (concat
+         "* ${title} (${year})\n"
+         ":PROPERTIES:\n"
+         ":Custom_ID: ${=key=}\n"
+         ":ID: ${ids}\n" ;; TODO breaks if bibtex entry has multiple aliases besides UUID
          ":END:\n"
          "cite:${=key=}\n"
          "%?")  ;; %? for org-capture
         )
 
   ;; Overwrite bibtex-completion-edit-notes to use org-capture
-  (eval-after-load "helm-bibtex"
-    '(defun bibtex-completion-edit-notes (keys)
-       "Open the notes associated with the selected entry or create new via org-capture."
-       (require 'org-capture)
-       (dolist (key keys)
-         (let* ((entry (bibtex-completion-get-entry key))
-                (year (or (bibtex-completion-get-value "year" entry)
-                          (car (split-string (bibtex-completion-get-value "date" entry "") "-"))))
-                (entry (push (cons "year" year) entry))
-                (buffer (generate-new-buffer-name "bibtex-notes")))
-           (with-current-buffer (make-indirect-buffer  ;; TODO: buffer is never deleted
-                                 (find-file-noselect bibtex-completion-notes-path)
-                                 buffer t)  ;; clone t
-             (widen)
-             (outline-show-all)
-             (goto-char (point-min))
-             (if (re-search-forward (format bibtex-completion-notes-key-pattern (regexp-quote key)) nil t)
+  (with-eval-after-load "helm-bibtex"
+    (progn
+      (require 'org-capture)
+      (require 'org-id)
+      (defun bibtex-completion-edit-notes (keys)
+        "Open the notes associated with the selected entry or create new via org-capture."
+        (dolist (key keys)
+          (let* ((entry (bibtex-completion-get-entry key))
+                 (id (bibtex-completion-get-value "id" entry nil))
+                 (year (or (bibtex-completion-get-value "year" entry)
+                           (car (split-string (bibtex-completion-get-value "date" entry
+                                                                           "")
+                                              "-"))))
+                 (entry (push (cons "year" year)
+                              entry))
+                 (buffer (generate-new-buffer-name "bibtex-notes")))
+            (if (and bibtex-completion-notes-path
+                     (f-directory? bibtex-completion-notes-path))
+                (let* ((current-new-zettel-file (new-zettel-file))
+                       (org-capture-templates '(("bibtex" "helm-bibtex"
+                                                 entry
+                                                 ;; Zettelkasten format
+                                                 (file current-new-zettel-file)
+                                                 "%(s-format bibtex-completion-notes-template-multiple-files 'bibtex-completion-apa-get-value entry)"))))
+                                        ; One notes file per publication based on org-id:
+                  (if (and id
+                           (hash-table-p org-id-locations)
+                           (gethash id org-id-locations))
+                                        ; id is not nil and exists
+                      (org-id-goto id)
+                    (if id
+                                        ; id is not nil, but no entry exists
+                        (progn
+                          (org-capture nil "bibtex")
+                          (org-id-add-location id current-new-zettel-file))
+                                        ; id is nil
+                      (let ((id (org-id-new)))
+                        ;; associate id with bibtex entry
+                        (with-current-buffer (with-temp-buffer
+                                               (bibtex-completion-show-entry (list key))
+                                               (bibtex-make-field '("id" "org-id"
+                                                                    (lambda ()
+                                                                      id))
+                                                                  t)
+                                               ;; TODO saving the buffer forces a
+                                               ;; costly reload of the .bib file
+                                               ;; by helm-bibtex
+                                               (save-buffer)))
+                        (let ((entry (bibtex-completion-get-entry key)))
+                          ;; reload entry due to id addition
+                          (org-capture nil "bibtex")
+                          (org-id-add-location id current-new-zettel-file))))))
+                                        ; One file for all notes:
+              (with-current-buffer (make-indirect-buffer ;; TODO: buffer is never deleted (find-file-noselect bibtex-completion-notes-path)
+                                    buffer t) ;; clone t
+                (widen)
+                (outline-show-all)
+                (goto-char (point-min))
+                (if (re-search-forward (format bibtex-completion-notes-key-pattern
+                                               (regexp-quote key))
+                                       nil
+                                       t)
                                         ; Existing entry found:
-                 (when (eq major-mode 'org-mode)
-                   (org-narrow-to-subtree)
-                   (goto-char (point-min))
-                   (outline-show-all)
-                   (switch-to-buffer-other-window buffer))
+                    (when (eq major-mode 'org-mode)
+                      (org-narrow-to-subtree)
+                      (goto-char (point-min))
+                      (outline-show-all)
+                      (switch-to-buffer-other-window buffer))
                                         ; Create a new entry:
-               (let ((org-capture-templates
-                      '(("bibtex" "helm-bibtex"
-                         entry
-                         (file+olp+datetree bibtex-completion-notes-path)
-                         "%(s-format bibtex-completion-notes-template-one-file 'bibtex-completion-apa-get-value entry)"))))
-                 (org-capture nil "bibtex")))))))))
+                  (let ((org-capture-templates '(("bibtex" "helm-bibtex"
+                                                  entry
+                                                  (file+olp+datetree bibtex-completion-notes-path)
+                                                  "%(s-format bibtex-completion-notes-template-one-file 'bibtex-completion-apa-get-value entry)"))))
+                    (org-capture nil "bibtex")))))))))))
 
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
