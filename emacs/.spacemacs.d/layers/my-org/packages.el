@@ -274,6 +274,7 @@ cite:%k
     (progn
       (require 'org-capture)
       (require 'org-id)
+      (org-id-locations-load) ; TODO necessary to avoid org-id-locations being nil
       (defun bibtex-completion-edit-notes (keys)
         "Open the notes associated with the selected entry or create new via org-capture."
         (dolist (key keys)
@@ -343,7 +344,38 @@ cite:%k
                                                   entry
                                                   (file+olp+datetree bibtex-completion-notes-path)
                                                   "%(s-format bibtex-completion-notes-template-one-file 'bibtex-completion-apa-get-value entry)"))))
-                    (org-capture nil "bibtex")))))))))))
+                    (org-capture nil "bibtex"))))))))
+      ;; Overwrite bibtex-completion-prepare-entry to handle org-id
+      (defun bibtex-completion-prepare-entry (entry &optional fields do-not-find-pdf)
+        (when entry ; entry may be nil, in which case just return nil
+          (let* ((fields (when fields
+                           (append fields
+                                   (list "=type=" "=key=" "=has-pdf=" "=has-note="))))
+                                        ; Check for PDF:
+                 (entry (if (and (not do-not-find-pdf)
+                                 (bibtex-completion-find-pdf entry))
+                            (cons (cons "=has-pdf=" bibtex-completion-pdf-symbol) entry)
+                          entry))
+                 (entry-key (cdr (assoc "=key=" entry)))
+                                        ; Check for notes:
+                 (id (bibtex-completion-get-value "id" entry nil))
+                 (entry (if (and id
+                                 (hash-table-p org-id-locations)
+                                 (gethash id org-id-locations))
+                            (cons (cons "=has-note=" bibtex-completion-notes-symbol) entry)
+                          entry))
+                                        ; Remove unwanted fields:
+                 (entry (if fields
+                            (--filter (member-ignore-case (car it)
+                                                          fields)
+                                      entry)
+                          entry)))
+            ;; Normalize case of entry type:
+            (setcdr (assoc "=type=" entry)
+                    (downcase (cdr (assoc "=type=" entry))))
+            ;; Remove duplicated fields:
+            (bibtex-completion-remove-duplicated-fields
+             entry)))))))
 
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
