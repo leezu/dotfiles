@@ -221,8 +221,6 @@
         org-ref-pdf-directory "~/Papers/"
         org-ref-bibliography-notes "~/Papers/notes.org")
 
-  (spacemacs/set-leader-keys "ob" 'helm-bibtex-with-local-bibliography)
-
   ;; Template for paper notes
   (setq org-ref-note-title-format
         "** %y - %t
@@ -244,7 +242,11 @@ cite:%k
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/Papers/references.bib")
         bibtex-completion-library-path '("~/Papers/")
-        bibtex-completion-notes-path "~/Papers/notes.org")
+        bibtex-completion-notes-path "~/Papers/notes.org"
+        bibtex-completion-cite-default-command "autocite"
+        bibtex-completion-cite-prompt-for-optional-arguments nil)
+
+  (spacemacs/set-leader-keys "ob" 'helm-bibtex-with-local-bibliography)
 
   (setq bibtex-completion-notes-template-one-file
         (concat
