@@ -315,9 +315,6 @@ cite:%k
                                                                     (lambda ()
                                                                       id))
                                                                   t)
-                                               ;; TODO saving the buffer forces a
-                                               ;; costly reload of the .bib file
-                                               ;; by helm-bibtex
                                                (save-buffer)))
                         (let ((entry (bibtex-completion-get-entry key)))
                           ;; reload entry due to id addition
@@ -375,7 +372,44 @@ cite:%k
                     (downcase (cdr (assoc "=type=" entry))))
             ;; Remove duplicated fields:
             (bibtex-completion-remove-duplicated-fields
-             entry)))))))
+             entry))))
+      ;; Disable file-watcher in bibtex-completion-init
+      (defun bibtex-completion-init ()
+  "Checks that the files and directories specified by the user
+actually exist. Also sets `bibtex-completion-display-formats-internal'."
+
+  ;; Remove current watch-descriptors for bibliography files:
+  (mapc (lambda (watch-descriptor)
+          (file-notify-rm-watch watch-descriptor))
+        bibtex-completion-file-watch-descriptors)
+  (setq bibtex-completion-file-watch-descriptors nil)
+
+  ;; Check that all specified bibliography files exist and add file
+  ;; watches for automatic reloading of the bibliography when a file
+  ;; is changed:
+  (mapc (lambda (file)
+          (unless (f-file? file)
+            (user-error "Bibliography file %s could not be found." file)))
+            (bibtex-completion-normalize-bibliography))
+
+  ;; Pre-calculate minimal widths needed by the format strings for
+  ;; various entry types:
+  (setq bibtex-completion-display-formats-internal
+        (mapcar (lambda (format)
+                  (let* ((format-string (cdr format))
+                         (fields-width 0)
+                         (string-width
+                          (length
+                           (s-format format-string
+                                     (lambda (field)
+                                       (setq fields-width
+                                             (+ fields-width
+                                                (string-to-number
+                                                 (or (cadr (split-string field ":"))
+                                                     ""))))
+                                       "")))))
+                    (-cons* (car format) format-string (+ fields-width string-width))))
+                bibtex-completion-display-formats))))))
 
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
