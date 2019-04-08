@@ -74,9 +74,9 @@ Move the cursor to that entry in that buffer."
   (setq org-id-link-to-org-use-id 'create-if-interactive
         org-id-extra-files
         '("~/Papers/notes.org"))
-  (defun my/zettel-id-targets ()
+  (defun my/zettel-id-targets (&optional overview)
     (sort (directory-files "/home/leonard/org/zettels"
-                           t ".*org" t)
+                           t (if overview "O.*org" ".*org") t)
           'string>))
   (defun my/org-id-complete-link (&optional arg)
     "Create an id: link using completion"
@@ -84,10 +84,13 @@ Move the cursor to that entry in that buffer."
             (org-id-get-with-outline-path-completion '((my/zettel-id-targets . (:maxlevel . 1))))))
   (org-link-set-parameters "id" :complete 'my/org-id-complete-link)
 ;;;;; Zettelkasten
-  (defun my/helm-zettelkasten ()
-    (interactive)
+  (defun my/helm-zettelkasten (all)
+    "With universal prefix arg, search all zettel. Otherwise only
+overview zettel."
+    (interactive "P")
+    (require 'helm-org)
     (let ((helm-org-headings-max-depth 1))
-      (helm :sources (helm-source-org-headings-for-files (my/zettel-id-targets))
+      (helm :sources (helm-source-org-headings-for-files (my/zettel-id-targets (not all)))
             :candidate-number-limit 99999
             :truncate-lines helm-org-truncate-lines
             :maxlevel 1
@@ -96,8 +99,9 @@ Move the cursor to that entry in that buffer."
     "oz" 'my/helm-zettelkasten)
 
 ;;;;; Capture
-  (defun new-zettel-file ()
+  (defun new-zettel-file (&optional overview)
     (concat "/home/leonard/org/zettels/"
+            (if overview "O-")
             (format-time-string "%Y%m%d%H%M%S")
             ".org"))
   (setq org-capture-templates
@@ -120,6 +124,10 @@ Move the cursor to that entry in that buffer."
           ("z" "Zettel"
            entry
            (file new-zettel-file)
+           "* %?\nOPENED: %U\n\n%i\n")
+          ("o" "Overview Zettel"
+           entry
+           (file (lambda () (new-zettel-file t)))
            "* %?\nOPENED: %U\n\n%i\n")
 
           ;; notes
