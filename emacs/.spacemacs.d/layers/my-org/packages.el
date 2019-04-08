@@ -41,6 +41,8 @@
         org-catch-invisible "error"  ;; Cancel invisible edits
         org-enforce-todo-dependencies t
         org-agenda-window-setup 'current-window
+        org-agenda-inhibit-startup t
+        org-agenda-use-tag-inheritance nil
         org-preview-latex-default-process 'dvisvgm
         org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
