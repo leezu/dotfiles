@@ -26,6 +26,7 @@
     ebib
     outshine
     helm-navi
+    org-id
     interleave
     org-alert
     org-super-agenda
@@ -47,11 +48,32 @@
         org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 ;;;;; org-id
-  ;; This makes sure that each captured entry gets a unique ID
   (require 'org-id)
-  (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
+  (defun org-id-goto-narrow-indirect-buffer (id)
+    "Switch to the buffer containing the entry with id ID.
+Move the cursor to that entry in that buffer."
+    (let ((m (org-id-find id 'marker)))
+      (unless m
+        (error "Cannot find entry with ID \"%s\""
+               id))
+      ;; TODO: buffer is never deleted
+      (with-current-buffer (marker-buffer m)
+        (widen)
+        (outline-show-all)
+        (goto-char m)
+        (move-marker m nil)
+        (let* ((heading (org-get-heading 'no-tags))
+               (ibuf (org-get-indirect-buffer (current-buffer) heading)))
+          (switch-to-buffer-other-window ibuf)
+          (goto-char (org-find-entry-with-id id))  ;; This shouldn't be
+                                                   ;; necessary but is..
+          (org-narrow-to-subtree)))))
+  ;; This makes sure that each captured entry gets a unique ID
+  (add-hook 'org-capture-prepare-finalize-hook
+            'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive
-        org-id-extra-files '("~/Papers/notes.org"))
+        org-id-extra-files
+        '("~/Papers/notes.org"))
   (defun my/zettel-id-targets ()
     (sort (directory-files "/home/leonard/org/zettels"
                            t ".*org" t)
@@ -59,11 +81,8 @@
   (defun my/org-id-complete-link (&optional arg)
     "Create an id: link using completion"
     (concat "id:"
-            (org-id-get-with-outline-path-completion
-             '((my/zettel-id-targets . (:maxlevel . 1))))))
-  (org-link-set-parameters "id"
-                           :complete 'my/org-id-complete-link)
-
+            (org-id-get-with-outline-path-completion '((my/zettel-id-targets . (:maxlevel . 1))))))
+  (org-link-set-parameters "id" :complete 'my/org-id-complete-link)
 ;;;;; Zettelkasten
   (defun my/helm-zettelkasten ()
     (interactive)
@@ -302,14 +321,15 @@ cite:%k
                            (hash-table-p org-id-locations)
                            (gethash id org-id-locations))
                                         ; id is not nil and exists
-                      (org-id-goto id)
+                      (with-helm-current-buffer (org-id-goto-narrow-indirect-buffer id))
                     (if id
                                         ; id is not nil, but no entry exists
                         (progn
                           (org-capture nil "bibtex")
                           (org-id-add-location id current-new-zettel-file))
                                         ; id is nil
-                      (let ((id (org-id-new)))
+                      (let ((id (org-id-new))
+                            (cbuf (current-buffer)))
                         ;; associate id with bibtex entry
                         (save-excursion
                           (with-temp-buffer
@@ -319,6 +339,7 @@ cite:%k
                                                    id))
                                                t)
                             (save-buffer)))
+                        (switch-to-buffer cbuf)
                         (let ((entry (bibtex-completion-get-entry key)))
                           ;; reload entry due to id addition
                           (org-capture nil "bibtex")
@@ -431,7 +452,6 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
 (defun my-org/init-interleave ()
   (use-package interleave)
   )
-
 
 ;;;; org-super-agenda
 (defun my-org/init-org-super-agenda ()
