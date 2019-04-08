@@ -259,16 +259,15 @@ cite:%k
          ":Custom_ID: ${=key=}\n"
          ":END:\n"
          "cite:${=key=}\n"
-         "%?")  ;; %? for org-capture
+         "%?")
         bibtex-completion-notes-template-multiple-files
         (concat
-         "* ${title} (${year})\n"
+         "* %?${title} (${year})\n"
          ":PROPERTIES:\n"
          ":Custom_ID: ${=key=}\n"
          ":ID: ${ids}\n" ;; TODO breaks if bibtex entry has multiple aliases besides UUID
          ":END:\n"
-         "cite:${=key=}\n"
-         "%?")  ;; %? for org-capture
+         "cite:${=key=}\n")
         )
 
   ;; Overwrite bibtex-completion-edit-notes to use org-capture
@@ -296,7 +295,8 @@ cite:%k
                                                  entry
                                                  ;; Zettelkasten format
                                                  (file current-new-zettel-file)
-                                                 "%(s-format bibtex-completion-notes-template-multiple-files 'bibtex-completion-apa-get-value entry)"))))
+                                                 "%(s-format bibtex-completion-notes-template-multiple-files 'bibtex-completion-apa-get-value entry)"
+                                                 :unnarrowed t))))
                                         ; One notes file per publication based on org-id:
                   (if (and id
                            (hash-table-p org-id-locations)
@@ -311,13 +311,14 @@ cite:%k
                                         ; id is nil
                       (let ((id (org-id-new)))
                         ;; associate id with bibtex entry
-                        (with-current-buffer (with-temp-buffer
-                                               (bibtex-completion-show-entry (list key))
-                                               (bibtex-make-field '("IDS" "org-id"
-                                                                    (lambda ()
-                                                                      id))
-                                                                  t)
-                                               (save-buffer)))
+                        (save-excursion
+                          (with-temp-buffer
+                            (bibtex-completion-show-entry (list key))
+                            (bibtex-make-field '("IDS" "org-id"
+                                                 (lambda ()
+                                                   id))
+                                               t)
+                            (save-buffer)))
                         (let ((entry (bibtex-completion-get-entry key)))
                           ;; reload entry due to id addition
                           (org-capture nil "bibtex")
