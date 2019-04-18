@@ -84,19 +84,20 @@ Move the cursor to that entry in that buffer."
             (org-id-get-with-outline-path-completion '((my/zettel-id-targets . (:maxlevel . 1))))))
   (org-link-set-parameters "id" :complete 'my/org-id-complete-link)
 ;;;;; Zettelkasten
-  (defun my/helm-zettelkasten (all)
-    "With universal prefix arg, search all zettel. Otherwise only
-overview zettel."
-    (interactive "P")
-    (require 'helm-org)
-    (let ((helm-org-headings-max-depth 1))
-      (helm :sources (helm-source-org-headings-for-files (my/zettel-id-targets (not all)))
-            :candidate-number-limit 99999
-            :truncate-lines helm-org-truncate-lines
-            :maxlevel 1
-            :buffer "*helm zettelkasten*")))
+  (require 'helm-ag)
+  (defun my/helm-zettelkasten-ag ()
+    (interactive)
+    (helm-ag--init-state)
+    (let ((helm-ag--last-query "^\\* ")
+          (helm-ag--default-directory "/home/leonard/org/zettels")
+          (helm-ag--default-target "/home/leonard/org/zettels")
+          )
+      (helm-attrset 'search-this-file nil helm-ag-source)
+      (helm-attrset 'name (helm-ag--helm-header helm-ag--default-directory) helm-ag-source)
+      (helm :sources '(helm-ag-source) :buffer "*helm-ag*" :keymap helm-ag-map
+            :history 'helm-ag--helm-history)))
   (spacemacs/set-leader-keys
-    "oz" 'my/helm-zettelkasten)
+    "oz" 'my/helm-zettelkasten-ag)
 
 ;;;;; Capture
   (defun new-zettel-file (&optional overview)
