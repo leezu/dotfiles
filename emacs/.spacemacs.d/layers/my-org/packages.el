@@ -347,7 +347,8 @@ cite:%k
                                                  (lambda ()
                                                    id))
                                                t)
-                            (save-buffer)))
+                            (save-buffer)
+                            (bury-buffer)))
                         (switch-to-buffer cbuf)
                         (let ((entry (bibtex-completion-get-entry key)))
                           ;; reload entry due to id addition
