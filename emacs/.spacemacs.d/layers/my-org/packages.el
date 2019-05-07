@@ -214,9 +214,7 @@ Move the cursor to that entry in that buffer."
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t
         org-agenda-sticky t
 
-        org-agenda-files `("~/org/organizer.org"
-                           "~/org/areas/"
-                           "~/org/areas/places/"
+        org-agenda-files `("~/org/"
                            ,(concat "~/org/journal/" (format-time-string "%Y") "/"))
 
         org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "|" "DONE(d!)" "CANCELLED(C@)")
