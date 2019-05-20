@@ -98,13 +98,6 @@
            (when (member "clocknote" tags)
              (org-add-note))))))
 
-;; via https://github.com/ekaschalk/.spacemacs.d/blob/58e266097efda77366fbd7ccafa0313ff5c491b4/layers/macros/local/macros/macros.el
-(defun define-keys (keymap &rest pairs)
-  "Define alternating key-def PAIRS for KEYMAP."
-  (-each
-      (-partition 2 pairs)
-    (-lambda ((key def))
-      (define-key keymap key def))))
 ;;; * Pomodoro
 (defun my/toggle-music (action)
   (let ((command (concat "playerctl --player=spotify " action)))

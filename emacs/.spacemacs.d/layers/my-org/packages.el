@@ -487,6 +487,14 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
     (unless (outline-on-heading-p t)
       (outline-previous-visible-heading 1)))
 
+  ;; via https://github.com/ekaschalk/.spacemacs.d/blob/58e266097efda77366fbd7ccafa0313ff5c491b4/layers/macros/local/macros/macros.el
+  (defun define-keys (keymap &rest pairs)
+    "Define alternating key-def PAIRS for KEYMAP."
+    (-each
+        (-partition 2 pairs)
+      (-lambda ((key def))
+        (define-key keymap key def))))
+
   (use-package outshine
     :init
     (progn
