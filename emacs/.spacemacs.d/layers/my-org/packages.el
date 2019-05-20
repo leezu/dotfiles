@@ -444,7 +444,7 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
 
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
-  (setq alert-default-style 'libnotify)
+  (setq alert-default-style 'mode-line)
   ;; TODO only "play" if music was "paused" in the same session
   (add-hook 'org-pomodoro-started-hook
             (apply-partially #'my/toggle-music "play"))
