@@ -75,8 +75,6 @@ This function should only modify configuration layer settings."
               notmuch-kill-tags '("+killed" "-inbox" "-autoinbox"))
      slack
 
-     ;; News
-     elfeed
 
      ;; Finance
      finance
