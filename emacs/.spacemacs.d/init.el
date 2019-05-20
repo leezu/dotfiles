@@ -816,9 +816,6 @@ before packages are loaded."
 
   ;; Auto-start with Org Agenda
   (org-agenda-list)
-
-  ;; Secrets
-  (load-file "~/.spacemacs.secret.el")
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
