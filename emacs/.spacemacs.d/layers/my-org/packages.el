@@ -26,7 +26,6 @@
     ebib
     outshine
     helm-navi
-    org-id
     interleave
     org-alert
     org-super-agenda
@@ -59,15 +58,17 @@ Move the cursor to that entry in that buffer."
       ;; TODO: buffer is never deleted
       (with-current-buffer (marker-buffer m)
         (widen)
-        (outline-show-all)
+        (org-show-all)
         (goto-char m)
         (move-marker m nil)
         (let* ((heading (org-get-heading 'no-tags))
                (ibuf (org-get-indirect-buffer (current-buffer) heading)))
           (switch-to-buffer-other-window ibuf)
-          (goto-char (org-find-entry-with-id id))  ;; This shouldn't be
-                                                   ;; necessary but is..
-          (org-narrow-to-subtree)))))
+          (with-current-buffer ibuf
+            (goto-char (org-find-entry-with-id id))  ;; This shouldn't be
+            (org-back-to-heading)                    ;; necessary but is..
+            (org-narrow-to-subtree)
+            (org-show-all)))))) ;; TODO org-show-all has no visible effect
   ;; This makes sure that each captured entry gets a unique ID
   (add-hook 'org-capture-prepare-finalize-hook
             'org-id-get-create)
