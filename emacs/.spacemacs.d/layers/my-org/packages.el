@@ -25,7 +25,6 @@
     evil-collection
     ebib
     outshine
-    helm-navi
     interleave
     org-alert
     org-super-agenda
@@ -508,14 +507,6 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
     (progn
       (add-hook 'LaTeX-mode-hook 'outshine-mode)
       (add-hook 'prog-mode-hook 'outshine-mode))))
-
-;;;; helm-navi
-(defun my-org/init-helm-navi ()
-  (use-package helm-navi
-    :init
-    (progn
-      (spacemacs/set-leader-keys
-        "sj" 'helm-navi))))
 
 ;;;; evil-collection
 (defun my-org/init-evil-collection ()
