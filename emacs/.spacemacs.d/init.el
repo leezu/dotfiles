@@ -94,6 +94,9 @@ This function should only modify configuration layer settings."
      markdown
      pandoc
      syntax-checking
+     (ess :variables
+          ess-disable-underscore-assign t)
+
      (python :variables
              python-enable-yapf-format-on-save nil)
      java
