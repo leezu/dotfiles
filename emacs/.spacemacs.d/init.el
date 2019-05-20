@@ -596,6 +596,9 @@ before packages are loaded."
   ;; Multi-cursor
   (global-evil-mc-mode 1)
 
+  ;; Use native line numbers
+  (setq linum-relative-backend 'display-line-numbers-mode)
+
   ;;
   ;; Layouts and workspaces
   ;;
