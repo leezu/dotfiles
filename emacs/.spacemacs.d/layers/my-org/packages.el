@@ -200,9 +200,6 @@ Move the cursor to that entry in that buffer."
   ;; Prompt for note on :clocknote tagged entries
   (add-hook 'org-clock-out-hook 'my/check-for-clock-out-note)
 
-;;;;; Time zone handling
-  (add-hook 'org-mode-hook 'my/org-check-timezone-property)
-
 ;;;;; Load extra functionality
   (with-eval-after-load 'org
     (require 'org-inlinetask))
