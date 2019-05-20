@@ -127,7 +127,7 @@ This function should only modify configuration layer settings."
      react
      (typescript :variables
                  typescript-fmt-tool 'prettier)
-
+     restclient
 
      ;; Others
      spotify
