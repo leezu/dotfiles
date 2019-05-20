@@ -72,9 +72,9 @@ Move the cursor to that entry in that buffer."
             'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive
         org-id-extra-files
-        '("~/Papers/notes.org"))
+        (cons "~/Papers/notes.org" (directory-files "~/wiki")))
   (defun my/zettel-id-targets (&optional overview)
-    (sort (directory-files "/home/leonard/org/zettels"
+    (sort (directory-files "~/wiki/"
                            t (if overview "O.*org" ".*org") t)
           'string>))
   (defun my/org-id-complete-link (&optional arg)
@@ -88,8 +88,8 @@ Move the cursor to that entry in that buffer."
     (interactive)
     (helm-ag--init-state)
     (let ((helm-ag--last-query "^\\* ")
-          (helm-ag--default-directory "/home/leonard/org/zettels")
-          (helm-ag--default-target "/home/leonard/org/zettels")
+          (helm-ag--default-directory "~/wiki/")
+          (helm-ag--default-target "~/wiki/")
           )
       (helm-attrset 'search-this-file nil helm-ag-source)
       (helm-attrset 'name (helm-ag--helm-header helm-ag--default-directory) helm-ag-source)
@@ -100,7 +100,7 @@ Move the cursor to that entry in that buffer."
 
 ;;;;; Capture
   (defun new-zettel-file (&optional overview)
-    (concat "/home/leonard/org/zettels/"
+    (concat "~/wiki/"
             (if overview "O-")
             (format-time-string "%Y%m%d%H%M%S")
             ".org"))
@@ -264,7 +264,7 @@ cite:%k
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/Papers/references.bib")
         bibtex-completion-library-path '("~/Papers/")
-        bibtex-completion-notes-path "~/org/zettels"
+        bibtex-completion-notes-path "~/wiki/"
         bibtex-completion-cite-default-command "autocite"
         bibtex-completion-cite-prompt-for-optional-arguments nil)
 
