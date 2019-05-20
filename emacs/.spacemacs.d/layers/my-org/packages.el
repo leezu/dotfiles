@@ -26,7 +26,6 @@
     ebib
     outshine
     interleave
-    org-alert
     org-super-agenda
     (git-auto-commit-mode :fetcher github
                           :repo "leezu/git-auto-commit-mode"
