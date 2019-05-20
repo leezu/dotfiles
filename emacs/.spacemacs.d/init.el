@@ -73,8 +73,6 @@ This function should only modify configuration layer settings."
               notmuch-delete-tags '("+deleted" "-inbox" "-autoinbox")
               notmuch-spam-tags '("+spam" "-inbox" "-autoinbox")
               notmuch-kill-tags '("+killed" "-inbox" "-autoinbox"))
-     slack
-
 
      ;; Finance
      finance
