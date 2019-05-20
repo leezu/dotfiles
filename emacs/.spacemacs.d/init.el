@@ -740,6 +740,9 @@ before packages are loaded."
   (sp-local-pair #'latex-mode "\\(" "\\)" :actions nil)
   (sp-local-pair #'latex-mode "(" ")" :actions nil)
 
+  ;; LaTeX
+  (add-to-list 'auto-mode-alist '("\\.tikz\\'" . latex-mode))
+
   ;; C++
   (with-eval-after-load 'c++
     (spacemacs/set-leader-keys-for-major-mode 'c++-mode
