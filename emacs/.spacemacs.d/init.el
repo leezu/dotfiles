@@ -737,8 +737,9 @@ before packages are loaded."
 
   ;; Easy math mode
   (setq TeX-electric-math (cons "\\(" "\\)"))
-  (sp-local-pair #'latex-mode "\\(" "\\)" :actions nil)
-  (sp-local-pair #'latex-mode "(" ")" :actions nil)
+  (with-eval-after-load 'smartparens
+    (sp-local-pair #'latex-mode "\\(" "\\)" :actions nil)
+    (sp-local-pair #'latex-mode "(" ")" :actions nil))
 
   ;; LaTeX
   (add-to-list 'auto-mode-alist '("\\.tikz\\'" . latex-mode))
