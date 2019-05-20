@@ -671,7 +671,7 @@ before packages are loaded."
   ;; Academic setup
   ;;
   (setq helm-case-fold-search t)
-  (setq gscholar-bibtex-database-file "~/Papers/references.bib")
+  (setq gscholar-bibtex-database-file "~/wiki/references.bib")
   (spacemacs/set-leader-keys "og" (lambda() (interactive) (gscholar-bibtex "Google Scholar")))
 
   ;; Reproducible research

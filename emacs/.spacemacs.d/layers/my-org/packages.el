@@ -239,7 +239,7 @@ Move the cursor to that entry in that buffer."
 
 ;;;; org-ref
 (defun my-org/post-init-org-ref ()
-  (setq org-ref-default-bibliography '("~/Papers/references.bib")
+  (setq org-ref-default-bibliography '("~/wiki/references.bib")
         org-ref-pdf-directory "~/Papers/"
         org-ref-bibliography-notes "~/Papers/notes.org")
 
@@ -262,7 +262,7 @@ cite:%k
 
 ;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
-  (setq bibtex-completion-bibliography '("~/Papers/references.bib")
+  (setq bibtex-completion-bibliography '("~/wiki/references.bib")
         bibtex-completion-library-path '("~/Papers/")
         bibtex-completion-notes-path "~/wiki/"
         bibtex-completion-cite-default-command "autocite"
