@@ -208,8 +208,6 @@ Move the cursor to that entry in that buffer."
 ;;;; org-agenda
 (defun my-org/post-init-org-agenda ()
   (setq org-agenda-skip-scheduled-if-deadline-is-shown t
-        org-agenda-sticky t
-
         org-agenda-files `("~/org/"
                            ,(concat "~/org/journal/" (format-time-string "%Y") "/"))
 
