@@ -228,8 +228,6 @@ Move the cursor to that entry in that buffer."
         org-tags-exclude-from-inheritance '("PROJECT")
         org-default-notes-file "~/org/organizer.org"
 
-        org-agenda-auto-exclude-function 'leezu/org-auto-exclude-function
-
         org-agenda-custom-commands
               '(("r" "Review" my/agenda-review)
                 ("w" "Workflow" my/agenda-workflow)
