@@ -1,1 +1,2 @@
+alias emacs="emacsclient -c -nw"
 export PATH="/usr/lib/ccache:$PATH"

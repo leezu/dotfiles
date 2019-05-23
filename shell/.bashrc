@@ -1,21 +1,18 @@
-# History configuration via https://unix.stackexchange.com/a/18443
-# No duplicates
-export HISTCONTROL=ignoredups:erasedups
-# Don't overwrite history file
-shopt -s histappend
-# Write history after every command
-if [[ ! $PROMPT_COMMAND =~ .*history.*$ ]]; then
-    # Adapt PROMPT_COMMAND only if it does not yet contain history.
-    export PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+if [[ $- != *i* ]] ; then
+    # shell is non-interactive. be done now!
+    return
 fi
 
-# load shared settings
-if [[ -f ~/.sharedshellrc ]]; then
-    source ~/.sharedshellrc
+# Load all files from .shell/bashrc.d directory
+if [ -d $HOME/.shellrc/bashrc.d ]; then
+    for file in $HOME/.shellrc/bashrc.d/*.bash; do
+        source $file
+    done
 fi
 
-# load $HOST specific setting
-export HOST=`hostname`
-if [[ -f ~/.bashrc-$HOST ]]; then
-    source ~/.bashrc-$HOST
+# Load all files from .shell/rc.d directory
+if [ -d $HOME/.shellrc/rc.d ]; then
+    for file in $HOME/.shellrc/rc.d/*.sh; do
+        source $file
+    done
 fi
