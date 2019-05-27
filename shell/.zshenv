@@ -1,8 +1,8 @@
-#
-# Defines environment variables.
-#
+# Sourced on all invocations of zsh
 
-# Ensure that a non-login, non-interactive shell has a defined environment.
-if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprofile"
+# Load all files from .shell/env.d directory
+if [ -d $HOME/.shellrc/env.d ]; then
+    for file in $HOME/.shellrc/env.d/*.sh; do
+        source $file
+    done
 fi

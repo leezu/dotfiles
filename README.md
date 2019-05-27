@@ -10,7 +10,7 @@ cd ~/.dotfiles
 
 ## Manual steps
 - shell
-  - `mkdir ~/.shellrc/{bashrc.d,zshrc.d,rc.d,login.d}`
+  - `mkdir -p ~/.shellrc/{bashrc.d,zshrc.d,rc.d,env.d}`
   - `git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm`
   - Open tmux, press `prefix + I`
 - emacs
