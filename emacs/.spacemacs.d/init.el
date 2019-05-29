@@ -116,6 +116,7 @@ This function should only modify configuration layer settings."
      shell-scripts
      nixos
      csv
+     systemd
 
      ;; Web
      (html :variables
