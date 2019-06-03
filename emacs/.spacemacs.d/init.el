@@ -798,6 +798,12 @@ before packages are loaded."
   (use-package cuda-mode :defer t)
 
   ;; Python
+  ;; https://github.com/syl20bnr/spacemacs/issues/12353 exec-path is not
+  ;; sorted correctly; thus the wrong Python binary is used for
+  ;; flycheck-python-pycompile-executable. As a workaround, prepend the pyenv
+  ;; directories
+  (add-to-list 'exec-path "~/.pyenv/shims/")
+  (add-to-list 'exec-path "~/.pyenv/bin/")
   (setq python-shell-interpreter "ipython3"
         python-shell-interpreter-args "--simple-prompt --pprint")
   (require 'flycheck-cython)
