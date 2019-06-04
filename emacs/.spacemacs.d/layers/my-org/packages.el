@@ -116,7 +116,7 @@ Move the cursor to that entry in that buffer."
            "* TODO [#B]%?\nOPENED: %U\n%a\n\n%i" :empty-lines 1)
           ("S" "Clocked entry checkbox" checkitem (clock) "[ ] %i")
           ("w" "Waiting for" entry (file+olp "~/org/organizer.org" "Tasks")
-           "* WAITING %?\nOPENED: %U\n%a\n\n%i")
+           "* WAIT %?\nOPENED: %U\n%a\n\n%i")
           ("s" "Someday" entry (file+olp "~/org/organizer.org" "Someday")
            "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
 
