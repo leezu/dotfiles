@@ -41,6 +41,7 @@
         org-agenda-window-setup 'current-window
         org-agenda-inhibit-startup t
         org-agenda-use-tag-inheritance nil
+        org-agenda-skip-scheduled-if-done t  ;; Don't show DONE tasks in time-grid
         org-preview-latex-default-process 'dvisvgm
         org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
