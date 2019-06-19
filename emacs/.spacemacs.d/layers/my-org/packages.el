@@ -85,23 +85,26 @@ Move the cursor to that entry in that buffer."
   (org-link-set-parameters "id" :complete 'my/org-id-complete-link)
 ;;;;; Zettelkasten
   (require 'helm-ag)
-  (defun my/helm-zettelkasten-ag ()
+  (defun my/helm-zettelkasten-ag (path)
     (interactive)
     (helm-ag--init-state)
     (let ((helm-ag--last-query "^\\* ")
-          (helm-ag--default-directory "~/wiki/")
-          (helm-ag--default-target "~/wiki/")
+          (helm-ag--default-directory path)
+          (helm-ag--default-target path)
           )
       (helm-attrset 'search-this-file nil helm-ag-source)
       (helm-attrset 'name (helm-ag--helm-header helm-ag--default-directory) helm-ag-source)
       (helm :sources '(helm-ag-source) :buffer "*helm-ag*" :keymap helm-ag-map
             :history 'helm-ag--helm-history)))
+  (defun my/helm-zettelkasten-ag-wiki ()
+    (interactive)
+    (my/helm-zettelkasten-ag "~/wiki"))
   (spacemacs/set-leader-keys
-    "oz" 'my/helm-zettelkasten-ag)
+    "oz" 'my/helm-zettelkasten-ag-wiki)
 
 ;;;;; Capture
-  (defun new-zettel-file (&optional overview)
-    (concat "~/wiki/"
+  (defun new-zettel-file (path &optional overview)
+    (concat path
             (if overview "O-")
             (format-time-string "%Y%m%d%H%M%S")
             ".org"))
@@ -124,11 +127,11 @@ Move the cursor to that entry in that buffer."
           ;; zettelkasten
           ("z" "Zettel"
            entry
-           (file new-zettel-file)
+           (file (lambda () (new-zettel-file "~/wiki/")))
            "* %?\nOPENED: %U\n\n%i\n")
           ("o" "Overview Zettel"
            entry
-           (file (lambda () (new-zettel-file t)))
+           (file (lambda () (new-zettel-file "~/wiki/" t)))
            "* %?\nOPENED: %U\n\n%i\n")
 
           ;; notes
