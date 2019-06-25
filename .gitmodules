@@ -4,3 +4,6 @@
 [submodule "shell/.shell/zsh-history-substring-search"]
 	path = shell/.shell/zsh-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search
+[submodule "shell/.shell/tmux-xpanes"]
+	path = shell/.shell/tmux-xpanes
+	url = https://github.com/greymd/tmux-xpanes.git
