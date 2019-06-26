@@ -312,7 +312,7 @@ cite:%k
                  (buffer (generate-new-buffer-name "bibtex-notes")))
             (if (and bibtex-completion-notes-path
                      (f-directory? bibtex-completion-notes-path))
-                (let* ((current-new-zettel-file (new-zettel-file))
+                (let* ((current-new-zettel-file (new-zettel-file "~/wiki/"))
                        (org-capture-templates '(("bibtex" "helm-bibtex"
                                                  entry
                                                  ;; Zettelkasten format
