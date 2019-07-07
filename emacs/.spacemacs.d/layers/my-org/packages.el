@@ -401,6 +401,34 @@ cite:%k
             ;; Remove duplicated fields:
             (bibtex-completion-remove-duplicated-fields
              entry))))
+      ;; Overwrite bibtex-completion-apa-get-value to preserve title capitalization
+      (defun bibtex-completion-apa-get-value (field entry &optional default)
+        ;; Virtual fields:
+        (if (string= field "author-or-editor")
+            (let ((value (bibtex-completion-get-value "author" entry)))
+              (if value
+                  (bibtex-completion-apa-format-authors value)
+                (bibtex-completion-apa-format-editors
+                 (bibtex-completion-get-value "editor" entry))))
+          ;; Real fields:
+          (let ((value (bibtex-completion-get-value field entry)))
+            (if value
+                (pcase field
+                  ;; https://owl.english.purdue.edu/owl/resource/560/06/
+                  ("author" (bibtex-completion-apa-format-authors value))
+                  ("editor" (bibtex-completion-apa-format-editors value))
+                  ;; For three or more authors, abbreviate to "Author et al"
+                  ("author-abbrev" (bibtex-completion-apa-format-authors-abbrev value))
+                  ("title" value)
+                  ("booktitle" value)
+                  ;; Maintain the punctuation and capitalization that is used by
+                  ;; the journal in its title.
+                  ("pages" (s-join "–" (s-split "[^0-9]+" value t)))
+                  ("doi" (s-concat " http://dx.doi.org/" value))
+                  ("year" (or value
+                              (car (split-string (bibtex-completion-get-value "date" entry "") "-"))))
+                  (_ value))
+              ""))))
       ;; Disable file-watcher in bibtex-completion-init
       (defun bibtex-completion-init ()
   "Checks that the files and directories specified by the user
