@@ -179,7 +179,8 @@ This function should only modify configuration layer settings."
              (chinese :variables
                       chinese-default-input-method 'pinyin
                       chinese-enable-fcitx t)
-             pdf
+             (pdf :variables
+                  pdf-view-display-size 'fit-page)
              )
            dotspacemacs-configuration-layers))
     )
