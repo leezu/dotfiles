@@ -22,6 +22,7 @@
     helm-bibtex
 
     ;; Owned packages
+    anki-editor
     evil-collection
     ebib
     outshine
@@ -30,6 +31,7 @@
     (git-auto-commit-mode :fetcher github
                           :repo "leezu/git-auto-commit-mode"
                           :branch "leezu")
+    org-drill
     ))
 
 ;;; Packages owned by other layers
@@ -133,14 +135,21 @@ Move the cursor to that entry in that buffer."
            entry
            (file (lambda () (new-zettel-file "~/wiki/" t)))
            "* %?\nOPENED: %U\n\n%i\n")
+          ("a" "Anki")
+          ("aa" "Anki card (current file)" entry (file+olp buffer-file-name)
+           "* Card\n:PROPERTIES:\n:ANKI_DECK: Wiki\n:ANKI_NOTE_TYPE: Basic\n:END:\n** Front\n\n** Back\n"
+           :immediate-finish t)
+          ("ac" "Anki cloze (current file)" entry (file+olp buffer-file-name)
+           "* Cloze\n:PROPERTIES:\n:ANKI_DECK: Wiki\n:ANKI_NOTE_TYPE: Cloze\n:END:\n** Text\n"
+           :immediate-finish t)
 
           ;; notes
           ("n" "Note (organizer.org)" entry (file+olp+datetree "~/org/organizer.org")
            "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
           ("l" "Note (current file)" entry (file+olp+datetree buffer-file-name)
            "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
-          ("c" "Clocked entry note" entry (clock)
-           "* %U %?\n%a\n\n%i" :empty-lines 1)
+          ;; ("c" "Clocked entry note" entry (clock)
+          ;;  "* %U %?\n%a\n\n%i" :empty-lines 1)
 
           ;; snippets
           ("C" "Code Snippet" entry (file+olp+datetree "~/org/snippets.org")
@@ -499,6 +508,12 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
             (apply-partially #'my/toggle-music "pause")))
 
 ;;; Owned packages
+(defun my-org/init-anki-editor ()
+  (use-package anki-editor-mode
+    :hook org-mode
+    :init (spacemacs/set-leader-keys-for-major-mode 'org-mode
+              "iN" 'anki-editor-insert-note
+              "ea" 'anki-editor-push-notes)))
 
 ;;;; interleave
 (defun my-org/init-interleave ()
@@ -524,6 +539,13 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
           (:discard (:anything t))
           )))
 
+;;;; org-drill
+(defun my-org/init-org-drill ()
+  (use-package org-drill
+    :defer t
+    :ensure org-plus-contrib
+    :commands (org-drill)
+    :config (setq org-drill-auto-pronounce nil)))
 ;;;; git-auto-commit-mode
 (defun my-org/init-git-auto-commit-mode ()
   (use-package git-auto-commit-mode
