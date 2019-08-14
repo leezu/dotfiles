@@ -16,9 +16,17 @@ pattern = AEGEE
 header = List-Id
 tags = +lists/aegee;-new;+autoinbox
 
+# MXNet dev
+# By default, messages for dev@mxnet.incubator.apache.org are only tagged as lists/dev
+[HeaderMatchingFilter.2]
+message = MXNet
+pattern = <dev.mxnet.incubator.apache.org>
+header = List-Id
+tags = -new;+lists/mxnet-dev
+
 # Auto-tagging
 # These filters remove the new tag, so subsequent filters won't be applied
-[HeaderMatchingFilter.2]
+[HeaderMatchingFilter.3]
 message = Auto-tagging
 pattern = l4usen-[lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
 header = Delivered-To
