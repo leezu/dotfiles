@@ -82,7 +82,6 @@ This function should only modify configuration layer settings."
      sphinx
 
      ;; Programming
-     cscope
      emacs-lisp
      package-lint ;; for emacs package development
      git
@@ -105,9 +104,11 @@ This function should only modify configuration layer settings."
      lua
      semantic
      (c-c++ :variables
-            c-c++-enable-clang-support t
-            c-c++-enable-rtags-support t
-            c-c++-default-mode-for-headers 'c++-mode)
+            c-c++-default-mode-for-headers 'c++-mode
+            c-c++-backend 'lsp-ccls
+            c-c++-lsp-executable (executable-find "ccls")
+            c-c++-lsp-sem-highlight-rainbow t
+            c++-enable-organize-includes-on-save t)
      cmake
      octave
      (shell :variables
