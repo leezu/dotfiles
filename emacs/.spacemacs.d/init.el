@@ -96,8 +96,11 @@ This function should only modify configuration layer settings."
      (ess :variables
           ess-disable-underscore-assign t)
 
+     ;; pip install --user 'python-language-server[all]' pyls-isort pyls-mypy
      (python :variables
-             python-enable-yapf-format-on-save nil)
+             python-backend 'lsp
+             python-test-runner 'pytest
+             python-formatter 'yapf)
      java
      go
      yaml
