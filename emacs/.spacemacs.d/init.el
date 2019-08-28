@@ -755,6 +755,11 @@ before packages are loaded."
   (add-to-list 'auto-mode-alist '("\\.tikz\\'" . latex-mode))
 
   ;; C++
+  (defconst my-cc-style
+    '("cc-mode"
+      (c-offsets-alist . ((innamespace . 0)))))
+  (c-add-style "my-cc-mode" my-cc-style)
+  (add-hook 'c++-mode-hook (lambda () (c-set-style "my-cc-mode") ))
   (add-hook 'c++-mode-hook
             (lambda ()
               (unless (or (file-exists-p "makefile")
