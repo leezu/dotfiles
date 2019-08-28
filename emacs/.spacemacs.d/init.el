@@ -765,11 +765,11 @@ before packages are loaded."
               (unless (or (file-exists-p "makefile")
                           (file-exists-p "Makefile"))
                 (set (make-local-variable 'compile-command)
-                     (concat "g++ -std=c++14 -Wall " buffer-file-name " && ./a.out")))
+                     (concat "g++ -std=c++17 -Wall " buffer-file-name " && ./a.out")))
               ;; (push 'company-semantic company-backends)
-              (setq company-clang-arguments '("-std=c++14"))
-              (setq flycheck-clang-language-standard "c++14")
-              (setq flycheck-gcc-language-standard "c++14")
+              (setq company-clang-arguments '("-std=c++17"))
+              (setq flycheck-clang-language-standard "c++17")
+              (setq flycheck-gcc-language-standard "c++17")
               ))
 
   ;; Linux coding style
