@@ -755,10 +755,6 @@ before packages are loaded."
   (add-to-list 'auto-mode-alist '("\\.tikz\\'" . latex-mode))
 
   ;; C++
-  (with-eval-after-load 'c++
-    (spacemacs/set-leader-keys-for-major-mode 'c++-mode
-      "o=" 'clang-format-region))
-
   (add-hook 'c++-mode-hook
             (lambda ()
               (unless (or (file-exists-p "makefile")
