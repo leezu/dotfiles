@@ -39,6 +39,7 @@
 (defun my-org/post-init-org ()
   (setq org-adapt-indentation nil  ;; Disable indentation in org mode
         org-startup-folded 'showall
+        org-startup-with-latex-preview t
         org-catch-invisible "error"  ;; Cancel invisible edits
         org-enforce-todo-dependencies t
         org-agenda-window-setup 'current-window
