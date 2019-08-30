@@ -164,7 +164,7 @@ Move the cursor to that entry in that buffer."
            :immediate-finish t)
           ("ac" "Anki cloze (current file)" entry (file+olp buffer-file-name)
            "* Cloze\n:PROPERTIES:\n:ANKI_DECK: Wiki\n:ANKI_NOTE_TYPE: Cloze\n:END:\n** Text\n"
-           :immediate-finish t)
+           :immediate-finish t :jump-to-captured t)
 
           ;; notes
           ("n" "Note (organizer.org)" entry (file+olp+datetree "~/org/organizer.org")
