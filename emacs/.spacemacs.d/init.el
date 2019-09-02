@@ -82,6 +82,8 @@ This function should only modify configuration layer settings."
      sphinx
 
      ;; Programming
+     (lsp :variables
+          lsp-ui-sideline-enable nil)
      emacs-lisp
      package-lint ;; for emacs package development
      git
