@@ -183,9 +183,6 @@ This function should only modify configuration layer settings."
     (setq dotspacemacs-configuration-layers
           (append
            '(
-             (chinese :variables
-                      chinese-default-input-method 'pinyin
-                      chinese-enable-fcitx t)
              (pdf :variables
                   pdf-view-display-size 'fit-page)
              )
@@ -706,14 +703,6 @@ before packages are loaded."
   ;; System specific configuration
   ;; Gentoo Linux:
   (when (string-match-p "gentoo" operating-system-release)
-    ;; Chinese
-    ;; Make sure the following comes before `(fcitx-aggressive-setup)'
-    (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
-    ;; Disable fcitx in minibuffer
-    (fcitx-aggressive-setup)
-    (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
-    (setq fcitx-use-dbus t)
-
     ;; LaTeX
     ;; Use pdf-tools to open PDF files
     (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
