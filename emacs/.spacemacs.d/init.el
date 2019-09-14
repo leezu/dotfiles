@@ -688,10 +688,6 @@ before packages are loaded."
   ;;       ess-swv-processor 'knitr
   ;;       ess-pdf-viewer-pref '("emacsclient"))
 
-  ;; Printing
-  (setq pdf-misc-print-programm "/usr/bin/lp"
-        pdf-misc-print-programm-args (quote ("-d csl12")))
-
   ;;
   ;; Finance
   ;;
