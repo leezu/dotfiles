@@ -83,6 +83,7 @@ This function should only modify configuration layer settings."
 
      ;; Programming
      (lsp :variables
+          lsp-enable-file-watchers nil
           lsp-ui-sideline-enable nil)
      emacs-lisp
      package-lint ;; for emacs package development
