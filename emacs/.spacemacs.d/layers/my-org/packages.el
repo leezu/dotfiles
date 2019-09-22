@@ -534,9 +534,10 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
 (defun my-org/init-anki-editor ()
   (use-package anki-editor-mode
     :hook org-mode
-    :init (spacemacs/set-leader-keys-for-major-mode
-            'org-mode "iN" 'anki-editor-insert-note "ea"
-            'anki-editor-push-notes))
+    :init (progn (spacemacs/set-leader-keys-for-major-mode
+                   'org-mode "iN" 'anki-editor-insert-note "ea"
+                   'anki-editor-push-notes)
+                 (setq anki-editor-use-math-jax t)))
   (defun my-anki-editor-push-all ()
     (anki-editor-push-notes nil
                             nil
