@@ -8,6 +8,8 @@ git clone --recurse-submodules https://github.com/leezu/dotfiles/ ~/.dotfiles
 cd ~/.dotfiles
 ```
 
+Run `stow` with `--no-folding` to allow multiple stow directories.
+
 ## Manual steps
 - shell
   - `mkdir -p ~/.shellrc/{bashrc.d,zshrc.d,rc.d,env.d}`
