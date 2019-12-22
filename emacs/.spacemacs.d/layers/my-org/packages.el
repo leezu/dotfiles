@@ -16,6 +16,7 @@
     org
     org-agenda
     org-pomodoro
+    org-brain
 
     ;; Packages owned by bibtex layer
     org-ref
@@ -529,6 +530,18 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
             (apply-partially #'my/toggle-music "play"))
   (add-hook 'org-pomodoro-finished-hook
             (apply-partially #'my/toggle-music "pause")))
+
+;;;; org-brain
+(defun my-org/post-init-org-brain ()
+  (setq org-brain-path "~/wiki/"
+        org-brain-scan-directories-recursively nil
+        org-brain-visualize-default-choices 'all
+        org-brain-show-text t
+        org-brain-show-resources t
+        org-brain-title-max-length 0
+        org-brain-include-file-entries nil
+        org-brain-file-entries-use-title nil)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "v" 'org-brain-visualize-entry-at-pt))
 
 ;;; Owned packages
 (defun my-org/init-anki-editor ()
