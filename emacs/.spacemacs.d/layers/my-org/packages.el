@@ -98,7 +98,7 @@ Move the cursor to that entry in that buffer."
             'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive
         org-id-extra-files
-        (cons "~/Papers/notes.org" (directory-files "~/wiki")))
+        (cons "~/Papers/notes.org" (directory-files "~/wiki" t ".*org" t)))
   (defun my/zettel-id-targets (&optional overview)
     (sort (directory-files "~/wiki/"
                            t (if overview "O.*org" ".*org") t)
