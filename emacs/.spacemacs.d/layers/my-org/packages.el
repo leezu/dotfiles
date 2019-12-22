@@ -538,7 +538,7 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
         org-brain-visualize-default-choices 'all
         org-brain-show-text t
         org-brain-show-resources t
-        org-brain-title-max-length 0
+        org-brain-title-max-length 50
         org-brain-include-file-entries nil
         org-brain-file-entries-use-title nil)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "v" 'org-brain-visualize-entry-at-pt))
