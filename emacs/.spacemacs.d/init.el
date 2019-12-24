@@ -87,7 +87,8 @@ This function should only modify configuration layer settings."
           lsp-ui-sideline-enable nil)
      emacs-lisp
      package-lint ;; for emacs package development
-     git
+     (git :variables
+          magit-save-repository-buffers 'dontask)
      github
      (latex :variables
             latex-enable-folding t
