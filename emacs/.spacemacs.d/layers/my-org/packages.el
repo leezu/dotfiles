@@ -541,7 +541,17 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
         org-brain-title-max-length 50
         org-brain-include-file-entries nil
         org-brain-file-entries-use-title nil)
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode "v" 'org-brain-visualize-entry-at-pt))
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "v" 'org-brain-visualize-entry-at-pt)
+
+  (with-eval-after-load 'org-brain
+    ;; Overwrite org-brain-choose-entries to avoid parsing all files but rather
+    ;; select a single file based on helm-ag and parse only that one
+    (defun org-brain-choose-entries (prompt entries &optional predicate require-match initial-input hist def inherit-input-method)
+      (unless org-id-locations (org-id-locations-load))
+      (save-window-excursion
+        (my/helm-zettelkasten-ag "~/wiki")
+        (list (org-brain-entry-from-id (org-id-get)))
+        ))))
 
 ;;; Owned packages
 (defun my-org/init-anki-editor ()
