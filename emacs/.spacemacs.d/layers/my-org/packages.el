@@ -71,6 +71,11 @@
 \\setlength{\\topmargin}{1.5cm}
 \\addtolength{\\topmargin}{-2.54cm}")
 
+;;;;; org-tempo
+  ;; Org 9.2 comes with a new template expansion mechanism, combining
+  ;; ~org-insert-structure-template~ bound to ~C-c C-,~. To activate previous
+  ;; patterns, e.g. =<s=, it is necessary to require Org Tempo
+  (require 'org-tempo)
 ;;;;; org-id
   (require 'org-id)
   (defun org-id-goto-narrow-indirect-buffer (id)
