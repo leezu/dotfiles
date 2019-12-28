@@ -289,7 +289,7 @@ Move the cursor to that entry in that buffer."
   (setq org-ref-note-title-format
         "** %y - %t
 :PROPERTIES:
-:Custom_ID: %k
+:BIBKEY: %k
 :INTERLEAVE_PDF: ./%k.pdf
 :END:
 cite:%k
