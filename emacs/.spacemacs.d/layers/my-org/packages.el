@@ -129,7 +129,10 @@ Move the cursor to that entry in that buffer."
             :history 'helm-ag--helm-history)))
   (defun my/helm-zettelkasten-ag-wiki ()
     (interactive)
-    (my/helm-zettelkasten-ag "~/wiki"))
+    (save-window-excursion
+      (my/helm-zettelkasten-ag "~/wiki")
+      (setq my/org-brain-current-entry (org-brain-entry-at-pt)))
+    (org-brain-visualize my/org-brain-current-entry))
   (spacemacs/set-leader-keys
     "oz" 'my/helm-zettelkasten-ag-wiki)
 
