@@ -149,7 +149,7 @@ If NOW, use that time instead."
 
 (defun my-mail/pre-init-org ()
   (spacemacs|use-package-add-hook org
-    :post-config (require 'org-notmuch)))
+    :post-config (require 'ol-notmuch)))
 
 (defun my-mail/init-vdirel ()
   (use-package vdirel
