@@ -101,7 +101,7 @@ Move the cursor to that entry in that buffer."
             (org-show-all)))))) ;; TODO org-show-all has no visible effect
   ;; This makes sure that each captured entry gets a unique ID
   (add-hook 'org-capture-prepare-finalize-hook
-            (lambda () (ignore-errors org-id-get-create)))
+            'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive
         org-id-extra-files
         (cons "~/Papers/notes.org" (directory-files "~/wiki" t ".*org" t)))
