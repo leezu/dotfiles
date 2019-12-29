@@ -593,9 +593,9 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
           (:name "Important" :and (:priority "A" :todo ("TODO" "NEXT" "INPROGRESS")))
           (:name "Projects"  :todo ("PLAN" "READY" "ACTIVE" "REVIEW"))
           (:name "Waiting Projects"  :todo "WAIT")
-          (:name "Backlog Projects"  :todo "BACKLOG")
           (:and (:priority<= "B" :todo ("TODO" "NEXT" "INPROGRESS")))
           (:todo ("TODO" "NEXT" "INPROGRESS"))
+          (:name "Backlog Projects"  :todo "BACKLOG")
           (:discard (:anything t))
           )))
 
