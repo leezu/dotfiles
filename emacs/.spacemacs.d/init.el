@@ -88,6 +88,7 @@ This function should only modify configuration layer settings."
      emacs-lisp
      package-lint ;; for emacs package development
      (git :variables
+          magit-revision-show-gravatar nil
           magit-save-repository-buffers 'dontask)
      github
      (latex :variables
