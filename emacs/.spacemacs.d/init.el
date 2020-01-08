@@ -83,6 +83,7 @@ This function should only modify configuration layer settings."
 
      ;; Programming
      (lsp :variables
+          lsp-navigation 'peek
           lsp-enable-file-watchers nil
           lsp-ui-sideline-enable t
           lsp-ui-doc-enable t
