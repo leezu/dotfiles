@@ -84,7 +84,9 @@ This function should only modify configuration layer settings."
      ;; Programming
      (lsp :variables
           lsp-enable-file-watchers nil
-          lsp-ui-sideline-enable nil)
+          lsp-ui-sideline-enable t
+          lsp-ui-doc-enable t
+          lsp-ui-doc-use-childframe nil)
      emacs-lisp
      package-lint ;; for emacs package development
      (git :variables
