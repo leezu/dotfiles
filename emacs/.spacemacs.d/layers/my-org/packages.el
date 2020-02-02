@@ -129,6 +129,7 @@ Move the cursor to that entry in that buffer."
             :history 'helm-ag--helm-history)))
   (defun my/helm-zettelkasten-ag-wiki ()
     (interactive)
+    (require 'org-brain)
     (save-window-excursion
       (my/helm-zettelkasten-ag "~/wiki")
       (setq my/org-brain-current-entry (org-brain-entry-at-pt)))
