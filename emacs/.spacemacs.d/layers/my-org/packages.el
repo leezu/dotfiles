@@ -561,8 +561,27 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
       (save-window-excursion
         (my/helm-zettelkasten-ag "~/wiki")
         (list (org-brain-entry-from-id (org-id-get)))
-        ))))
+        ))
 
+    ;; Overwrite org-brain-visualize-random to avoid parsing all files but
+    ;; rather select a single file randomly and open the first headline therein
+    (defun org-brain-visualize-random (&optional restrict-to)
+      (interactive (when (equal current-prefix-arg '(4))
+                     (list (org-brain-descendants org-brain--vis-entry))))
+      (if restrict-to
+          (setq my/org-brain-current-entry
+                (nth (random (length restrict-to)) restrict-to) nil nil t)
+        (let* ((files (directory-files "~/wiki" t ".*\.org"))
+               (file (nth (random (length files)) files))
+               (buf (create-file-buffer file)))
+          (with-current-buffer buf
+            (insert-file-contents file t)
+            (setq buffer-file-truename (abbreviate-file-name (file-truename buffer-file-name)))
+            (org-mode)
+            (setq my/org-brain-current-entry (org-brain-entry-at-pt)))
+          (kill-buffer buf)))
+      (org-brain-visualize my/org-brain-current-entry))
+    ))
 ;;; Owned packages
 (defun my-org/init-anki-editor ()
   (use-package anki-editor-mode
