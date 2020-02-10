@@ -544,6 +544,7 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
 (defun my-org/post-init-org-brain ()
   (setq org-brain-path "~/wiki/"
         org-brain-scan-directories-recursively nil
+        org-brain-visualizing-mind-map t
         org-brain-visualize-default-choices 'all
         org-brain-show-text t
         org-brain-show-resources t
@@ -560,15 +561,7 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
       (save-window-excursion
         (my/helm-zettelkasten-ag "~/wiki")
         (list (org-brain-entry-from-id (org-id-get)))
-        ))
-
-    ;; Overwrite org-brain-siblings to avoid displaying all siblings in
-    ;; org-brain-visualize. Instead, claim that there are no siblings.
-    (defun org-brain-siblings (entry)
-      (delete-dups
-       (mapcar
-        (lambda (parent) (cons parent nil))
-        (org-brain-parents entry))))))
+        ))))
 
 ;;; Owned packages
 (defun my-org/init-anki-editor ()
