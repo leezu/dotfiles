@@ -119,7 +119,7 @@ Move the cursor to that entry in that buffer."
   (defun my/helm-zettelkasten-ag (path)
     (interactive)
     (helm-ag--init-state)
-    (let ((helm-ag--last-query "^\\* ")
+    (let ((helm-ag--last-query "(^\\* )|(^\\*\\* )|(^\\*\\*\\* )|(^\\*\\*\\*\\* )")
           (helm-ag--default-directory path)
           (helm-ag--default-target path)
           )
