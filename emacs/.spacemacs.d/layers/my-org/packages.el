@@ -29,6 +29,7 @@
     outshine
     interleave
     org-super-agenda
+    org-sidebar
     (git-auto-commit-mode :fetcher github
                           :repo "leezu/git-auto-commit-mode"
                           :branch "leezu")
@@ -618,6 +619,12 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
           (:name "Backlog Projects"  :todo "BACKLOG")
           (:discard (:anything t))
           )))
+
+;;;; org-sidebar
+(defun my-org/init-org-sidebar ()
+  (use-package org-super-agenda)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "ms" 'org-sidebar-toggle)
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "mt" 'org-sidebar-tree-toggle))
 
 ;;;; org-drill
 (defun my-org/init-org-drill ()
