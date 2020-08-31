@@ -82,16 +82,15 @@
   (defun org-id-goto-narrow-indirect-buffer (id)
     "Switch to the buffer containing the entry with id ID.
 Move the cursor to that entry in that buffer."
-    (let ((m (org-id-find id 'marker)))
+    (let ((m (org-id-find id)))
       (unless m
         (error "Cannot find entry with ID \"%s\""
                id))
       ;; TODO: buffer is never deleted
-      (with-current-buffer (marker-buffer m)
+      (with-current-buffer (find-file-noselect (car m))
         (widen)
         (org-show-all)
-        (goto-char m)
-        (move-marker m nil)
+        (goto-char (org-find-entry-with-id id))
         (let* ((heading (org-get-heading 'no-tags))
                (ibuf (org-get-indirect-buffer (current-buffer) heading)))
           (switch-to-buffer-other-window ibuf)
@@ -321,7 +320,7 @@ cite:%k
         (concat
          "* ${title} (${year})\n"
          ":PROPERTIES:\n"
-         ":Custom_ID: ${=key=}\n"
+         ":BIBTEXKEY: ${=key=}\n"
          ":END:\n"
          "cite:${=key=}\n"
          "%?")
@@ -329,7 +328,7 @@ cite:%k
         (concat
          "* %?${title} (${year})\n"
          ":PROPERTIES:\n"
-         ":Custom_ID: ${=key=}\n"
+         ":BIBTEXKEY: ${=key=}\n"
          ":ID: ${ids}\n" ;; TODO breaks if bibtex entry has multiple aliases besides UUID
          ":END:\n"
          "cite:${=key=}\n")
