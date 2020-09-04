@@ -1,9 +1,0 @@
-XMODIFIERS=@im=fcitx
-QT_IM_MODULE=fcitx
-GTK_IM_MODULE=fcitx
-
-LC_CTYPE=zh_CN.UTF-8
-
-# https://wiki.archlinux.org/index.php/GnuPG#SSH_agent
-SSH_AGENT_PID   DEFAULT=
-SSH_AUTH_SOCK   DEFAULT="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"

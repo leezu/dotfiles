@@ -1,8 +1,0 @@
-# This file is read for Xsessions on debian https://wiki.debian.org/Xsession
-
-# Chinese support with fcitx
-export XMODIFIERS=@im=fcitx
-export QT_IM_MODULE=fcitx
-export GTK_IM_MODULE=fcitx
-
-export LC_CTYPE=zh_CN.UTF-8
