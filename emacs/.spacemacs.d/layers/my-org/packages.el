@@ -16,7 +16,7 @@
     org
     org-agenda
     org-pomodoro
-    org-brain
+    org-roam
 
     ;; Packages owned by bibtex layer
     org-ref
@@ -104,45 +104,8 @@ Move the cursor to that entry in that buffer."
             'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive
         org-id-extra-files
-        (cons "~/Papers/notes.org" (directory-files "~/wiki" t ".*org" t)))
-  (defun my/zettel-id-targets (&optional overview)
-    (sort (directory-files "~/wiki/"
-                           t (if overview "O.*org" ".*org") t)
-          'string>))
-  (defun my/org-id-complete-link (&optional arg)
-    "Create an id: link using completion"
-    (concat "id:"
-            (org-id-get-with-outline-path-completion '((my/zettel-id-targets . (:maxlevel . 1))))))
-  (org-link-set-parameters "id" :complete 'my/org-id-complete-link)
-;;;;; Zettelkasten
-  (require 'helm-ag)
-  (defun my/helm-zettelkasten-ag (path)
-    (interactive)
-    (helm-ag--init-state)
-    (let ((helm-ag--last-query "(^\\* )|(^\\*\\* )|(^\\*\\*\\* )|(^\\*\\*\\*\\* )")
-          (helm-ag--default-directory path)
-          (helm-ag--default-target path)
-          )
-      (helm-attrset 'search-this-file nil helm-ag-source)
-      (helm-attrset 'name (helm-ag--helm-header helm-ag--default-directory) helm-ag-source)
-      (helm :sources '(helm-ag-source) :buffer "*helm-ag*" :keymap helm-ag-map
-            :history 'helm-ag--helm-history)))
-  (defun my/helm-zettelkasten-ag-wiki ()
-    (interactive)
-    (require 'org-brain)
-    (save-window-excursion
-      (my/helm-zettelkasten-ag "~/wiki")
-      (setq my/org-brain-current-entry (org-brain-entry-at-pt)))
-    (org-brain-visualize my/org-brain-current-entry))
-  (spacemacs/set-leader-keys
-    "oz" 'my/helm-zettelkasten-ag-wiki)
-
+        (cons (cons "~/Papers/notes.org" (directory-files "~/wiki" t ".*org" t)) (directory-files "~/wiki/refs" t ".*org" t)))
 ;;;;; Capture
-  (defun new-zettel-file (path &optional overview)
-    (concat path
-            (if overview "O-")
-            (format-time-string "%Y%m%d%H%M%S")
-            ".org"))
   (setq org-capture-templates
         ;; note the backquote ` instead of normal quote '
         `(("P" "New project" entry (file+olp "~/org/organizer.org" "Projects")
@@ -159,15 +122,6 @@ Move the cursor to that entry in that buffer."
           ("s" "Someday" entry (file+olp "~/org/organizer.org" "Someday")
            "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
 
-          ;; zettelkasten
-          ("z" "Zettel"
-           entry
-           (file (lambda () (new-zettel-file "~/wiki/")))
-           "* %?\nOPENED: %U\n\n%i\n")
-          ("o" "Overview Zettel"
-           entry
-           (file (lambda () (new-zettel-file "~/wiki/" t)))
-           "* %?\nOPENED: %U\n\n%i\n")
           ("a" "Anki")
           ("aa" "Anki card (current file)" entry (file+olp buffer-file-name)
            "* Card\n:PROPERTIES:\n:ANKI_DECK: Wiki\n:ANKI_NOTE_TYPE: Basic\n:END:\n** Front\n\n** Back\n"
@@ -306,6 +260,14 @@ cite:%k
             (bibtex-completion-edit-notes
              (list (car (org-ref-get-bibtex-key-and-file thekey))))))))
 
+;;;; org-roam
+(defun my-org/post-init-org-roam ()
+  (setq org-roam-capture-templates
+        '(("d" "default" plain (function org-roam-capture--get-point)
+           "%?"
+           :file-name "%<%Y%m%d%H%M%S>"
+           :head "#+TITLE: ${title}\nOPENED: %U\n%i\n"
+           :unnarrowed t))))
 ;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/wiki/references.bib")
@@ -326,12 +288,13 @@ cite:%k
          "%?")
         bibtex-completion-notes-template-multiple-files
         (concat
-         "* %?${title} (${year})\n"
          ":PROPERTIES:\n"
-         ":BIBTEXKEY: ${=key=}\n"
          ":ID: ${ids}\n" ;; TODO breaks if bibtex entry has multiple aliases besides UUID
+         ":BIBTEXKEY: ${=key=}\n"
          ":END:\n"
-         "cite:${=key=}\n")
+         "#+TITLE: ${title} (${year})\n"
+         "cite:${=key=}\n"
+         "%?\n")
         )
 
   ;; Overwrite bibtex-completion-edit-notes to use org-capture
@@ -345,6 +308,8 @@ cite:%k
         (dolist (key keys)
           (let* ((entry (bibtex-completion-get-entry key))
                  (id (bibtex-completion-get-value "IDS" entry nil))
+                 (title (bibtex-completion-get-value "title" entry))
+                 (author (car (s-split "," (bibtex-completion-shorten-authors (bibtex-completion-get-value "author" entry)))))
                  (year (or (bibtex-completion-get-value "year" entry)
                            (car (split-string (bibtex-completion-get-value "date" entry
                                                                            "")
@@ -354,11 +319,10 @@ cite:%k
                  (buffer (generate-new-buffer-name "bibtex-notes")))
             (if (and bibtex-completion-notes-path
                      (f-directory? bibtex-completion-notes-path))
-                (let* ((current-new-zettel-file (new-zettel-file "~/wiki/"))
+                (let* ((current-new-file (concat "~/wiki/refs/" year "-" (org-roam--title-to-slug author) "-" (org-roam--title-to-slug title) ".org"))
                        (org-capture-templates '(("bibtex" "helm-bibtex"
-                                                 entry
-                                                 ;; Zettelkasten format
-                                                 (file current-new-zettel-file)
+                                                 plain
+                                                 (file current-new-file)
                                                  "%(s-format bibtex-completion-notes-template-multiple-files 'bibtex-completion-apa-get-value entry)"
                                                  :unnarrowed t))))
                                         ; One notes file per publication based on org-id:
@@ -371,7 +335,7 @@ cite:%k
                                         ; id is not nil, but no entry exists
                         (progn
                           (org-capture nil "bibtex")
-                          (org-id-add-location id current-new-zettel-file))
+                          (org-id-add-location id current-new-file))
                                         ; id is nil
                       (let ((id (org-id-new))
                             (cbuf (current-buffer)))
@@ -389,7 +353,7 @@ cite:%k
                         (let ((entry (bibtex-completion-get-entry key)))
                           ;; reload entry due to id addition
                           (org-capture nil "bibtex")
-                          (org-id-add-location id current-new-zettel-file))))))
+                          (org-id-add-location id current-new-file))))))
                                         ; One file for all notes:
               (with-current-buffer (make-indirect-buffer ;; TODO: buffer is never deleted (find-file-noselect bibtex-completion-notes-path)
                                     buffer t) ;; clone t
@@ -540,48 +504,6 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
   (add-hook 'org-pomodoro-finished-hook
             (apply-partially #'my/toggle-music "pause")))
 
-;;;; org-brain
-(defun my-org/post-init-org-brain ()
-  (setq org-brain-path "~/wiki/"
-        org-brain-scan-directories-recursively nil
-        org-brain-visualizing-mind-map t
-        org-brain-visualize-default-choices 'all
-        org-brain-show-text t
-        org-brain-show-resources nil
-        org-brain-title-max-length 50
-        org-brain-include-file-entries nil
-        org-brain-file-entries-use-title nil)
-  (spacemacs/set-leader-keys-for-major-mode 'org-mode "v" 'org-brain-visualize-entry-at-pt)
-
-  (with-eval-after-load 'org-brain
-    ;; Overwrite org-brain-choose-entries to avoid parsing all files but rather
-    ;; select a single file based on helm-ag and parse only that one
-    (defun org-brain-choose-entries (prompt entries &optional predicate require-match initial-input hist def inherit-input-method)
-      (unless org-id-locations (org-id-locations-load))
-      (save-window-excursion
-        (my/helm-zettelkasten-ag "~/wiki")
-        (list (org-brain-entry-from-id (org-id-get)))
-        ))
-
-    ;; Overwrite org-brain-visualize-random to avoid parsing all files but
-    ;; rather select a single file randomly and open the first headline therein
-    (defun org-brain-visualize-random (&optional restrict-to)
-      (interactive (when (equal current-prefix-arg '(4))
-                     (list (org-brain-descendants org-brain--vis-entry))))
-      (if restrict-to
-          (setq my/org-brain-current-entry
-                (nth (random (length restrict-to)) restrict-to) nil nil t)
-        (let* ((files (directory-files "~/wiki" t ".*\.org"))
-               (file (nth (random (length files)) files))
-               (buf (create-file-buffer file)))
-          (with-current-buffer buf
-            (insert-file-contents file t)
-            (setq buffer-file-truename (abbreviate-file-name (file-truename buffer-file-name)))
-            (org-mode)
-            (setq my/org-brain-current-entry (org-brain-entry-at-pt)))
-          (kill-buffer buf)))
-      (org-brain-visualize my/org-brain-current-entry))
-    ))
 ;;; Owned packages
 (defun my-org/init-anki-editor ()
   (use-package anki-editor-mode

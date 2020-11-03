@@ -59,6 +59,8 @@ This function should only modify configuration layer settings."
      ;; Org
      (org :variables
           org-projectile-file "~/org/projectile.org"
+          org-enable-roam-support t
+          org-roam-directory "~/wiki"
           org-want-todo-bindings t
           org-agenda-span 1
           org-agenda-start-on-weekday nil)
