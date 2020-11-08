@@ -395,9 +395,7 @@ Move the cursor to that entry in that buffer."
                                    (list "=type=" "=key=" "=has-pdf=" "=has-note="))))
                  (id (bibtex-completion-get-value "IDS" entry nil))
                                         ; Check for PDF:
-                 (entry (if (and id
-                                 (not do-not-find-pdf)
-                                 (bibtex-completion-find-pdf id))  ; use ID instead of key
+                 (entry (if (and (not do-not-find-pdf) (bibtex-completion-find-pdf entry))
                             (cons (cons "=has-pdf=" bibtex-completion-pdf-symbol) entry)
                           entry))
                  (entry-key (cdr (assoc "=key=" entry)))
@@ -483,26 +481,7 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
                                                      ""))))
                                        "")))))
                     (-cons* (car format) format-string (+ fields-width string-width))))
-                bibtex-completion-display-formats)))
-      ;; Overwrite bibtex-completion-open-pdf to open based on IDS
-      (defun bibtex-completion-open-pdf (keys &optional fallback-action)
-        (dolist (key keys)
-          (let* ((entry (bibtex-completion-get-entry key))
-                 (id (bibtex-completion-get-value "IDS" entry nil))
-                 (pdf (if id (bibtex-completion-find-pdf id bibtex-completion-find-additional-pdfs) nil)))
-            (cond
-             ((> (length pdf) 1)
-              (let* ((pdf (f-uniquify-alist pdf))
-                     (choice (completing-read "File to open: " (mapcar 'cdr pdf) nil t))
-                     (file (car (rassoc choice pdf))))
-                (funcall bibtex-completion-pdf-open-function file)))
-             (pdf
-              (funcall bibtex-completion-pdf-open-function (car pdf)))
-             (fallback-action
-              (funcall fallback-action (list key)))
-             (t
-              (message "No PDF(s) found for this entry: %s"
-                       key)))))))))
+                bibtex-completion-display-formats))))))
 
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()
