@@ -241,19 +241,16 @@ Move the cursor to that entry in that buffer."
 
 ;;;; org-ref
 (defun my-org/post-init-org-ref ()
-  (setq org-ref-default-bibliography '("~/wiki/references.bib")
-        org-ref-pdf-directory "~/Papers/"
-        org-ref-bibliography-notes "~/Papers/notes.org")
+  (setq bibtex-autokey-year-length 4
+        bibtex-autokey-name-year-separator ""
+        bibtex-autokey-year-title-separator ""
+        bibtex-autokey-titleword-separator "-"
+        bibtex-autokey-titlewords 2
+        bibtex-autokey-titlewords-stretch 1
+        bibtex-autokey-titleword-length nil)
 
-  ;; Template for paper notes
-  (setq org-ref-note-title-format
-        "** %y - %t
-:PROPERTIES:
-:BIBKEY: %k
-:INTERLEAVE_PDF: ./%k.pdf
-:END:
-cite:%k
-")
+  (setq org-ref-default-bibliography '("~/wiki/references.bib")
+        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex)
 
   ;; Tell org-ref to let helm-bibtex find notes for it
   (setq org-ref-notes-function
