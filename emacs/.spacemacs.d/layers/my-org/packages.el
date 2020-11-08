@@ -24,8 +24,10 @@
 
     ;; Owned packages
     anki-editor
+    biblio
     evil-collection
     ebib
+    gscholar-bibtex
     outshine
     interleave
     org-super-agenda
@@ -276,6 +278,18 @@ cite:%k
         bibtex-completion-cite-default-command "autocite"
         bibtex-completion-cite-prompt-for-optional-arguments nil)
 
+  (setq bibtex-completion-fallback-options
+  '(("Google Scholar                            (biblio-gscholar.el)"
+     . (lambda (search-expression) (biblio-lookup #'biblio-gscholar-backend search-expression)))
+    ("arXiv                                     (biblio.el)"
+     . (lambda (search-expression) (biblio-lookup #'biblio-arxiv-backend search-expression)))
+    ("DBLP (computer science bibliography)      (biblio.el)"
+     . (lambda (search-expression) (biblio--lookup-1 #'biblio-dblp-backend search-expression)))
+    ("CrossRef                                  (biblio.el)"
+     . (lambda (search-expression) (biblio-lookup #'biblio-crossref-backend search-expression)))
+    ("IEEE                                      (biblio.el)"
+     . (lambda (search-expression) (biblio--lookup-1 #'biblio-ieee-backend search-expression)))))
+
   (spacemacs/set-leader-keys "ob" 'helm-bibtex-with-local-bibliography)
 
   (setq bibtex-completion-notes-template-one-file
@@ -517,11 +531,41 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
                             nil
                             (split-string (shell-command-to-string "find ~/wiki -type f -name '*.org' -maxdepth 1 | xargs grep -l 'ANKI'")))))
 
+;;;; biblio
+(defun my-org/init-biblio ()
+  (use-package biblio
+    :config
+    (define-key biblio-selection-mode-map "A" 'my/biblio-selection-insert-end-of-bibfile))
+
+  (use-package biblio-gscholar
+    :load-path "lisp/")
+
+  (spacemacs/set-leader-keys "og" 'biblio-gscholar-lookup)
+
+  ;; biblio.el action to append to references file
+  (defun my/biblio--selection-insert-at-end-of-bibfile-callback (bibtex entry)
+    "Add BIBTEX (from ENTRY) to end of a user-specified bibtex file."
+    (with-current-buffer (find-file-noselect "~/wiki/references.bib")
+      (goto-char (point-max))
+      (insert bibtex)
+      (org-ref-clean-bibtex-entry))
+    (quit-window)
+    (message "Inserted bibtex entry for %S."
+	           (biblio--prepare-title (biblio-alist-get 'title entry))))
+  (defun my/biblio-selection-insert-end-of-bibfile ()
+    "Insert BibTeX of current entry at the end of user-specified bibtex file."
+    (interactive)
+    (biblio--selection-forward-bibtex #'my/biblio--selection-insert-at-end-of-bibfile-callback)))
+
 ;;;; interleave
 (defun my-org/init-interleave ()
   (use-package interleave)
   )
 
+;;;; gscholar-bibtex
+(defun my-org/init-gscholar-bibtex ()
+  (use-package gscholar-bibtex
+    :defer t))
 ;;;; org-super-agenda
 (defun my-org/init-org-super-agenda ()
   (use-package org-super-agenda
