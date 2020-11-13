@@ -25,8 +25,6 @@
     ;; Owned packages
     anki-editor
     biblio
-    evil-collection
-    ebib
     gscholar-bibtex
     outshine
     interleave
@@ -611,27 +609,3 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
     (progn
       (add-hook 'LaTeX-mode-hook 'outshine-mode)
       (add-hook 'prog-mode-hook 'outshine-mode))))
-
-;;;; evil-collection
-(defun my-org/init-evil-collection ()
-  (use-package evil-collection
-    :ensure t
-    :after evil
-    ;; Hide warning that evil-want-keybinding is not nil. Consequently
-    ;; evil-keybindings.el will be loaded, but as none of the conflicting parts
-    ;; of evil-collection is activated, there will be no issue.
-    ;; https://github.com/emacs-evil/evil/commit/7ff4a877f3c5cc8765ee81a910c25d70940b486f
-    :init
-    (add-to-list 'warning-suppress-types '(evil-collection))
-    :config
-    (evil-collection-init 'ebib)))
-
-;;;; ebib
-(defun my-org/init-ebib ()
-  (use-package ebib
-    :init
-    (progn
-      (spacemacs/set-leader-keys "oe" 'ebib)
-      (setq ebib-bibtex-dialect 'biblatex
-          ebib-notes-use-single-file "~/Papers/notes.org"))
-    ))
