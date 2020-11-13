@@ -194,6 +194,7 @@ This function should only modify configuration layer settings."
              )
            dotspacemacs-configuration-layers))
     (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
+    (add-hook 'pdf-tools-enabled-hook 'pdf-view-auto-slice-minor-mode)
     )
   )
 
