@@ -193,6 +193,7 @@ This function should only modify configuration layer settings."
              (pdf)
              )
            dotspacemacs-configuration-layers))
+    (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
     )
   )
 
