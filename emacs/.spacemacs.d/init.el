@@ -190,8 +190,7 @@ This function should only modify configuration layer settings."
     (setq dotspacemacs-configuration-layers
           (append
            '(
-             (pdf :variables
-                  pdf-view-display-size 'fit-page)
+             (pdf)
              )
            dotspacemacs-configuration-layers))
     )
