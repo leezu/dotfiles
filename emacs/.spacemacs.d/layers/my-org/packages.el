@@ -241,6 +241,8 @@ Move the cursor to that entry in that buffer."
 
 ;;;; org-ref
 (defun my-org/post-init-org-ref ()
+  (spacemacs/set-leader-keys-for-major-mode 'bibtex-mode "c" 'org-ref-clean-bibtex-entry)
+
   (setq bibtex-autokey-year-length 4
         bibtex-autokey-name-year-separator ""
         bibtex-autokey-year-title-separator ""
