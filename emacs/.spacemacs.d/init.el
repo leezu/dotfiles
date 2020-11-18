@@ -190,7 +190,7 @@ This function should only modify configuration layer settings."
     (setq dotspacemacs-configuration-layers
           (append
            '(
-             (pdf)
+             (my-pdf)
              )
            dotspacemacs-configuration-layers))
     (add-hook 'pdf-tools-enabled-hook 'pdf-view-midnight-minor-mode)
