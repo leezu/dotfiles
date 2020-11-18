@@ -10,7 +10,11 @@
 ;;
 ;;; License: GPLv3
 
-(setq my-pdf-packages '(pdf-tools))
+(setq my-pdf-packages '((pdf-tools :location (recipe
+                                              :fetcher github
+                                              :repo "leezu/pdf-tools"
+                                              :branch "fix-macros"
+                                              :files ("lisp/*.el" "server")))))
 
 (defun my-pdf/init-pdf-tools ()
   (use-package pdf-tools
@@ -20,6 +24,12 @@
     (spacemacs//pdf-tools-setup-transient-state)
     :config
     (progn
+      ;; Add (expand-file-name "server" pdf-tools-directory) for quelpa support
+      (defun pdf-tools-locate-build-directory ()
+        (cl-some #'pdf-tools-identify-build-directory
+                 (list default-directory
+                       (expand-file-name "server" pdf-tools-directory))))
+
       (pdf-tools-install)
 
       (spacemacs/declare-prefix-for-mode 'pdf-view-mode "ma" "annotations")
