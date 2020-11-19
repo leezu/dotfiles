@@ -564,8 +564,9 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
     "Add BIBTEX (from ENTRY) to end of a user-specified bibtex file."
     (with-current-buffer (find-file-noselect "~/wiki/references.bib")
       (goto-char (point-max))
-      (insert bibtex)
-      (org-ref-clean-bibtex-entry))
+      (insert (concat bibtex "\n\n"))
+      (org-ref-clean-bibtex-entry)
+      (save-buffer))
     (quit-window)
     (message "Inserted bibtex entry for %S."
 	           (biblio--prepare-title (biblio-alist-get 'title entry))))
