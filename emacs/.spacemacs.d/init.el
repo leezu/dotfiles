@@ -603,6 +603,11 @@ before packages are loaded."
   (use-package cus-edit
     :custom
     (custom-file null-device "Don't store customizations"))
+
+  ;; native-comp
+  (setq comp-async-report-warnings-errors nil
+        comp-deferred-compilation-black-list '("smartparens"))
+
   ;;
   ;; Spacemacs Configuration
   ;;
