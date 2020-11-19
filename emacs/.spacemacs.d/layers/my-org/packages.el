@@ -267,7 +267,15 @@ Move the cursor to that entry in that buffer."
            "%?"
            :file-name "%<%Y%m%d%H%M%S>"
            :head "#+TITLE: ${title}\nOPENED: %U\n%i\n"
-           :unnarrowed t))))
+           :unnarrowed t)))
+
+  (defun my/org-roam-buffer-update ()
+    "Trigger org-roam buffer update."
+    (interactive)
+    (org-roam-buffer--update-maybe :redisplay t))
+
+  (spacemacs/set-leader-keys-for-minor-mode
+    'org-roam-mode "ru" 'my/org-roam-buffer-update))
 ;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/wiki/references.bib")
