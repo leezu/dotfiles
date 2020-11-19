@@ -104,7 +104,7 @@ Move the cursor to that entry in that buffer."
             'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive
         org-id-extra-files
-        (cons (cons "~/Papers/notes.org" (directory-files "~/wiki" t ".*org" t)) (directory-files "~/wiki/refs" t ".*org" t)))
+        (append (cons "~/Papers/notes.org" (directory-files "~/wiki" t ".*org" t)) (directory-files "~/wiki/refs" t ".*org" t)))
 ;;;;; Capture
   (setq org-capture-templates
         ;; note the backquote ` instead of normal quote '
