@@ -307,7 +307,9 @@ Move the cursor to that entry in that buffer."
     (org-roam-buffer--update-maybe :redisplay t))
 
   (spacemacs/set-leader-keys-for-minor-mode
-    'org-roam-mode "ru" 'my/org-roam-buffer-update))
+    'org-roam-mode "ru" 'my/org-roam-buffer-update)
+  (spacemacs/set-leader-keys-for-minor-mode
+    'org-roam-mode "rU" 'org-roam-db-build-cache))
 ;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/wiki/references.bib")
