@@ -247,7 +247,8 @@ Move the cursor to that entry in that buffer."
         bibtex-autokey-titleword-separator "-"
         bibtex-autokey-titlewords 2
         bibtex-autokey-titlewords-stretch 1
-        bibtex-autokey-titleword-length nil)
+        bibtex-autokey-titleword-length nil
+        bibtex-autokey-titleword-ignore '("A" "An" "On" "The" "Eine?" "Der" "Die" "Das" ".*[^[:upper:][:lower:]0-9].*"))
 
   (setq org-ref-default-bibliography '("~/wiki/references.bib")
         org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex)
