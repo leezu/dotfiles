@@ -334,18 +334,16 @@ Move the cursor to that entry in that buffer."
         (concat
          "* ${title} (${year})\n"
          ":PROPERTIES:\n"
-         ":BIBTEXKEY: ${=key=}\n"
+         ":ROAM_KEY: cite:${=key=}\n"
          ":END:\n"
-         "cite:${=key=}\n"
          "%?")
         bibtex-completion-notes-template-multiple-files
         (concat
          ":PROPERTIES:\n"
          ":ID: ${ids}\n" ;; TODO breaks if bibtex entry has multiple aliases besides UUID
-         ":BIBTEXKEY: ${=key=}\n"
+         ":ROAM_KEY: cite:${=key=}\n"
          ":END:\n"
          "#+TITLE: ${title} (${year})\n"
-         "cite:${=key=}\n"
          "%?\n")
         )
 
