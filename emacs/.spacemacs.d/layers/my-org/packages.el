@@ -269,6 +269,38 @@ Move the cursor to that entry in that buffer."
            :head "#+TITLE: ${title}\nOPENED: %U\n%i\n"
            :unnarrowed t)))
 
+  ;; Fallback to org 9.4 file-level properties
+  (defun org-roam--extract-global-props (props)
+    "Extract PROPS from the current org buffer."
+    (if (org-entry-get nil (car props) t)
+        (list (cons (car props) (org-entry-get nil (car props) t)))
+      (let ((collected
+             ;; Collect the raw props first
+             ;; It'll be returned in the form of
+             ;; (("PROP" "value" ...) ("PROP2" "value" ...))
+             (if (functionp 'org-collect-keywords)
+                 (org-collect-keywords props)
+               (let ((buf (org-element-parse-buffer))
+                     res)
+                 (dolist (prop props)
+                   (let ((p (org-element-map buf 'keyword
+                              (lambda (kw)
+                                (when (string-equal (org-element-property :key kw) prop)
+                                  (org-element-property :value kw)))
+                              :first-match nil)))
+                     (push (cons prop p) res)))
+                 res))))
+        ;; convert (("TITLE" "a" "b") ("Another" "c"))
+        ;; to (("TITLE" . "a") ("TITLE" . "b") ("Another" . "c"))
+        (let (ret)
+          (pcase-dolist (`(,key . ,values) collected)
+            (if values
+                (dolist (value values)
+                  (push (cons key value) ret))
+              (push (cons key (org-entry-get nil key t)) ret))
+            )
+          ret))))
+
   (defun my/org-roam-buffer-update ()
     "Trigger org-roam buffer update."
     (interactive)
