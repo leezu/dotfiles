@@ -79,26 +79,6 @@
   (require 'org-tempo)
 ;;;;; org-id
   (require 'org-id)
-  (defun org-id-goto-narrow-indirect-buffer (id)
-    "Switch to the buffer containing the entry with id ID.
-Move the cursor to that entry in that buffer."
-    (let ((m (org-id-find id)))
-      (unless m
-        (error "Cannot find entry with ID \"%s\""
-               id))
-      ;; TODO: buffer is never deleted
-      (with-current-buffer (find-file-noselect (car m))
-        (widen)
-        (org-show-all)
-        (goto-char (org-find-entry-with-id id))
-        (let* ((heading (org-get-heading 'no-tags))
-               (ibuf (org-get-indirect-buffer (current-buffer) heading)))
-          (switch-to-buffer-other-window ibuf)
-          (with-current-buffer ibuf
-            (goto-char (org-find-entry-with-id id))  ;; This shouldn't be
-            (org-back-to-heading)                    ;; necessary but is..
-            (org-narrow-to-subtree)
-            (org-show-all)))))) ;; TODO org-show-all has no visible effect
   ;; This makes sure that each captured entry gets a unique ID
   (add-hook 'org-capture-prepare-finalize-hook
             'org-id-get-create)
@@ -382,7 +362,7 @@ Move the cursor to that entry in that buffer."
                            (hash-table-p org-id-locations)
                            (gethash id org-id-locations))
                                         ; id is not nil and exists
-                      (with-helm-current-buffer (org-id-goto-narrow-indirect-buffer id))
+                      (with-helm-current-buffer (org-id-goto id))
                     (if id
                                         ; id is not nil, but no entry exists
                         (progn
