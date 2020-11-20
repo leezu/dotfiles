@@ -41,36 +41,47 @@
 (defun my-org/post-init-org ()
   (setq org-adapt-indentation nil  ;; Disable indentation in org mode
         org-startup-folded 'showall
-        org-startup-with-latex-preview t
         org-catch-invisible "error"  ;; Cancel invisible edits
         org-enforce-todo-dependencies t
         org-agenda-window-setup 'current-window
         org-agenda-inhibit-startup t
         org-agenda-use-tag-inheritance nil
-        org-agenda-skip-scheduled-if-done t  ;; Don't show DONE tasks in time-grid
-        org-preview-latex-default-process 'dvisvgm
-        org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+        org-agenda-skip-scheduled-if-done t)  ;; Don't show DONE tasks in time-grid
   ;; Latex
-  (setq org-format-latex-header "\\documentclass{article}
-\\usepackage[usenames]{color}
-% add mathtools here, as org-latex-packages-alist is not used for inline latex fragments
-\\usepackage{mathtools}
-[PACKAGES]
-[DEFAULT-PACKAGES]
-\\pagestyle{empty}             % do not remove
-% The settings below are copied from fullpage.sty
-\\setlength{\\textwidth}{\\paperwidth}
-\\addtolength{\\textwidth}{-3cm}
-\\setlength{\\oddsidemargin}{1.5cm}
-\\addtolength{\\oddsidemargin}{-2.54cm}
-\\setlength{\\evensidemargin}{\\oddsidemargin}
-\\setlength{\\textheight}{\\paperheight}
-\\addtolength{\\textheight}{-\\headheight}
-\\addtolength{\\textheight}{-\\headsep}
-\\addtolength{\\textheight}{-\\footskip}
-\\addtolength{\\textheight}{-3cm}
-\\setlength{\\topmargin}{1.5cm}
-\\addtolength{\\topmargin}{-2.54cm}")
+  (setq org-startup-with-latex-preview t
+        org-latex-compiler "xelatex"
+        org-format-latex-options (plist-put org-format-latex-options :scale 2.0)
+        org-preview-latex-default-process 'dvisvgm
+        org-preview-latex-process-alist  ;; overwrite to use xelatex instead of latex
+        '((dvisvgm :programs ("xelatex" "dvisvgm")
+                   :description "xdv > svg"
+                   :message "you need to install the programs: xelatex and dvisvgm."
+                   :image-input-type "xdv"
+                   :image-output-type "svg"
+                   :image-size-adjust (1.7 . 1.5)
+                   :latex-compiler ("xelatex -no-pdf -interaction nonstopmode -output-directory %o %f")
+                   :image-converter ("dvisvgm %f -n -b min -c %S -o %O"))
+          (imagemagick :programs("xelatex" "convert")
+                       :description "pdf > png"
+                       :message "you need to install the programs: xelatex and imagemagick."
+                       :image-input-type "pdf"
+                       :image-output-type "png"
+                       :image-size-adjust (1.0 . 1.0)
+                       :latex-compiler ("xelatex -interaction nonstopmode -output-directory %o %f")
+                       :image-converter ("convert -density %D -trim -antialias %f -quality 100 %O")))
+        org-latex-default-packages-alist '((""     "fontenc"   t)
+                                           (""     "fixltx2e"  nil)
+                                           (""     "wrapfig"   nil)
+                                           (""     "soul"      t)
+                                           (""     "textcomp"  t)
+                                           (""     "marvosym"  t)
+                                           (""     "wasysym"   t)
+                                           (""     "latexsym"  t)
+                                           (""     "amssymb"   t)
+                                           (""     "hyperref"  nil)
+                                           (""     "unicode-math"  t0)
+                                           "\\setmainfont{Linux Libertine O}"
+                                           "\\setmathfont{STIX2Math.otf}"))
 
 ;;;;; org-tempo
   ;; Org 9.2 comes with a new template expansion mechanism, combining
