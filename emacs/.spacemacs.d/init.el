@@ -606,7 +606,7 @@ before packages are loaded."
 
   ;; native-comp
   (setq comp-async-report-warnings-errors nil
-        comp-deferred-compilation-black-list '("smartparens"))
+        comp-deferred-compilation-deny-list '())
 
   ;;
   ;; Spacemacs Configuration
