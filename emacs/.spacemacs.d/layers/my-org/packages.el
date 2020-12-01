@@ -564,7 +564,18 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
   (defun my/biblio-selection-insert-end-of-bibfile ()
     "Insert BibTeX of current entry at the end of user-specified bibtex file."
     (interactive)
-    (biblio--selection-forward-bibtex #'my/biblio--selection-insert-at-end-of-bibfile-callback)))
+    (biblio--selection-forward-bibtex #'my/biblio--selection-insert-at-end-of-bibfile-callback))
+
+  ;; Overwrite biblio-url-retrieve to adapt timeout
+  (defun biblio-url-retrieve (url callback)
+    "Wrapper around `url-queue-retrieve'.
+URL and CALLBACK; see `url-queue-retrieve'"
+    (message "Fetching %s" url)
+    (if biblio-synchronous
+        (with-current-buffer (url-retrieve-synchronously url)
+          (funcall callback nil))
+      (setq url-queue-timeout 10)
+      (url-queue-retrieve url callback))))
 
 ;;;; interleave
 (defun my-org/init-interleave ()
