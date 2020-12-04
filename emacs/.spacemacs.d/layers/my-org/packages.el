@@ -340,6 +340,12 @@
          "%?\n")
         )
 
+  ;; Add bibtex-completion "add pdf" action to org-ref
+  (with-eval-after-load "org-ref"
+    (add-to-list 'org-ref-helm-user-candidates
+                 '("Add PDF to library" . (lambda () (bibtex-completion-add-pdf-to-library (list (car (org-ref-get-bibtex-key-and-file))))))
+                 t))
+
   ;; Overwrite bibtex-completion-edit-notes to use org-capture
   (with-eval-after-load "helm-bibtex"
     (progn
