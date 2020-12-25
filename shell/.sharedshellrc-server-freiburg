@@ -1,2 +1,1 @@
-alias emacs="emacs --dump-file=$HOME/.emacs.d/.cache/dumps/spacemacs.pdmp"
 export PATH="/usr/lib/ccache:$PATH"
