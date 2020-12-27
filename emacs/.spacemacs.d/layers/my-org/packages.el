@@ -202,7 +202,7 @@
         org-agenda-files `("~/org/"
                            ,(concat "~/org/journal/" (format-time-string "%Y") "/"))
 
-        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "|" "DONE(d!)" "CANCELLED(C@)")
+        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "VERYIMPORTANTTASK(i)" "|" "DONE(d!)" "CANCELLED(C@)")
                             (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)"
                                       "BACKLOG(b)" "|" "COMPLETED(c)" "CANC(k@)"))
         org-stuck-projects '("/!+PLAN|+READY|+ACTIVE|+REVIEW|+WAIT" nil nil "SCHEDULED:\\|DEADLINE:")
@@ -599,6 +599,7 @@ URL and CALLBACK; see `url-queue-retrieve'"
 
   (setq org-super-agenda-groups
         '(;; Each group has an implicit boolean OR operator between its selectors.
+          (:name "Very Important Task" :todo "VERYIMPORTANTTASK")
           (:name "Today" :time-grid t)
           (:name "In progress" :todo "INPROGRESS")
           (:name "Next" :todo "NEXT")
