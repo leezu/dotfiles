@@ -351,6 +351,7 @@
     (progn
       (require 'org-capture)
       (require 'org-id)
+      (require 'org-roam)
       (org-id-locations-load) ; TODO necessary to avoid org-id-locations being nil
       (defun bibtex-completion-edit-notes (keys)
         "Open the notes associated with the selected entry or create new via org-capture."
