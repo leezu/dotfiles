@@ -86,9 +86,10 @@ This function should only modify configuration layer settings."
      ;; Programming
      (lsp :variables
           lsp-navigation 'peek
+          lsp-auto-configure nil ;; lsp-mode otherwise automatically activates lsp-ui
           lsp-enable-file-watchers nil
-          lsp-ui-sideline-enable t
-          lsp-ui-doc-enable t
+          lsp-ui-sideline-enable nil  ;; annoying
+          lsp-ui-doc-enable nil  ;; causes emacs to hang time to time
           lsp-ui-doc-use-childframe nil)
      emacs-lisp
      package-lint ;; for emacs package development
