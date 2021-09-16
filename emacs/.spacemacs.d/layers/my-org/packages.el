@@ -20,11 +20,11 @@
 
     ;; Packages owned by bibtex layer
     org-ref
+    biblio
     helm-bibtex
 
     ;; Owned packages
     anki-editor
-    biblio
     gscholar-bibtex
     outshine
     interleave
@@ -547,13 +547,11 @@ actually exist. Also sets `bibtex-completion-display-formats-internal'."
                             (split-string (shell-command-to-string "find ~/wiki -type f -name '*.org' -maxdepth 1 | xargs grep -l 'ANKI'")))))
 
 ;;;; biblio
-(defun my-org/init-biblio ()
-  (use-package biblio
+(defun my-org/post-init-biblio ()
+  (use-package biblio-gscholar
+    :load-path "lisp/"
     :config
     (define-key biblio-selection-mode-map "A" 'my/biblio-selection-insert-end-of-bibfile))
-
-  (use-package biblio-gscholar
-    :load-path "lisp/")
 
   (spacemacs/set-leader-keys "og" 'biblio-gscholar-lookup)
 
