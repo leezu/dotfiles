@@ -253,54 +253,12 @@
 
 ;;;; org-roam
 (defun my-org/post-init-org-roam ()
-  (setq org-roam-capture-templates
-        '(("d" "default" plain (function org-roam-capture--get-point)
-           "%?"
-           :file-name "%<%Y%m%d%H%M%S>"
-           :head "#+TITLE: ${title}\nOPENED: %U\n%i\n"
-           :unnarrowed t)))
-
-  ;; Fallback to org 9.4 file-level properties
-  (defun org-roam--extract-global-props (props)
-    "Extract PROPS from the current org buffer."
-    (if (org-entry-get nil (car props) t)
-        (list (cons (car props) (org-entry-get nil (car props) t)))
-      (let ((collected
-             ;; Collect the raw props first
-             ;; It'll be returned in the form of
-             ;; (("PROP" "value" ...) ("PROP2" "value" ...))
-             (if (functionp 'org-collect-keywords)
-                 (org-collect-keywords props)
-               (let ((buf (org-element-parse-buffer))
-                     res)
-                 (dolist (prop props)
-                   (let ((p (org-element-map buf 'keyword
-                              (lambda (kw)
-                                (when (string-equal (org-element-property :key kw) prop)
-                                  (org-element-property :value kw)))
-                              :first-match nil)))
-                     (push (cons prop p) res)))
-                 res))))
-        ;; convert (("TITLE" "a" "b") ("Another" "c"))
-        ;; to (("TITLE" . "a") ("TITLE" . "b") ("Another" . "c"))
-        (let (ret)
-          (pcase-dolist (`(,key . ,values) collected)
-            (if values
-                (dolist (value values)
-                  (push (cons key value) ret))
-              (push (cons key (org-entry-get nil key t)) ret))
-            )
-          ret))))
-
-  (defun my/org-roam-buffer-update ()
-    "Trigger org-roam buffer update."
-    (interactive)
-    (org-roam-buffer--update-maybe :redisplay t))
-
-  (spacemacs/set-leader-keys-for-minor-mode
-    'org-roam-mode "ru" 'my/org-roam-buffer-update)
-  (spacemacs/set-leader-keys-for-minor-mode
-    'org-roam-mode "rU" 'org-roam-db-build-cache))
+  (setq org-roam-v2-ack t
+        org-roam-capture-templates
+        '(("d" "default" plain "%?"
+          :target (file+head "%<%Y%m%d%H%M%S>.org"
+                             "#+TITLE: ${title}\nOPENED: %U\n%i\n")
+          :unnarrowed t))))
 ;;;; helm-bibtex
 (defun my-org/post-init-helm-bibtex ()
   (setq bibtex-completion-bibliography '("~/wiki/references.bib")
@@ -353,6 +311,44 @@
       (require 'org-id)
       (require 'org-roam)
       (org-id-locations-load) ; TODO necessary to avoid org-id-locations being nil
+      (cl-defmethod my/slug (title) ; Adapted from org-roam-node-slug
+        "Return the slug of title."
+        (let ((slug-trim-chars '(;; Combining Diacritical Marks https://www.unicode.org/charts/PDF/U0300.pdf
+                                 768 ; U+0300 COMBINING GRAVE ACCENT
+                                 769 ; U+0301 COMBINING ACUTE ACCENT
+                                 770 ; U+0302 COMBINING CIRCUMFLEX ACCENT
+                                 771 ; U+0303 COMBINING TILDE
+                                 772 ; U+0304 COMBINING MACRON
+                                 774 ; U+0306 COMBINING BREVE
+                                 775 ; U+0307 COMBINING DOT ABOVE
+                                 776 ; U+0308 COMBINING DIAERESIS
+                                 777 ; U+0309 COMBINING HOOK ABOVE
+                                 778 ; U+030A COMBINING RING ABOVE
+                                 780 ; U+030C COMBINING CARON
+                                 795 ; U+031B COMBINING HORN
+                                 803 ; U+0323 COMBINING DOT BELOW
+                                 804 ; U+0324 COMBINING DIAERESIS BELOW
+                                 805 ; U+0325 COMBINING RING BELOW
+                                 807 ; U+0327 COMBINING CEDILLA
+                                 813 ; U+032D COMBINING CIRCUMFLEX ACCENT BELOW
+                                 814 ; U+032E COMBINING BREVE BELOW
+                                 816 ; U+0330 COMBINING TILDE BELOW
+                                 817 ; U+0331 COMBINING MACRON BELOW
+                                 )))
+          (cl-flet* ((nonspacing-mark-p (char)
+                                        (memq char slug-trim-chars))
+                     (strip-nonspacing-marks (s)
+                                             (ucs-normalize-NFC-string
+                                              (apply #'string (seq-remove #'nonspacing-mark-p
+                                                                          (ucs-normalize-NFD-string s)))))
+                     (cl-replace (title pair)
+                                 (replace-regexp-in-string (car pair) (cdr pair) title)))
+            (let* ((pairs `(("[^[:alnum:][:digit:]]" . "_") ;; convert anything not alphanumeric
+                            ("__*" . "_")                   ;; remove sequential underscores
+                            ("^_" . "")                     ;; remove starting underscore
+                            ("_$" . "")))                   ;; remove ending underscore
+                   (slug (-reduce-from #'cl-replace (strip-nonspacing-marks title) pairs)))
+              (downcase slug)))))
       (defun bibtex-completion-edit-notes (keys)
         "Open the notes associated with the selected entry or create new via org-capture."
         (dolist (key keys)
@@ -369,7 +365,7 @@
                  (buffer (generate-new-buffer-name "bibtex-notes")))
             (if (and bibtex-completion-notes-path
                      (f-directory? bibtex-completion-notes-path))
-                (let* ((current-new-file (concat "~/wiki/refs/" year "-" (org-roam--title-to-slug author) "-" (org-roam--title-to-slug title) ".org"))
+                (let* ((current-new-file (concat "~/wiki/refs/" year "-" (my/slug author) "-" (my/slug title) ".org"))
                        (org-capture-templates '(("bibtex" "helm-bibtex"
                                                  plain
                                                  (file current-new-file)
