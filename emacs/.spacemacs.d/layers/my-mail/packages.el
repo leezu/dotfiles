@@ -12,6 +12,7 @@
 (defconst my-mail-packages
   '((helm-notmuch :requires helm)
     notmuch
+    ol-notmuch
     org
     vdirel
     ))
@@ -20,6 +21,10 @@
   (use-package helm-notmuch
     :defer t
     :init (spacemacs/set-leader-keys "aNn" 'helm-notmuch)))
+
+(defun my-mail/init-ol-notmuch ()
+  (use-package ol-notmuch
+    :defer t))
 
 (defun my-mail/init-notmuch ()
   (use-package notmuch
