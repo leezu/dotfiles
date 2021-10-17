@@ -581,7 +581,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
         '(("melpa stable" . "stable.melpa.org/packages/")
           ("melpa" . "melpa.org/packages/")
           ("org" . "orgmode.org/elpa/")
-          ("gnu" . "elpa.gnu.org/packages/")))
+          ("gnu" . "elpa.gnu.org/packages/")
+          ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
   (push '(rtags . "melpa stable") package-pinned-packages))
 
 ;;; user-load
