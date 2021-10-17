@@ -122,7 +122,8 @@ This function should only modify configuration layer settings."
             c-c++-backend 'lsp-ccls
             c-c++-lsp-executable (executable-find "ccls")
             c-c++-lsp-sem-highlight-rainbow t
-            c++-enable-organize-includes-on-save nil)
+            c++-enable-organize-includes-on-save nil
+            c-c++-dap-adapters '())
      cmake
      octave
      (shell :variables
