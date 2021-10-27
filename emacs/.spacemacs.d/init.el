@@ -626,8 +626,7 @@ before packages are loaded."
     (setq interprogram-paste-function 'wl-paste))
 
   ;; native-comp
-  (setq comp-async-report-warnings-errors nil
-        comp-deferred-compilation-deny-list '())
+  (setq native-comp-async-report-warnings-errors nil)
 
   ;;
   ;; Spacemacs Configuration
