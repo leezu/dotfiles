@@ -579,10 +579,10 @@ configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq configuration-layer-elpa-archives
-        '(("melpa stable" . "stable.melpa.org/packages/")
-          ("melpa" . "melpa.org/packages/")
-          ("org" . "orgmode.org/elpa/")
-          ("gnu" . "elpa.gnu.org/packages/")
+        '(("melpa stable" . "https://stable.melpa.org/packages/")
+          ("melpa" . "https://melpa.org/packages/")
+          ("org" . "https://orgmode.org/elpa/")
+          ("gnu" . "https://elpa.gnu.org/packages/")
           ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
   (push '(rtags . "melpa stable") package-pinned-packages))
 
