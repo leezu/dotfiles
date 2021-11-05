@@ -578,6 +578,8 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+  (fset 'evil-redirect-digit-argument 'ignore)
+
   (setq configuration-layer-elpa-archives
         '(("melpa stable" . "https://stable.melpa.org/packages/")
           ("melpa" . "https://melpa.org/packages/")
@@ -601,6 +603,10 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  (add-to-list 'evil-digit-bound-motions 'evil-org-beginning-of-line)
+  (evil-define-key 'motion 'evil-org-mode
+    (kbd "0") 'evil-org-beginning-of-line)
 
   ;; Emacs internals
   (use-package cus-edit
