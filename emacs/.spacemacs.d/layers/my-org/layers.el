@@ -10,4 +10,3 @@
 ;;; License: GPLv3
 
 (configuration-layer/declare-layer 'org)
-(configuration-layer/declare-layer 'bibtex)

@@ -10,17 +10,11 @@
 ;;; License: GPLv3
 
 (defconst my-mail-packages
-  '((helm-notmuch :requires helm)
-    notmuch
+  '(notmuch
     ol-notmuch
     org
     vdirel
     ))
-
-(defun my-mail/init-helm-notmuch ()
-  (use-package helm-notmuch
-    :defer t
-    :init (spacemacs/set-leader-keys "aNn" 'helm-notmuch)))
 
 (defun my-mail/init-ol-notmuch ()
   (use-package ol-notmuch

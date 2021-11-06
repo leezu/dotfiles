@@ -21,11 +21,12 @@
     ;; Packages owned by bibtex layer
     org-ref
     biblio
-    helm-bibtex
 
     ;; Owned packages
     anki-editor
     gscholar-bibtex
+    bibtex-completion
+    citar
     outshine
     interleave
     org-super-agenda
@@ -83,6 +84,9 @@
                                            "\\setmainfont{Linux Libertine O}"
                                            "\\setmathfont{STIX2Math.otf}"))
 
+;;;;; org-cite
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode
+    "ic" 'org-cite-insert)
 ;;;;; org-tempo
   ;; Org 9.2 comes with a new template expansion mechanism, combining
   ;; ~org-insert-structure-template~ bound to ~C-c C-,~. To activate previous
@@ -193,7 +197,8 @@
 
 ;;;;; Load extra functionality
   (with-eval-after-load 'org
-    (require 'org-inlinetask))
+    (require 'org-inlinetask)
+    (require 'bibtex-completion))
   )
 
 ;;;; org-agenda
@@ -239,17 +244,7 @@
         bibtex-autokey-titlewords 2
         bibtex-autokey-titlewords-stretch 1
         bibtex-autokey-titleword-length nil
-        bibtex-autokey-titleword-ignore '("A" "An" "On" "The" "Eine?" "Der" "Die" "Das" "And" "and" "To" "to" ".*[^[:upper:][:lower:]0-9].*"))
-
-  (setq org-ref-default-bibliography '("~/wiki/references.bib")
-        org-ref-get-pdf-filename-function 'org-ref-get-pdf-filename-helm-bibtex)
-
-  ;; Tell org-ref to let helm-bibtex find notes for it
-  (setq org-ref-notes-function
-        (lambda (thekey)
-          (let ((bibtex-completion-bibliography (org-ref-find-bibliography)))
-            (bibtex-completion-edit-notes
-             (list (car (org-ref-get-bibtex-key-and-file thekey))))))))
+        bibtex-autokey-titleword-ignore '("A" "An" "On" "The" "Eine?" "Der" "Die" "Das" "And" "and" "To" "to" ".*[^[:upper:][:lower:]0-9].*")))
 
 ;;;; org-roam
 (defun my-org/post-init-org-roam ()
@@ -259,58 +254,62 @@
           :target (file+head "%<%Y%m%d%H%M%S>.org"
                              "#+TITLE: ${title}\nOPENED: %U\n%i\n")
           :unnarrowed t))))
-;;;; helm-bibtex
-(defun my-org/post-init-helm-bibtex ()
-  (setq bibtex-completion-bibliography '("~/wiki/references.bib")
-        bibtex-completion-library-path '("~/library/")
-        bibtex-completion-notes-path "~/wiki/"
-        bibtex-completion-cite-default-command "autocite"
-        bibtex-completion-cite-prompt-for-optional-arguments nil)
 
-  (setq bibtex-completion-fallback-options
-  '(("Google Scholar                            (biblio-gscholar.el)"
-     . (lambda (search-expression) (biblio-lookup #'biblio-gscholar-backend search-expression)))
-    ("arXiv                                     (biblio.el)"
-     . (lambda (search-expression) (biblio-lookup #'biblio-arxiv-backend search-expression)))
-    ("DBLP (computer science bibliography)      (biblio.el)"
-     . (lambda (search-expression) (biblio--lookup-1 #'biblio-dblp-backend search-expression)))
-    ("CrossRef                                  (biblio.el)"
-     . (lambda (search-expression) (biblio-lookup #'biblio-crossref-backend search-expression)))
-    ("IEEE                                      (biblio.el)"
-     . (lambda (search-expression) (biblio--lookup-1 #'biblio-ieee-backend search-expression)))))
+;;;; bibtex-completion
+(defun my-org/init-bibtex-completion ()
+  (use-package bibtex-completion
+    :defer t
+    :custom
+    (bibtex-completion-bibliography '("~/wiki/references.bib"))
+    (bibtex-completion-library-path '("~/library/"))
+    (bibtex-completion-notes-path "~/wiki/")
+    (bibtex-completion-cite-default-command "autocite")
+    (bibtex-completion-cite-prompt-for-optional-arguments nil)))
 
-  (spacemacs/set-leader-keys "ob" 'helm-bibtex-with-local-bibliography)
+;;;; citar
+(defun my-org/init-citar ()
+  (use-package citar
+    :defer t
+    :bind (("C-c b" . citar-insert-citation)
+           :map minibuffer-local-map
+           ("M-b" . citar-insert-preset))
+    ;; :init
+    ;;(spacemacs/set-leader-keys-for-major-mode 'bibtex-mode
+    ;;"m" 'helm-bibtex)
+    :custom
+    (citar-bibliography '("~/wiki/references.bib"))
+    (org-cite-global-bibliography '("~/wiki/references.bib"))
+    (org-cite-insert-processor 'citar)
+    (org-cite-follow-processor 'citar)
+    (org-cite-activate-processor 'citar)
+    (citar-open-note-function 'my-citar-org-open-notes)
+    (citar-file-note-org-include '(org-id org-roam-ref))
+    (citar-at-point-function 'embark-act)
+    (bibtex-dialect 'biblatex))
 
-  (setq bibtex-completion-notes-template-one-file
-        (concat
-         "* ${title} (${year})\n"
-         ":PROPERTIES:\n"
-         ":ROAM_KEY: cite:${=key=}\n"
-         ":END:\n"
-         "%?")
-        bibtex-completion-notes-template-multiple-files
-        (concat
-         ":PROPERTIES:\n"
-         ":ID: ${ids}\n" ;; TODO breaks if bibtex entry has multiple aliases besides UUID
-         ":ROAM_KEY: cite:${=key=}\n"
-         ":END:\n"
-         "#+TITLE: ${title} (${year})\n"
-         "%?\n")
-        )
-
-  ;; Add bibtex-completion "add pdf" action to org-ref
-  (with-eval-after-load "org-ref"
-    (add-to-list 'org-ref-helm-user-candidates
-                 '("Add PDF to library" . (lambda () (bibtex-completion-add-pdf-to-library (list (car (org-ref-get-bibtex-key-and-file))))))
-                 t))
+  (spacemacs/set-leader-keys "obn" 'citar-open-notes)
+  (spacemacs/set-leader-keys "obp" 'my-citar-add-pdf-to-library)
 
   ;; Overwrite bibtex-completion-edit-notes to use org-capture
-  (with-eval-after-load "helm-bibtex"
+  (with-eval-after-load "citar"
     (progn
       (require 'org-capture)
       (require 'org-id)
       (require 'org-roam)
       (org-id-locations-load) ; TODO necessary to avoid org-id-locations being nil
+
+      ;; Import as this is a deprecated command upstream in citar due to
+      ;; reliance on 'bibtex-completion'
+      (defun my-citar-add-pdf-to-library (keys-entries)
+        "Add PDF associated with the KEYS-ENTRIES to library.
+The PDF can be added either from an open buffer, a file, or a
+URL.
+With prefix, rebuild the cache before offering candidates."
+        (interactive (list (citar-select-refs
+                            :rebuild-cache current-prefix-arg)))
+        (bibtex-completion-add-pdf-to-library
+         (citar--extract-keys keys-entries)))
+
       (cl-defmethod my/slug (title) ; Adapted from org-roam-node-slug
         "Return the slug of title."
         (let ((slug-trim-chars '(;; Combining Diacritical Marks https://www.unicode.org/charts/PDF/U0300.pdf
@@ -349,174 +348,56 @@
                             ("_$" . "")))                   ;; remove ending underscore
                    (slug (-reduce-from #'cl-replace (strip-nonspacing-marks title) pairs)))
               (downcase slug)))))
-      (defun bibtex-completion-edit-notes (keys)
-        "Open the notes associated with the selected entry or create new via org-capture."
-        (dolist (key keys)
-          (let* ((entry (bibtex-completion-get-entry key))
-                 (id (bibtex-completion-get-value "IDS" entry nil))
+
+      (defun my-citar-org-open-notes (key entry)
+        "Open a note file from KEY and ENTRY."
+        (if-let* ((entry (bibtex-completion-get-entry key))
+                  (id (bibtex-completion-get-value "IDS" entry nil))
+                  ;; Optional(?) checks
+                  ;; (hash-table (hash-table-p org-id-locations))
+                  ;; (hash (gethash id org-id-locations))
+                  )
+            (org-id-goto id)
+          (let* ((uuid (org-id-new))
                  (title (bibtex-completion-get-value "title" entry))
                  (author (car (s-split "," (bibtex-completion-shorten-authors (bibtex-completion-get-value "author" entry)))))
                  (year (or (bibtex-completion-get-value "year" entry)
                            (car (split-string (bibtex-completion-get-value "date" entry
                                                                            "")
                                               "-"))))
-                 (entry (push (cons "year" year)
-                              entry))
-                 (buffer (generate-new-buffer-name "bibtex-notes")))
-            (if (and bibtex-completion-notes-path
-                     (f-directory? bibtex-completion-notes-path))
-                (let* ((current-new-file (concat "~/wiki/refs/" year "-" (my/slug author) "-" (my/slug title) ".org"))
-                       (org-capture-templates '(("bibtex" "helm-bibtex"
-                                                 plain
-                                                 (file current-new-file)
-                                                 "%(s-format bibtex-completion-notes-template-multiple-files 'bibtex-completion-apa-get-value entry)"
-                                                 :unnarrowed t))))
-                                        ; One notes file per publication based on org-id:
-                  (if (and id
-                           (hash-table-p org-id-locations)
-                           (gethash id org-id-locations))
-                                        ; id is not nil and exists
-                      (with-helm-current-buffer (org-id-goto id))
-                    (if id
-                                        ; id is not nil, but no entry exists
-                        (progn
-                          (org-capture nil "bibtex")
-                          (org-id-add-location id current-new-file))
-                                        ; id is nil
-                      (let ((id (org-id-new))
-                            (cbuf (current-buffer)))
-                        ;; associate id with bibtex entry
-                        (save-excursion
-                          (with-temp-buffer
-                            (bibtex-completion-show-entry (list key))
-                            (bibtex-make-field '("IDS" "org-id"
-                                                 (lambda ()
-                                                   id))
-                                               t)
-                            (save-buffer)
-                            (bury-buffer)))
-                        (switch-to-buffer cbuf)
-                        (let ((entry (bibtex-completion-get-entry key)))
-                          ;; reload entry due to id addition
-                          (org-capture nil "bibtex")
-                          (org-id-add-location id current-new-file))))))
-                                        ; One file for all notes:
-              (with-current-buffer (make-indirect-buffer ;; TODO: buffer is never deleted (find-file-noselect bibtex-completion-notes-path)
-                                    buffer t) ;; clone t
-                (widen)
-                (outline-show-all)
-                (goto-char (point-min))
-                (if (re-search-forward (format bibtex-completion-notes-key-pattern
-                                               (regexp-quote key))
-                                       nil
-                                       t)
-                                        ; Existing entry found:
-                    (when (eq major-mode 'org-mode)
-                      (org-narrow-to-subtree)
-                      (goto-char (point-min))
-                      (outline-show-all)
-                      (switch-to-buffer-other-window buffer))
-                                        ; Create a new entry:
-                  (let ((org-capture-templates '(("bibtex" "helm-bibtex"
-                                                  entry
-                                                  (file+olp+datetree bibtex-completion-notes-path)
-                                                  "%(s-format bibtex-completion-notes-template-one-file 'bibtex-completion-apa-get-value entry)"))))
-                    (org-capture nil "bibtex"))))))))
-      ;; Overwrite bibtex-completion-prepare-entry to handle org-id
-      (defun bibtex-completion-prepare-entry (entry &optional fields do-not-find-pdf)
-        (when entry ; entry may be nil, in which case just return nil
-          (let* ((fields (when fields
-                           (append fields
-                                   (list "=type=" "=key=" "=has-pdf=" "=has-note="))))
-                 (id (bibtex-completion-get-value "IDS" entry nil))
-                                        ; Check for PDF:
-                 (entry (if (and (not do-not-find-pdf) (bibtex-completion-find-pdf entry))
-                            (cons (cons "=has-pdf=" bibtex-completion-pdf-symbol) entry)
-                          entry))
-                 (entry-key (cdr (assoc "=key=" entry)))
-                                        ; Check for notes:
-                 (entry (if (and id
-                                 (hash-table-p org-id-locations)
-                                 (gethash id org-id-locations))
-                            (cons (cons "=has-note=" bibtex-completion-notes-symbol) entry)
-                          entry))
-                                        ; Remove unwanted fields:
-                 (entry (if fields
-                            (--filter (member-ignore-case (car it)
-                                                          fields)
-                                      entry)
-                          entry)))
-            ;; Normalize case of entry type:
-            (setcdr (assoc "=type=" entry)
-                    (downcase (cdr (assoc "=type=" entry))))
-            ;; Remove duplicated fields:
-            (bibtex-completion-remove-duplicated-fields
-             entry))))
-      ;; Overwrite bibtex-completion-apa-get-value to preserve title capitalization
-      (defun bibtex-completion-apa-get-value (field entry &optional default)
-        ;; Virtual fields:
-        (if (string= field "author-or-editor")
-            (let ((value (bibtex-completion-get-value "author" entry)))
-              (if value
-                  (bibtex-completion-apa-format-authors value)
-                (bibtex-completion-apa-format-editors
-                 (bibtex-completion-get-value "editor" entry))))
-          ;; Real fields:
-          (let ((value (bibtex-completion-get-value field entry)))
-            (if value
-                (pcase field
-                  ;; https://owl.english.purdue.edu/owl/resource/560/06/
-                  ("author" (bibtex-completion-apa-format-authors value))
-                  ("editor" (bibtex-completion-apa-format-editors value))
-                  ;; For three or more authors, abbreviate to "Author et al"
-                  ("author-abbrev" (bibtex-completion-apa-format-authors-abbrev value))
-                  ("title" value)
-                  ("booktitle" value)
-                  ;; Maintain the punctuation and capitalization that is used by
-                  ;; the journal in its title.
-                  ("pages" (s-join "–" (s-split "[^0-9]+" value t)))
-                  ("doi" (s-concat " http://dx.doi.org/" value))
-                  ("year" (or value
-                              (car (split-string (bibtex-completion-get-value "date" entry "") "-"))))
-                  (_ value))
-              ""))))
-      ;; Disable file-watcher in bibtex-completion-init
-      (defun bibtex-completion-init ()
-  "Checks that the files and directories specified by the user
-actually exist. Also sets `bibtex-completion-display-formats-internal'."
+                 (file (concat "~/wiki/refs/" year "-" (my/slug author) "-" (my/slug title) ".org"))
+                 (template (citar-get-template 'note))
+                 (note-meta
+                  (when template
+                    (citar--format-entry-no-widths
+                     entry
+                     template)))
+                 (org-id (when (member 'org-id citar-file-note-org-include)
+                           (concat "\n:ID:   " uuid)))
+                 (org-roam-key (when (member 'org-roam-ref citar-file-note-org-include)
+                                 (concat "\n:ROAM_REFS: @" key)))
+                 (prop-drawer (or org-id org-roam-key))
+                 (content
+                  (concat (when prop-drawer ":PROPERTIES:")
+                          org-roam-key org-id
+                          (when prop-drawer "\n:END:\n")
+                          note-meta "\n")))
 
-  ;; Remove current watch-descriptors for bibliography files:
-  (mapc (lambda (watch-descriptor)
-          (file-notify-rm-watch watch-descriptor))
-        bibtex-completion-file-watch-descriptors)
-  (setq bibtex-completion-file-watch-descriptors nil)
+            ;; associate id with bibtex entry
+            (save-excursion
+              (with-temp-buffer
+                (bibtex-completion-show-entry (list key))
+                (bibtex-make-field '("IDS" "org-id"
+                                     (lambda ()
+                                       uuid))
+                                   t)
+                (save-buffer)
+                (bury-buffer)))
 
-  ;; Check that all specified bibliography files exist and add file
-  ;; watches for automatic reloading of the bibliography when a file
-  ;; is changed:
-  (mapc (lambda (file)
-          (unless (f-file? file)
-            (user-error "Bibliography file %s could not be found." file)))
-            (bibtex-completion-normalize-bibliography))
-
-  ;; Pre-calculate minimal widths needed by the format strings for
-  ;; various entry types:
-  (setq bibtex-completion-display-formats-internal
-        (mapcar (lambda (format)
-                  (let* ((format-string (cdr format))
-                         (fields-width 0)
-                         (string-width
-                          (length
-                           (s-format format-string
-                                     (lambda (field)
-                                       (setq fields-width
-                                             (+ fields-width
-                                                (string-to-number
-                                                 (or (cadr (split-string field ":"))
-                                                     ""))))
-                                       "")))))
-                    (-cons* (car format) format-string (+ fields-width string-width))))
-                bibtex-completion-display-formats))))))
+            (funcall citar-file-open-function file)
+            ;; This just overrides other template insertion.
+            (erase-buffer)
+            (when template (insert content))))))))
 
 ;;;; org-pomodoro
 (defun my-org/post-init-org-pomodoro ()

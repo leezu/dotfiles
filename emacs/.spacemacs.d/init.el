@@ -41,7 +41,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
+     compleseus
      (auto-completion :variables
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-help-tooltip t)
@@ -52,9 +52,6 @@ This function should only modify configuration layer settings."
      my-ui
      multiple-cursors
      neotree
-
-     ;; Academic
-     bibtex
 
      ;; Org
      (org :variables
@@ -686,7 +683,6 @@ before packages are loaded."
       (org-tree-to-indirect-buffer)))
   (global-set-key (kbd "<f12>") 'org-agenda)
   (global-set-key (kbd "<f10>") 'org-inlinetask-insert-task)
-  (global-set-key (kbd "<f9>") 'helm-org-rifle)
   (global-set-key (kbd "<f8>") 'org-pomodoro)
   (global-set-key (kbd "<f6>") 'org-clock-in)
   (global-set-key (kbd "<f5>") 'my/clock-goto-narrow)
@@ -719,11 +715,6 @@ before packages are loaded."
   (spacemacs/set-leader-keys "oc" 'org-capture)
   (spacemacs/set-leader-keys "oa" 'org-agenda-list)
   (spacemacs/set-leader-keys "oo" 'org-agenda)
-
-  ;;
-  ;; Academic setup
-  ;;
-  (setq helm-case-fold-search t)
 
   ;; Reproducible research
   ;; It seems ess breaks org mode
