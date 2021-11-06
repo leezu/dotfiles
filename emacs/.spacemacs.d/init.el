@@ -580,7 +580,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq configuration-layer-elpa-archives
         '(("melpa stable" . "https://stable.melpa.org/packages/")
           ("melpa" . "https://melpa.org/packages/")
-          ("org" . "https://orgmode.org/elpa/")
           ("gnu" . "https://elpa.gnu.org/packages/")
           ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
   (push '(rtags . "melpa stable") package-pinned-packages))
