@@ -253,7 +253,45 @@
         '(("d" "default" plain "%?"
           :target (file+head "%<%Y%m%d%H%M%S>.org"
                              "#+TITLE: ${title}\nOPENED: %U\n%i\n")
-          :unnarrowed t))))
+          :unnarrowed t)))
+
+  ;; Workaround https://github.com/org-roam/org-roam/issues/1772
+  (el-patch-feature org-roam)
+  (with-eval-after-load 'org-roam
+    (el-patch-defun org-roam-buffer-toggle ()
+      "Toggle display of the persistent `org-roam-buffer'."
+      (interactive)
+      (pcase (org-roam-buffer--visibility)
+        ('visible
+         (progn
+           (delete-window (get-buffer-window org-roam-buffer))
+           (remove-hook 'post-command-hook #'org-roam-buffer--redisplay-h)))
+        ((or 'exists 'none)
+         (progn
+           (el-patch-remove (display-buffer (get-buffer-create org-roam-buffer)))
+           (org-roam-buffer-persistent-redisplay)))))
+    (el-patch-defun org-roam-buffer-persistent-redisplay ()
+      "Recompute contents of the persistent `org-roam-buffer'.
+Has no effect when there's no `org-roam-node-at-point'."
+      (when-let ((node (org-roam-node-at-point)))
+        (unless (equal node org-roam-buffer-current-node)
+          (setq org-roam-buffer-current-node node
+                org-roam-buffer-current-directory org-roam-directory)
+          (el-patch-remove (with-current-buffer (get-buffer-create org-roam-buffer)
+            (org-roam-buffer-render-contents)
+            (add-hook 'kill-buffer-hook #'org-roam-buffer--persistent-cleanup-h nil t)))
+          (el-patch-add
+            (if (get-buffer-window org-roam-buffer)
+		            (delete-window (get-buffer-window org-roam-buffer)))
+            (let ((buffer (get-buffer-create org-roam-buffer)))
+		          (with-current-buffer buffer
+		            (org-roam-buffer-render-contents)
+		            (add-hook 'kill-buffer-hook #'org-roam-buffer--persistent-cleanup-h nil t))
+		          (display-buffer buffer))))))
+    ;; Validation fails https://github.com/raxod502/el-patch/issues/55
+    ;; (el-patch-validate-all)
+    ))
+
 
 ;;;; bibtex-completion
 (defun my-org/init-bibtex-completion ()
