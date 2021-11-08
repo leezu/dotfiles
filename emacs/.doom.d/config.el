@@ -1,13 +1,26 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;; Load Environment
+;; Workaround https://github.com/hlissner/doom-emacs/issues/5760
+(setenv "TZ" "America/New_York")
+(if (file-exists-p "~/.doom.d/env")
+    (doom-load-envvars-file "~/.doom.d/env"))
+(eval-when-compile (require 'cl-lib))
+(with-eval-after-load 'magit
+  (cl-callf setenv-internal magit-git-environment "TZ" "UTC0" nil))
+
+;; Overwrite bindings
+(map! ;; Frame-local font resizing
+      :n "C-="  #'doom/increase-font-size
+      :n "C--"  #'doom/decrease-font-size)
+
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
+(setq evil-snipe-override-evil-repeat-keys nil)
+(setq doom-localleader-key ",")
 
-
-;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "Leonard Lausen"
+      user-mail-address "leonard@lausen.nl")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
 ;; are the three important ones:
@@ -26,10 +39,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -52,3 +62,6 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+(load! "+org.el")
+(load! "+mail.el")
