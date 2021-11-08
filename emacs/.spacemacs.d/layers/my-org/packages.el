@@ -23,18 +23,15 @@
     biblio
 
     ;; Owned packages
-    anki-editor
     gscholar-bibtex
     bibtex-completion
     citar
     outshine
-    interleave
     org-super-agenda
     org-sidebar
     (git-auto-commit-mode :fetcher github
                           :repo "leezu/git-auto-commit-mode"
                           :branch "leezu")
-    org-drill
     ))
 
 ;;; Packages owned by other layers
@@ -48,6 +45,7 @@
         org-agenda-inhibit-startup t
         org-agenda-use-tag-inheritance nil
         org-agenda-skip-scheduled-if-done t)  ;; Don't show DONE tasks in time-grid
+
   ;; Latex
   (setq org-startup-with-latex-preview t
         org-latex-compiler "xelatex"
@@ -116,14 +114,6 @@
            "* WAIT %?\nOPENED: %U\n%a\n\n%i")
           ("s" "Someday" entry (file+olp "~/org/organizer.org" "Someday")
            "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
-
-          ("a" "Anki")
-          ("aa" "Anki card (current file)" entry (file+olp buffer-file-name)
-           "* Card\n:PROPERTIES:\n:ANKI_DECK: Wiki\n:ANKI_NOTE_TYPE: Basic\n:END:\n** Front\n\n** Back\n"
-           :immediate-finish t)
-          ("ac" "Anki cloze (current file)" entry (file+olp buffer-file-name)
-           "* Cloze\n:PROPERTIES:\n:ANKI_DECK: Wiki\n:ANKI_NOTE_TYPE: Cloze\n:END:\n** Text\n"
-           :immediate-finish t :jump-to-captured t)
 
           ;; notes
           ("n" "Note (organizer.org)" entry (file+olp+datetree "~/org/organizer.org")
@@ -449,18 +439,6 @@ With prefix, rebuild the cache before offering candidates."
             (apply-partially #'my/toggle-music "pause")))
 
 ;;; Owned packages
-(defun my-org/init-anki-editor ()
-  (use-package anki-editor-mode
-    :hook org-mode
-    :init (progn (spacemacs/set-leader-keys-for-major-mode
-                   'org-mode "iN" 'anki-editor-insert-note "ea"
-                   'anki-editor-push-notes)
-                 (setq anki-editor-use-math-jax t)))
-  (defun my-anki-editor-push-all ()
-    (anki-editor-push-notes nil
-                            nil
-                            (split-string (shell-command-to-string "find ~/wiki -type f -name '*.org' -maxdepth 1 | xargs grep -l 'ANKI'")))))
-
 ;;;; biblio
 (defun my-org/post-init-biblio ()
   (use-package biblio-gscholar
@@ -497,11 +475,6 @@ URL and CALLBACK; see `url-queue-retrieve'"
       (setq url-queue-timeout 10)
       (url-queue-retrieve url callback))))
 
-;;;; interleave
-(defun my-org/init-interleave ()
-  (use-package interleave)
-  )
-
 ;;;; gscholar-bibtex
 (defun my-org/init-gscholar-bibtex ()
   (use-package gscholar-bibtex
@@ -532,13 +505,6 @@ URL and CALLBACK; see `url-queue-retrieve'"
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "ms" 'org-sidebar-toggle)
   (spacemacs/set-leader-keys-for-major-mode 'org-mode "mt" 'org-sidebar-tree-toggle))
 
-;;;; org-drill
-(defun my-org/init-org-drill ()
-  (use-package org-drill
-    :defer t
-    :ensure org-plus-contrib
-    :commands (org-drill)
-    :config (setq org-drill-auto-pronounce nil)))
 ;;;; git-auto-commit-mode
 (defun my-org/init-git-auto-commit-mode ()
   (use-package git-auto-commit-mode

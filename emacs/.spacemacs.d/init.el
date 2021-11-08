@@ -93,7 +93,7 @@ This function should only modify configuration layer settings."
      (git :variables
           magit-revision-show-gravatar nil
           magit-save-repository-buffers 'dontask)
-     github
+     ;; github
      (latex :variables
             latex-enable-folding t
             latex-build-command "LatexMk")
@@ -116,8 +116,8 @@ This function should only modify configuration layer settings."
      semantic
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode
-            c-c++-backend 'lsp-ccls
-            c-c++-lsp-executable (executable-find "ccls")
+            c-c++-backend 'lsp-clangd
+            lsp-clients-clangd-executable (executable-find "clangd")
             c-c++-lsp-sem-highlight-rainbow t
             c++-enable-organize-includes-on-save nil
             c-c++-dap-adapters '())
@@ -329,7 +329,7 @@ It should only modify the values of Spacemacs settings."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 27
+                               :size 14
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
