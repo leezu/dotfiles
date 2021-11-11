@@ -9,16 +9,10 @@
    ;; ; TODO define default super-agenda groups
    org-super-agenda-groups
    '(;; Each group has an implicit boolean OR operator between its selectors.
-     (:name "Very Important Task" :todo "VERYIMPORTANTTASK")
      (:name "Today" :time-grid t)
-     (:name "In progress" :todo "INPROGRESS")
-     (:name "Next" :todo "NEXT")
-     (:name "Important" :and (:priority "A" :todo ("TODO" "NEXT" "INPROGRESS")))
-     (:name "Projects"  :todo ("PLAN" "READY" "ACTIVE" "REVIEW"))
-     (:name "Waiting Projects"  :todo "WAIT")
-     (:and (:priority<= "B" :todo ("TODO" "NEXT" "INPROGRESS")))
-     (:todo ("TODO" "NEXT" "INPROGRESS"))
-     (:name "Backlog Projects"  :todo "BACKLOG")
+     (:name "Important" :and (:priority "A" :todo ("TODO" "TASK")))
+     (:name "Others" :todo ("TASK"))
+     (:and (:priority<= "B" :todo ("TODO")))
      (:discard (:anything t))
      ))
 
@@ -33,6 +27,7 @@
 (map! :leader :desc "Org Capture"
       "o c" #'org-capture)
 (after! org
+  (require 'org-secretary)
   (setq org-directory "~/org/"
         org-roam-directory "~/wiki/"
         org-cite-global-bibliography '("~/wiki/references.bib")
@@ -40,6 +35,16 @@
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar
         )
+
+  ;; org-secretary
+  (defun org-sec-who-view (par)
+    "Builds agenda for a given user.  Queried. "
+    (let ((who (completing-read "Build todo for user/tag: " org-sec-with-history
+                                nil nil "" '(org-sec-with-history 0))))
+      (org-sec-with-view "TODO dowith" who)
+      (org-sec-assigned-with-view "TASK with" who)
+      (org-sec-stuck-with-view "STUCK with" who)))
+
 
   ;; org-id
   ;; Ensure that each captured entry gets a unique ID
@@ -50,30 +55,14 @@
   ;; Capture
   (setq org-capture-templates
         ;; note the backquote ` instead of normal quote '
-        `(("P" "New project" entry (file+olp "~/org/organizer.org" "Projects")
-           "* PLAN %?\nOPENED: %U\n%a\n\n%i")
-          ("b" "New project (backlog)" entry (file+olp "~/org/organizer.org" "Projects")
-           "* BACKLOG %?\nOPENED: %U\n%a\n\n%i")
-          ("t" "Task" entry (file+olp "~/org/organizer.org" "Tasks")
+        `(("p" "New project" entry (file+olp "~/org/organizer.org" "Projects")
+           "* TODO %? :prj:\nOPENED: %U\n%a\n\n%i")
+          ("b" "Backlog" entry (file+olp "~/org/organizer.org" "Tasks")
+           "* BACKLOG [#B]%?\nOPENED: %U\n%a\n\n%i")
+          ("t" "Todo" entry (file+olp "~/org/organizer.org" "Tasks")
            "* TODO [#B]%?\nOPENED: %U\n%a\n\n%i")
-          ("s" "Clocked entry subtask" entry (clock)
-           "* TODO [#B]%?\nOPENED: %U\n%a\n\n%i" :empty-lines 1)
-          ("S" "Clocked entry checkbox" checkitem (clock) "[ ] %i")
-          ("w" "Waiting for" entry (file+olp "~/org/organizer.org" "Tasks")
-           "* WAIT %?\nOPENED: %U\n%a\n\n%i")
-          ("s" "Someday" entry (file+olp "~/org/organizer.org" "Someday")
-           "* SOMEDAY %?\nOPENED: %U\n%a\n\n%i")
-
-          ;; notes
-          ("n" "Note (organizer.org)" entry (file+olp+datetree "~/org/organizer.org")
-           "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
-          ("l" "Note (current file)" entry (file+olp+datetree buffer-file-name)
-           "* %?\nCREATED: %U\n%a\n\n%i" :prepend t)
-
-          ;; snippets
-          ("C" "Code Snippet" entry (file+olp+datetree "~/org/snippets.org")
-           ;; Prompt for tag and language
-           "* %?\t:%^{language}:\nCREATED: %U\n%a\n#+BEGIN_SRC %\\1\n%i\n#+END_SRC")
+          ("o" "Task" entry (file+olp "~/org/organizer.org" "Tasks")
+           "* TASK [#B]%?\nOPENED: %U\n%a\n\n%i")
           ))
 
   ;; Refile
@@ -94,20 +83,32 @@
         org-agenda-files `("~/org/"
                            ,(concat "~/org/journal/" (format-time-string "%Y") "/"))
 
-        org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "INPROGRESS" "VERYIMPORTANTTASK(i)" "|" "DONE(d!)" "CANCELLED(C@)")
-                            (sequence "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)"
-                                      "BACKLOG(b)" "|" "COMPLETED(c)" "CANC(k@)"))
-        org-stuck-projects '("/!+PLAN|+READY|+ACTIVE|+REVIEW|+WAIT" nil nil "SCHEDULED:\\|DEADLINE:")
+        org-todo-keywords '((sequence "TODO(t)" "|" "DONE(d)" "CANCELLED(c)")
+                            (sequence "TASK(f)" "|" "DONE(d)")
+                            (sequence "BACKLOG(m)" "|" "CANCELLED(c)"))
+        org-tags-exclude-from-inheritance '("prj")
+        org-stuck-projects '("+prj/-BACKLOG-DONE" ("TODO" "TASK") ())
 
         org-log-into-drawer t
-        org-tag-alist '(("@office" . ?o)
-                        ("@home" . ?h)
-                        ("@errand" . ?e))
-        org-tags-exclude-from-inheritance '("PROJECT")
         org-default-notes-file "~/org/organizer.org"
 
         org-agenda-custom-commands
         '(
+          ("h" "Todos" tags-todo
+           "-doat={.+}-dowith={.+}/!-TASK"
+           ((org-agenda-todo-ignore-scheduled t)))
+          ("H" "All todos" tags-todo "/!-TASK-BACKLOG"
+           ((org-agenda-todo-ignore-scheduled nil)))
+          ("A" "Todos with doat or dowith" tags-todo
+           "+doat={.+}|dowith={.+}/!-TASK"
+           ((org-agenda-todo-ignore-scheduled nil)))
+          ("j" "TODO dowith and TASK with"
+           ((org-sec-with-view "TODO dowith")
+            (org-sec-where-view "TODO doat")
+            (org-sec-assigned-with-view "TASK with")
+            (org-sec-stuck-with-view "STUCK with")))
+          ("J" "Interactive TODO dowith and TASK with"
+           ((org-sec-who-view "TODO dowith")))
           ("R" "Week in review" agenda ""  ;; agenda settings
            ((org-agenda-span 'week)
             (org-agenda-start-on-weekday 0) ;; start on Sunday
