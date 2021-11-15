@@ -140,11 +140,9 @@
         bibtex-dialect 'biblatex
         )
 
-  (require 'org-capture)
   (require 'org-id)
   (require 'org-roam)
   (require 'bibtex-completion)
-  (org-id-locations-load) ; TODO necessary to avoid org-id-locations being nil
 
   ;; Import as this is a deprecated command upstream in citar due to
   ;; reliance on 'bibtex-completion'
@@ -199,53 +197,42 @@ With prefix, rebuild the cache before offering candidates."
 
   (defun my-citar-org-open-notes (key entry)
     "Open a note file from KEY and ENTRY."
+    (if (not org-id-locations) (org-id-locations-load))  ; Ensure org-id-locations is not nil
     (if-let* ((entry (bibtex-completion-get-entry key))
-              (id (bibtex-completion-get-value "IDS" entry nil))
-              ;; Optional(?) checks
-              ;; (hash-table (hash-table-p org-id-locations))
-              ;; (hash (gethash id org-id-locations))
-              )
-        (org-id-goto id)
-      (let* ((uuid (org-id-new))
-             (title (bibtex-completion-get-value "title" entry))
-             (author (car (s-split "," (bibtex-completion-shorten-authors (bibtex-completion-get-value "author" entry)))))
-             (year (or (bibtex-completion-get-value "year" entry)
-                       (car (split-string (bibtex-completion-get-value "date" entry
-                                                                       "")
-                                          "-"))))
-             (file (concat "~/wiki/refs/" year "-" (my/slug author) "-" (my/slug title) ".org"))
-             (template (citar-get-template 'note))
-             (note-meta
-              (when template
-                (citar--format-entry-no-widths
-                 entry
-                 template)))
-             (org-id (when (member 'org-id citar-file-note-org-include)
-                       (concat "\n:ID:   " uuid)))
-             (org-roam-key (when (member 'org-roam-ref citar-file-note-org-include)
-                             (concat "\n:ROAM_REFS: @" key)))
-             (prop-drawer (or org-id org-roam-key))
-             (content
-              (concat (when prop-drawer ":PROPERTIES:")
-                      org-roam-key org-id
-                      (when prop-drawer "\n:END:\n")
-                      note-meta "\n")))
+              (id (bibtex-completion-get-value "IDS" entry nil)))
+        (org-id-goto id)  ;; Support legacy entries with org-id UUID stored in bibtex entry IDS field
+      (if-let* ((hash (gethash key org-id-locations)))
+          (org-id-goto key)  ;; New approach: bibtex key is reused as org-id
+        (let* ((title (bibtex-completion-get-value "title" entry))
+               (author (car (s-split "," (bibtex-completion-shorten-authors (bibtex-completion-get-value "author" entry)))))
+               (year (or (bibtex-completion-get-value "year" entry)
+                         (car (split-string (bibtex-completion-get-value "date" entry
+                                                                         "")
+                                            "-"))))
+               (file (concat "~/wiki/refs/" year "-" (my/slug author) "-" (my/slug title) ".org"))
+               (template (citar-get-template 'note))
+               (note-meta
+                (when template
+                  (citar--format-entry-no-widths
+                   entry
+                   template)))
+               (org-id (when (member 'org-id citar-file-note-org-include)
+                         (concat "\n:ID:   " key)))
+               (org-roam-key (when (member 'org-roam-ref citar-file-note-org-include)
+                               (concat "\n:ROAM_REFS: @" key)))
+               (prop-drawer (or org-id org-roam-key))
+               (content
+                (concat (when prop-drawer ":PROPERTIES:")
+                        org-roam-key org-id
+                        (when prop-drawer "\n:END:\n")
+                        note-meta "\n")))
 
-        ;; associate id with bibtex entry
-        (save-excursion
-          (with-temp-buffer
-            (bibtex-completion-show-entry (list key))
-            (bibtex-make-field '("IDS" "org-id"
-                                 (lambda ()
-                                   uuid))
-                               t)
-            (save-buffer)
-            (bury-buffer)))
 
-        (funcall citar-file-open-function file)
-        ;; This just overrides other template insertion.
-        (erase-buffer)
-        (when template (insert content)))))
+          (funcall citar-file-open-function file)
+          ;; This just overrides other template insertion.
+          (erase-buffer)
+          (when template (insert content)
+                (org-id-add-location key file))))))
   )
 
 (after! bibtex-completion
