@@ -126,6 +126,7 @@
            :unnarrowed t))
         ))
 
+(use-package! bibtex-completion)
 (map! :leader :nv "o b" nil)
 (map! :leader :desc "Bibliography"
        (:prefix ("o b" . "bibliography")
