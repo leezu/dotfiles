@@ -127,11 +127,20 @@
         ))
 
 (use-package! bibtex-completion)
+(use-package! gscholar-bibtex)
+(use-package biblio-gscholar
+  :load-path "lisp/")
+(after! biblio
+  (define-key biblio-selection-mode-map "A" 'my/biblio-selection-insert-end-of-bibfile)
+  (setq biblio-bibtex-use-autokey t
+        biblio-crossref-user-email-address user-mail-address))
 (map! :leader :nv "o b" nil)
 (map! :leader :desc "Bibliography"
-       (:prefix ("o b" . "bibliography")
-        :desc "Open note" "n" #'citar-open-notes
-        :desc "Add pdf to library" "p" #'my-citar-add-pdf-to-library))  ;; TODO my-citar-add-pdf-to-library still undefined at this point
+      (:prefix ("o b" . "bibliography")
+       :desc "Open note" "n" #'citar-open-notes
+       :desc "Google scholar" "g" #'biblio-gscholar-lookup
+       :desc "Biblio lookup" "b" #'biblio-lookup
+       :desc "Add pdf to library" "p" #'my-citar-add-pdf-to-library))  ;; TODO my-citar-add-pdf-to-library still undefined at this point
 (after! citar
   (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
   (setq citar-bibliography '("~/wiki/references.bib")
@@ -235,6 +244,45 @@ With prefix, rebuild the cache before offering candidates."
           (when template (insert content)
                 (org-id-add-location key file))))))
   )
+
+(after! bibtex
+  (setq bibtex-autokey-year-length 4
+        bibtex-autokey-name-year-separator ""
+        bibtex-autokey-year-title-separator ""
+        bibtex-autokey-titleword-separator "-"
+        bibtex-autokey-titlewords 2
+        bibtex-autokey-titlewords-stretch 1
+        bibtex-autokey-titleword-length nil
+        bibtex-autokey-titleword-ignore '("A" "An" "On" "The" "Eine?" "Der" "Die" "Das" "And" "and" "To" "to" ".*[^[:upper:][:lower:]0-9].*"))
+  )
+
+(after! biblio
+  ;; biblio.el action to append to references file
+  (defun my/biblio--selection-insert-at-end-of-bibfile-callback (bibtex entry)
+    "Add BIBTEX (from ENTRY) to end of a user-specified bibtex file."
+    (with-current-buffer (find-file-noselect "~/wiki/references.bib")
+      (goto-char (point-max))
+      (insert (concat bibtex "\n\n"))
+      (save-buffer))
+    (quit-window)
+    (message "Inserted bibtex entry for %S."
+	           (biblio--prepare-title (biblio-alist-get 'title entry))))
+  (defun my/biblio-selection-insert-end-of-bibfile ()
+    "Insert BibTeX of current entry at the end of user-specified bibtex file."
+    (interactive)
+    (biblio--selection-forward-bibtex #'my/biblio--selection-insert-at-end-of-bibfile-callback))
+
+  ;; Overwrite biblio-url-retrieve to adapt timeout
+  ;; https://github.com/cpitclaudel/biblio.el/issues/39
+  (defun biblio-url-retrieve (url callback)
+    "Wrapper around `url-queue-retrieve'.
+URL and CALLBACK; see `url-queue-retrieve'"
+    (message "Fetching %s" url)
+    (if biblio-synchronous
+        (with-current-buffer (url-retrieve-synchronously url)
+          (funcall callback nil))
+      (setq url-queue-timeout 10)
+      (url-queue-retrieve url callback))))
 
 (after! bibtex-completion
   (setq

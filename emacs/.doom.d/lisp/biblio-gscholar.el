@@ -70,8 +70,9 @@
 			       (gscholar-bibtex-google-scholar-subtitles (buffer-string))))
 	 (bibtex-urls (gscholar-bibtex-google-scholar-bibtex-urls (buffer-string)))
 	 (bibtex-contents (mapcar 'gscholar-bibtex-google-scholar-bibtex-content bibtex-urls)))
-    
-    (loop for title in titles
+
+    (message "%s" (buffer-string))
+    (cl-loop for title in titles
 	  for authors in author-lists
 	  for bibtex-content in bibtex-contents
 	  collecting `((title . ,title)

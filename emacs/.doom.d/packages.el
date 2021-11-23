@@ -8,6 +8,7 @@
 (package! org-super-agenda)
 (package! git-auto-commit-mode)
 (package! bibtex-completion)
+(package! gscholar-bibtex)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
