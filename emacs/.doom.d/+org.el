@@ -126,6 +126,15 @@
            :unnarrowed t))
         ))
 
+;; Import as this is a deprecated command upstream in citar due to
+;; reliance on 'bibtex-completion'
+(require 'citar)  ; TODO defer require
+(defun my-citar-pdf-handling (keys-entries)
+  "Open or add PDF associated with the KEYS-ENTRIES to library."
+  (interactive (list (citar-select-refs :rebuild-cache current-prefix-arg)))
+  (bibtex-completion-open-pdf (citar--extract-keys keys-entries)
+                              'bibtex-completion-add-pdf-to-library))
+
 (use-package! bibtex-completion)
 (use-package! gscholar-bibtex)
 (use-package biblio-gscholar
@@ -140,7 +149,7 @@
        :desc "Open note" "n" #'citar-open-notes
        :desc "Google scholar" "g" #'biblio-gscholar-lookup
        :desc "Biblio lookup" "b" #'biblio-lookup
-       :desc "Add pdf to library" "p" #'my-citar-add-pdf-to-library))  ;; TODO my-citar-add-pdf-to-library still undefined at this point
+       :desc "Add pdf to library" "p" #'my-citar-pdf-handling))
 (after! citar
   (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
   (setq citar-bibliography '("~/wiki/references.bib")
@@ -153,18 +162,6 @@
   (require 'org-id)
   (require 'org-roam)
   (require 'bibtex-completion)
-
-  ;; Import as this is a deprecated command upstream in citar due to
-  ;; reliance on 'bibtex-completion'
-  (defun my-citar-add-pdf-to-library (keys-entries)
-    "Add PDF associated with the KEYS-ENTRIES to library.
-The PDF can be added either from an open buffer, a file, or a
-URL.
-With prefix, rebuild the cache before offering candidates."
-    (interactive (list (citar-select-refs
-                        :rebuild-cache current-prefix-arg)))
-    (bibtex-completion-add-pdf-to-library
-     (citar--extract-keys keys-entries)))
 
   (cl-defmethod my/slug (title) ; Adapted from org-roam-node-slug
     "Return the slug of title."
