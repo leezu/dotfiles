@@ -190,9 +190,9 @@
       (cl-flet* ((nonspacing-mark-p (char)
                                     (memq char slug-trim-chars))
                  (strip-nonspacing-marks (s)
-                                         (ucs-normalize-NFC-string
+                                         (string-glyph-compose
                                           (apply #'string (seq-remove #'nonspacing-mark-p
-                                                                      (ucs-normalize-NFD-string s)))))
+                                                                      (string-glyph-decompose s)))))
                  (cl-replace (title pair)
                              (replace-regexp-in-string (car pair) (cdr pair) title)))
         (let* ((pairs `(("[^[:alnum:][:digit:]]" . "_") ;; convert anything not alphanumeric
