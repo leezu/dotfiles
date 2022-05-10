@@ -1,3 +1,17 @@
+partial alphanumeric_keys modifier_keys
+xkb_symbols "media_keys" {
+    key <FK01> { [ XF86Back ] };
+    key <FK02> { [ XF86Forward ] };
+    key <FK03> { [ XF86Refresh ] };
+    key <FK04> { [ F11 ] };
+    key <FK05> { [ XF86ApplicationRight ] };
+    key <FK06> { [ XF86MonBrightnessDown ] };
+    key <FK07> { [ XF86MonBrightnessUp ] };
+    key <FK08> { [ XF86AudioMute ] };
+    key <FK09> { [ XF86AudioLowerVolume ] };
+    key <FK10> { [ XF86AudioRaiseVolume ] };
+};
+
 // Swap the functions of the left Win key (Search) and the CAPS key.
 partial modifier_keys
 xkb_symbols "swap_lwin_caps" {

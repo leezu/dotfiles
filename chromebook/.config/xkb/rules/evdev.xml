@@ -9,6 +9,12 @@
       </configItem>
       <option>
       <configItem>
+        <name>chromebook:media_keys</name>
+        <description>Enable Chromebook Media Keys</description>
+      </configItem>
+      </option>
+      <option>
+      <configItem>
         <name>chromebook:swap_lwin_caps</name>
         <description>Swap Search Key and CAPS</description>
       </configItem>
