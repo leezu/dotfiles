@@ -5,14 +5,3 @@ xkb_symbols "swap_lwin_caps" {
   replace key <CAPS> { [ Super_L ] };
   // modifier_map Mod3  { <LWIN> };
 };
-
-// Use LWIN as modifier key
-partial modifier_keys
-xkb_symbols "lwin_switch" {
-  key <LWIN> {
-    type[Group1]="ONE_LEVEL",
-    symbols[Group1] = [ ISO_Level3_Shift ]
-  };
-  include "level3(modifier_mapping)"
-};
-

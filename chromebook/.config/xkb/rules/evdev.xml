@@ -13,12 +13,6 @@
         <description>Swap Search Key and CAPS</description>
       </configItem>
       </option>
-      <option>
-      <configItem>
-        <name>chromebook:lwin_switch</name>
-        <description>Left Win chooses 3rd level</description>
-      </configItem>
-      </option>
     </group>
   </optionList>
 </xkbConfigRegistry>

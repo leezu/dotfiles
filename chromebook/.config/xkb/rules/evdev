@@ -1,4 +1,3 @@
 ! option = symbols
   chromebook:swap_lwin_caps    = +chromebook(swap_lwin_caps)
-  chromebook:lwin_switch       = +chromebook(lwin_switch)
 ! include %S/evdev
