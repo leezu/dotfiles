@@ -30,6 +30,7 @@
   (require 'org-secretary)
   (setq org-directory "~/org/"
         org-roam-directory "~/wiki/"
+        citar-notes-paths '("~/wiki/")
         org-cite-global-bibliography '("~/wiki/references.bib")
         org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
