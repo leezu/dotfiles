@@ -1,6 +1,12 @@
 ;;; ../.dotfiles/emacs/.doom.d/+org.el -*- lexical-binding: t; -*-
 
 
+(map! :map org-capture-mode-map
+      :localleader
+      (:prefix ("r" . "refile")
+       "a" #'org-capture-refile)  ;; Overwrite #'org-refile in org-capture-mode
+      )
+
 (use-package! org-super-agenda
   :after org-agenda
   :init
@@ -24,8 +30,11 @@
               gac-automatically-fetch-p 1
               gac-automatically-pull-p 1))
 
-(map! :leader :desc "Org Capture"
-      "o c" #'org-capture)
+(map! :leader
+      ;; Swap doom "o a" and  "o A"
+      :desc "Org agenda" "o a"  #'org-agenda
+      ;; Custom org-capture shortcut
+      :desc "Org Capture" "o c" #'org-capture)
 (after! org
   (require 'org-secretary)
   (setq org-directory "~/org/"
