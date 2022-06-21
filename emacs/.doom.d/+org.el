@@ -302,6 +302,19 @@ URL and CALLBACK; see `url-queue-retrieve'"
    ))
 
 
+(defun bibtex-clean-entry-reformat-reference-keys ()
+  (interactive)
+  (bibtex-clean-entry t))
+
+;; Overwrite bibtex-clean-entry keybinding with bibtex-clean-entry-reformat-reference-keys
+(map! :map bibtex-mode-map
+      "C-c C-c" #'bibtex-clean-entry-reformat-reference-keys
+      "C-c C-C" #'bibtex-clean-entry
+      :localleader
+      "c" #'bibtex-clean-entry-reformat-reference-keys
+      "C" #'bibtex-clean-entry
+      )
+
 ;; https://github.com/jkitchin/org-ref/blob/f058835db31c5f7266b9686c9da84ecf4ebc4314/org-ref-isbn.el
 (defun isbn-to-bibtex (isbn)
   "Get bibtex entry for ISBN and insert it into ~/wiki/references.bib.
