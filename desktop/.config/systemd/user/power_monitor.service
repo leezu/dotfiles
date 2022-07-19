@@ -1,0 +1,6 @@
+[Unit]
+Description=Monitor battery state and adapt power profile
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c '[[ $(cat /sys/class/power_supply/BAT*/status) = "Discharging" ]] && powerprofilesctl set power-saver || powerprofilesctl set performance'

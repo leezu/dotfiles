@@ -1,0 +1,9 @@
+[Unit]
+Description=Set power profile based on battery status
+
+[Timer]
+OnBootSec=1min
+OnCalendar=*-*-* *:*:00
+
+[Install]
+WantedBy=multi-user.target
