@@ -1,6 +1,0 @@
-[Unit]
-Description=Backup /home/data/lelausen/projects from dycpu2 to local ~/backups/dycpu2/
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/rsync -av --delete dycpu2:/home/data/lelausen/projects /home/leonard/backups/dycpu2/
