@@ -33,6 +33,7 @@
 
 
 (after! notmuch
+  (require 'notmuch-maildir-fcc)
   (setq +notmuch-sync-backend "muchsync"
         +notmuch-mail-folder "~/mail"
         notmuch-crypto-process-mime nil  ;; crypto
