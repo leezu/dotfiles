@@ -162,8 +162,7 @@
        :desc "Biblio lookup" "b" #'biblio-lookup
        :desc "Add pdf to library" "p" #'my-citar-pdf-handling))
 (after! citar
-  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook))
-  (setq citar-bibliography '("~/wiki/references.bib")
+  (setq citar-bibliography '("~/wiki/references.bib" "~/wiki/references-stable.bib")
         citar-open-note-function 'my-citar-org-open-notes
         citar-file-note-org-include '(org-id org-roam-ref)
         citar-at-point-function 'embark-act
