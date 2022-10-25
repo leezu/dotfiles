@@ -160,7 +160,7 @@
 (use-package! bibtex-completion)
 (use-package! gscholar-bibtex)
 (use-package biblio-gscholar
-  :load-path "lisp/")
+  :load-path "~/.doom.d/lisp/")
 (after! biblio
   (define-key biblio-selection-mode-map "A" 'my/biblio-selection-insert-end-of-bibfile)
   (setq biblio-bibtex-use-autokey t
