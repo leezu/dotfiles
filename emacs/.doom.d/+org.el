@@ -50,8 +50,7 @@
   (require 'org-secretary)
   (setq org-directory "~/org/"
         org-roam-directory "~/wiki/"
-        citar-notes-paths '("~/wiki/")
-        org-cite-global-bibliography '("~/wiki/references.bib")
+        org-cite-global-bibliography '("~/wiki/references.bib" "~/wiki/references-stable.bib")
         org-cite-insert-processor 'citar
         org-cite-follow-processor 'citar
         org-cite-activate-processor 'citar
@@ -71,7 +70,7 @@
   ;; Ensure that each captured entry gets a unique ID
   (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create)
   (setq org-id-link-to-org-use-id 'create-if-interactive
-        org-id-extra-files (append (directory-files "~/wiki" t ".*org" t) (directory-files "~/wiki/refs" t ".*org" t)))
+        org-id-extra-files (append (directory-files "~/wiki" t ".*org" t) (directory-files "~/wiki/references" t ".*org" t)))
 
   ;; Capture
   (setq org-capture-templates
@@ -148,15 +147,6 @@
            :unnarrowed t))
         ))
 
-;; Import as this is a deprecated command upstream in citar due to
-;; reliance on 'bibtex-completion'
-(require 'citar)  ; TODO defer require
-(defun my-citar-pdf-handling (keys-entries)
-  "Open or add PDF associated with the KEYS-ENTRIES to library."
-  (interactive (list (citar-select-refs :rebuild-cache current-prefix-arg)))
-  (bibtex-completion-open-pdf (citar--extract-keys keys-entries)
-                              'bibtex-completion-add-pdf-to-library))
-
 (use-package! bibtex-completion)
 (use-package! gscholar-bibtex)
 (use-package biblio-gscholar
@@ -168,100 +158,18 @@
 (map! :leader :nv "o b" nil)
 (map! :leader :desc "Bibliography"
       (:prefix ("o b" . "bibliography")
+       :desc "Citar" "c" #'citar-open
        :desc "Open note" "n" #'citar-open-notes
+       :desc "Open file" "f" #'citar-open-files
+       :desc "Add file" "F" #'citar-add-file-to-library
        :desc "Google scholar" "g" #'biblio-gscholar-lookup
-       :desc "Biblio lookup" "b" #'biblio-lookup
-       :desc "Add pdf to library" "p" #'my-citar-pdf-handling))
+       :desc "Biblio lookup" "b" #'biblio-lookup))
 (after! citar
   (setq citar-bibliography '("~/wiki/references.bib" "~/wiki/references-stable.bib")
-        citar-open-note-function 'my-citar-org-open-notes
-        citar-file-note-org-include '(org-id org-roam-ref)
         citar-at-point-function 'embark-act
-        bibtex-dialect 'biblatex
-        )
-
-  (require 'org-id)
-  (require 'org-roam)
-  (require 'bibtex-completion)
-
-  (cl-defmethod my/slug (title) ; Adapted from org-roam-node-slug
-    "Return the slug of title."
-    (let ((slug-trim-chars '(;; Combining Diacritical Marks https://www.unicode.org/charts/PDF/U0300.pdf
-                             768 ; U+0300 COMBINING GRAVE ACCENT
-                             769 ; U+0301 COMBINING ACUTE ACCENT
-                             770 ; U+0302 COMBINING CIRCUMFLEX ACCENT
-                             771 ; U+0303 COMBINING TILDE
-                             772 ; U+0304 COMBINING MACRON
-                             774 ; U+0306 COMBINING BREVE
-                             775 ; U+0307 COMBINING DOT ABOVE
-                             776 ; U+0308 COMBINING DIAERESIS
-                             777 ; U+0309 COMBINING HOOK ABOVE
-                             778 ; U+030A COMBINING RING ABOVE
-                             780 ; U+030C COMBINING CARON
-                             795 ; U+031B COMBINING HORN
-                             803 ; U+0323 COMBINING DOT BELOW
-                             804 ; U+0324 COMBINING DIAERESIS BELOW
-                             805 ; U+0325 COMBINING RING BELOW
-                             807 ; U+0327 COMBINING CEDILLA
-                             813 ; U+032D COMBINING CIRCUMFLEX ACCENT BELOW
-                             814 ; U+032E COMBINING BREVE BELOW
-                             816 ; U+0330 COMBINING TILDE BELOW
-                             817 ; U+0331 COMBINING MACRON BELOW
-                             )))
-      (cl-flet* ((nonspacing-mark-p (char)
-                                    (memq char slug-trim-chars))
-                 (strip-nonspacing-marks (s)
-                                         (string-glyph-compose
-                                          (apply #'string (seq-remove #'nonspacing-mark-p
-                                                                      (string-glyph-decompose s)))))
-                 (cl-replace (title pair)
-                             (replace-regexp-in-string (car pair) (cdr pair) title)))
-        (let* ((pairs `(("[^[:alnum:][:digit:]]" . "_") ;; convert anything not alphanumeric
-                        ("__*" . "_")                   ;; remove sequential underscores
-                        ("^_" . "")                     ;; remove starting underscore
-                        ("_$" . "")))                   ;; remove ending underscore
-               (slug (-reduce-from #'cl-replace (strip-nonspacing-marks title) pairs)))
-          (downcase slug)))))
-
-  (defun my-citar-org-open-notes (key entry)
-    "Open a note file from KEY and ENTRY."
-    (if (not org-id-locations) (org-id-locations-load))  ; Ensure org-id-locations is not nil
-    (if-let* ((entry (bibtex-completion-get-entry key))
-              (id (bibtex-completion-get-value "IDS" entry nil)))
-        (org-id-goto id)  ;; Support legacy entries with org-id UUID stored in bibtex entry IDS field
-      (if-let* ((hash (gethash key org-id-locations)))
-          (org-id-goto key)  ;; New approach: bibtex key is reused as org-id
-        (let* ((title (bibtex-completion-get-value "title" entry))
-               (author (car (s-split "," (bibtex-completion-shorten-authors (bibtex-completion-get-value "author" entry)))))
-               (year (or (bibtex-completion-get-value "year" entry)
-                         (car (split-string (bibtex-completion-get-value "date" entry
-                                                                         "")
-                                            "-"))))
-               (file (concat "~/wiki/refs/" year "-" (my/slug author) "-" (my/slug title) ".org"))
-               (template (citar-get-template 'note))
-               (note-meta
-                (when template
-                  (citar--format-entry-no-widths
-                   entry
-                   template)))
-               (org-id (when (member 'org-id citar-file-note-org-include)
-                         (concat "\n:ID:   " key)))
-               (org-roam-key (when (member 'org-roam-ref citar-file-note-org-include)
-                               (concat "\n:ROAM_REFS: @" key)))
-               (prop-drawer (or org-id org-roam-key))
-               (content
-                (concat (when prop-drawer ":PROPERTIES:")
-                        org-roam-key org-id
-                        (when prop-drawer "\n:END:\n")
-                        note-meta "\n")))
-
-
-          (funcall citar-file-open-function file)
-          ;; This just overrides other template insertion.
-          (erase-buffer)
-          (when template (insert content)
-                (org-id-add-location key file))))))
-  )
+        citar-library-paths '("~/library/")
+        citar-notes-paths '("~/wiki/")
+        bibtex-dialect 'biblatex))
 
 (after! bibtex
   (setq bibtex-autokey-year-length 4
@@ -304,7 +212,7 @@ URL and CALLBACK; see `url-queue-retrieve'"
 
 (after! bibtex-completion
   (setq
-   bibtex-completion-bibliography '("~/wiki/references.bib")
+   bibtex-completion-bibliography '("~/wiki/references.bib" "~/wiki/references-stable.bib")
    bibtex-completion-library-path '("~/library/")
    bibtex-completion-notes-path "~/wiki/"
    bibtex-completion-cite-default-command "autocite"
