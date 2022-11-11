@@ -169,6 +169,7 @@
         citar-at-point-function 'embark-act
         citar-library-paths '("~/library/")
         citar-notes-paths '("~/wiki/")
+        citar-org-roam-note-title-template "${title}"
         bibtex-dialect 'biblatex))
 
 (after! bibtex
