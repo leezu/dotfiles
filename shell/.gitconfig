@@ -17,3 +17,5 @@
 	required = true
 [github]
 	user = leezu
+[rerere]
+	enabled = true
