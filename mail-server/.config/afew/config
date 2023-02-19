@@ -7,14 +7,14 @@ sent_tag = sent
 [Filter.0]
 message = Killed
 query = tag:killed
-tags = -autoinbox;-inbox
+tags = -inbox
 
 # AEGEE Lists
 [HeaderMatchingFilter.1]:
 message = AEGEE
 pattern = AEGEE
 header = List-Id
-tags = +lists/aegee;-new;+autoinbox
+tags = +lists/aegee
 
 # MXNet dev
 # By default, messages for dev@mxnet.incubator.apache.org are only tagged as lists/dev
@@ -22,7 +22,7 @@ tags = +lists/aegee;-new;+autoinbox
 message = MXNet
 pattern = <dev.mxnet.incubator.apache.org>
 header = List-Id
-tags = -new;+lists/mxnet-dev
+tags = +lists/mxnet-dev
 
 # Auto-tagging
 # These filters remove the new tag, so subsequent filters won't be applied
@@ -31,22 +31,21 @@ message = Auto-tagging
 pattern = l4usen-[lL]-(?P<id>[a-z0-9\-]+)@[lL][aA][uU][sS][eE][nN]\.[nN][lL]
 header = Delivered-To
 splitmatch = -
-tags = -new;+{id};+autoinbox
+tags = +{id}
 
 # Folder based stuff for interoperability with mobile client
-# May need to overwrite some of the previously added autoinbox tags
 [Filter.1]
 message = uberspace Archive
 query = folder:uberspace/Archive
-tags = -new;-autoinbox;-inbox
+tags = -new;-inbox
 [Filter.2]
 message = uberspace Trash
 query = folder:'uberspace/Trash'
-tags = +deleted;-new;-autoinbox;-inbox
+tags = +deleted;-new;-inbox
 [Filter.3]
 message = uberspace Spam
 query = folder:'uberspace/Spam'
-tags = +spam;-new;-autoinbox;-inbox
+tags = +spam;-new;-inbox
 
 [InboxFilter]
 # Retags all messages not tagged as junk or killed as inbox
@@ -59,8 +58,7 @@ tags = -new
 
 [MailMover]
 # Multiple matching rules for one source folder results in copying mails to multiple target folders
-folders = uberspace/INBOX uberspace/TaggedInbox uberspace/Spam uberspace/Trash
-uberspace/INBOX = 'tag:spam AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted':uberspace/Spam 'tag:deleted AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:spam':uberspace/Trash 'tag:autoinbox AND NOT tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/TaggedInbox 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
-uberspace/TaggedInbox = 'tag:spam AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted':uberspace/Spam 'tag:deleted AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:spam':uberspace/Trash 'tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
-uberspace/Spam = 'tag:deleted AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:spam':uberspace/Trash 'tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'tag:autoinbox AND NOT tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/TaggedInbox 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
-uberspace/Trash = 'tag:spam AND NOT tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted':uberspace/Spam 'tag:inbox AND NOT tag:autoinbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'tag:autoinbox AND NOT tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/TaggedInbox 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted AND NOT tag:autoinbox':uberspace/Archive
+folders = uberspace/INBOX uberspace/Spam uberspace/Trash
+uberspace/INBOX = 'tag:spam AND NOT tag:inbox AND NOT tag:deleted':uberspace/Spam 'tag:deleted AND NOT tag:inbox AND NOT tag:spam':uberspace/Trash 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted':uberspace/Archive
+uberspace/Spam = 'tag:deleted AND NOT tag:inbox AND NOT tag:spam':uberspace/Trash 'tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted':uberspace/Archive
+uberspace/Trash = 'tag:spam AND NOT tag:inbox AND NOT tag:deleted':uberspace/Spam 'tag:inbox AND NOT tag:deleted AND NOT tag:spam':uberspace/INBOX 'NOT tag:inbox AND NOT tag:spam AND NOT tag:deleted':uberspace/Archive
