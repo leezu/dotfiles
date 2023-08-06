@@ -165,11 +165,16 @@
        :desc "Google scholar" "g" #'biblio-gscholar-lookup
        :desc "Biblio lookup" "b" #'biblio-lookup))
 (after! citar
+  (require 'citar-org-roam)
+  (citar-org-roam-mode)
   (setq citar-bibliography '("~/wiki/references.bib" "~/wiki/references-stable.bib")
         citar-at-point-function 'embark-act
         citar-library-paths '("~/library/")
         citar-notes-paths '("~/wiki/")
-        citar-org-roam-note-title-template "${title}"
+        citar-org-roam-note-title-template "Notes on \"${title}\""
+        citar-file-open-functions '(("html" . citar-file-open-external)
+                                    ("pdf" . citar-file-open-external)
+                                    (t . find-file))
         bibtex-dialect 'biblatex))
 
 (after! bibtex
