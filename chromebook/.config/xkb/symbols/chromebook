@@ -11,11 +11,3 @@ xkb_symbols "media_keys" {
     key <FK09> { [ XF86AudioLowerVolume ] };
     key <FK10> { [ XF86AudioRaiseVolume ] };
 };
-
-// Swap the functions of the left Win key (Search) and the CAPS key.
-partial modifier_keys
-xkb_symbols "swap_lwin_caps" {
-  replace key <LWIN> { [ Caps_Lock ] };
-  replace key <CAPS> { [ Super_L ] };
-  // modifier_map Mod3  { <LWIN> };
-};

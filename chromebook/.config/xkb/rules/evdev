@@ -1,4 +1,3 @@
 ! option = symbols
   chromebook:media_keys        = +chromebook(media_keys)
-  chromebook:swap_lwin_caps    = +chromebook(swap_lwin_caps)
 ! include %S/evdev
