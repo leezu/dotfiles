@@ -9,7 +9,6 @@
 (package! git-auto-commit-mode)
 (package! bibtex-completion)
 (package! gscholar-bibtex)
-(package! python-black)
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
