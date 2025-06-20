@@ -95,6 +95,7 @@
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
        magit             ; a git porcelain for Emacs
+       llm
        (lsp +eglot)        ; M-x vscode
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
