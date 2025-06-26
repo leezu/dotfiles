@@ -36,15 +36,6 @@
       ;; Custom org-capture shortcut
       :desc "Org Capture" "o c" #'org-capture)
 (after! org
-  ;; https://github.com/doomemacs/doomemacs/issues/5714#issuecomment-1018788028
-  (defadvice! dan/+org--restart-mode-h-careful-restart (fn &rest args)
-    :around #'+org--restart-mode-h
-    (let ((old-org-capture-current-plist (and (bound-and-true-p org-capture-mode)
-                                              (bound-and-true-p org-capture-current-plist))))
-      (apply fn args)
-      (when old-org-capture-current-plist
-        (setq-local org-capture-current-plist old-org-capture-current-plist)
-        (org-capture-mode +1))))
   (add-hook! 'org-capture-after-finalize-hook (org-element-cache-reset t))
 
   (require 'org-secretary)
