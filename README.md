@@ -18,7 +18,7 @@ Run `stow` with `--no-folding` to allow multiple stow directories.
 - desktop
   - To automatically switch to power-saver profile on battery, use `systemctl --user enable --now power_monitor.timer`
 - emacs
-  - `git clone https://github.com/syl20bnr/spacemacs.git ~/.emacs.d -b develop`
+  -  sudo apt install emacs emacs-editing-major-modes elpa-citar elpa-consult elpa-corfu elpa-doom-themes elpa-eat elpa-emacsql-sqlite elpa-evil elpa-magit elpa-orderless elpa-org-roam elpa-vertico
 - mail
   - Make sure `~/.msmtp-password.gpg` is present
 
