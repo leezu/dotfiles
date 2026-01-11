@@ -1,0 +1,196 @@
+#!/bin/bash
+# Sandbox Enter Script
+# ====================
+#
+# Enters a sandboxed shell for development projects using bubblewrap.
+# Only the current project directory is writable by default, preventing
+# accidental modification of files outside the project.
+#
+# Key Features:
+# - **Project isolation**: Only current project directory is writable by default
+# - **Rust toolchain**: ~/.rustup and ~/.cargo mounted read-only
+# - **Explicit mounts**: Additional paths require --bind or --ro-bind flags
+# - **Emacs integration**: Preserves PID/network namespaces for IDE connectivity
+# - **Visual indicator**: PS1 shows sandbox status
+# - **Persistent home**: Optional persistent home directory per project
+#
+# Usage:
+#   sandbox-enter [OPTIONS] [-- CMD [ARGS...]]
+#
+# Options:
+#   --bind SRC DEST       Add writable bind mount to sandbox
+#   --ro-bind SRC DEST    Add read-only bind mount to sandbox
+#   --device PATH         Add device access (e.g., /dev/ttyUSB0)
+#   --persistent-home     Use persistent home directory (mirrors project path)
+#   --gpu                 Enable GPU device passthrough
+#   --worktree-rw         Mount main git repo read-write for worktree commits
+#   -h, --help            Show this help
+#
+# Requirements:
+#   - bubblewrap (bwrap)
+#   - Must be run from within a git repo or directory with .sandbox-project
+
+set -euo pipefail
+
+# Source common sandbox library
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/sandbox-lib.sh"
+
+# Check dependencies
+sandbox_check_deps bwrap || exit 1
+
+# ============================================================================
+# Argument Parsing
+# ============================================================================
+
+usage() {
+    cat <<'EOF'
+Usage: sandbox-enter [OPTIONS] [-- CMD [ARGS...]]
+
+Enter a sandboxed shell for the current project.
+
+Options:
+    --bind SRC DEST       Add writable bind mount to sandbox
+    --ro-bind SRC DEST    Add read-only bind mount to sandbox
+    --device PATH         Add device access (e.g., /dev/ttyUSB0)
+    --persistent-home     Use persistent home directory (mirrors project path)
+    --gpu                 Enable GPU device passthrough
+    --worktree-rw         Mount main git repo read-write for worktree commits
+    -h, --help            Show this help
+
+Examples:
+    sandbox-enter                              # Enter interactive sandbox shell
+    sandbox-enter --persistent-home            # Enable persistent home directory
+    sandbox-enter --gpu                        # Enable GPU access
+    sandbox-enter --bind ~/.cache/pip ~/.cache/pip   # Add writable pip cache
+    sandbox-enter --device /dev/ttyUSB0        # Add serial device access
+    sandbox-enter -- make build                # Run 'make build' in sandbox
+
+Security:
+    Only the project directory is writable by default. Rust toolchain
+    (~/.rustup, ~/.cargo) is mounted read-only. Use --ro-bind for other paths.
+
+Persistence:
+    Without --persistent-home: Home is ephemeral, history at ~/.local/state/sandbox/<escaped-path>/.zhistory
+    With --persistent-home: Full writable home at ~/.local/state/sandbox/<escaped-path>/
+    Escaping: % -> %25, - -> %2d, / -> -
+    Example: /home/user/my-app -> ~/.local/state/sandbox/-home-user-my%2dapp/
+EOF
+}
+
+SANDBOX_CUSTOM_BINDS=()
+SANDBOX_PERSISTENT_HOME=false
+SANDBOX_GPU=false
+SANDBOX_WORKTREE_RW=false
+CUSTOM_DEVICES=()
+EXEC_CMD=()
+
+while [[ $# -gt 0 ]]; do
+    if sandbox_parse_option "$@"; then
+        shift "$SANDBOX_SHIFT"
+        continue
+    elif [[ $? -eq 2 ]]; then
+        exit 1  # Parse error
+    fi
+    case "$1" in
+        --device)
+            [[ $# -lt 2 ]] && { echo "Error: --device requires PATH" >&2; exit 1; }
+            CUSTOM_DEVICES+=("$2")
+            shift 2
+            ;;
+        --)
+            shift
+            EXEC_CMD=("$@")
+            break
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Error: unknown option '$1'" >&2
+            echo "Use --help for usage information" >&2
+            exit 1
+            ;;
+    esac
+done
+
+# ============================================================================
+# Main
+# ============================================================================
+
+# Find project root
+PROJECT_ROOT=$(sandbox_find_project_root .git .sandbox-project) || {
+    echo "Error: not in a project directory (no .git or .sandbox-project found)" >&2
+    echo "Create a .sandbox-project file to mark this directory as a project root." >&2
+    exit 1
+}
+
+# Initialize sandbox with common binds
+sandbox_init
+
+# Add GPU devices if requested
+[[ "$SANDBOX_GPU" == true ]] && sandbox_add_gpu_devices
+
+# Mount main git directory for worktree support
+WORKTREE_MAIN=$(sandbox_get_worktree_main)
+if [[ -n "$WORKTREE_MAIN" ]]; then
+    if [[ "$SANDBOX_WORKTREE_RW" == true ]]; then
+        sandbox_add_bind "$WORKTREE_MAIN"
+    else
+        sandbox_add_ro_bind "$WORKTREE_MAIN"
+    fi
+fi
+
+# Add Rust toolchain
+sandbox_add_rust_toolchain
+
+# Add shell configs (read-only, needed for both modes)
+sandbox_add_shell_configs
+
+# Get project-specific state directory (used for both ephemeral and persistent modes)
+SANDBOX_STATE_DIR=$(sandbox_get_persistent_home "$PROJECT_ROOT")
+
+# Setup home directory strategy
+if [[ "$SANDBOX_PERSISTENT_HOME" == true ]]; then
+    mkdir -p "$SANDBOX_STATE_DIR" 2>/dev/null
+    HOME_MODE="bind:$SANDBOX_STATE_DIR"
+else
+    # Shell history: use project-specific sandbox state directory
+    mkdir -p "$SANDBOX_STATE_DIR" 2>/dev/null
+    sandbox_add_bind "$SANDBOX_STATE_DIR"
+    HOME_MODE="ephemeral"
+fi
+
+# Custom devices from arguments
+for dev in "${CUSTOM_DEVICES[@]}"; do
+    sandbox_add_dev_bind "$dev"
+done
+
+# Determine what to run
+if [[ ${#EXEC_CMD[@]} -gt 0 ]]; then
+    SHELL_CMD=("${EXEC_CMD[@]}")
+else
+    SHELL_CMD=("${SHELL:-/bin/bash}")
+fi
+
+# Sandbox environment variables (detected by shell config for prompt indicator)
+SANDBOX_ENV_VARS=(
+    --setenv SANDBOX_ACTIVE 1
+    --setenv SANDBOX_ROOT "$PROJECT_ROOT"
+)
+
+# Set HISTFILE based on home directory mode
+if [[ "$SANDBOX_PERSISTENT_HOME" == true ]]; then
+    # With persistent home, use default location inside persistent home
+    SANDBOX_ENV_VARS+=(--setenv HISTFILE "$HOME/.zhistory")
+else
+    # Without persistent home, use project-specific state directory
+    SANDBOX_ENV_VARS+=(--setenv HISTFILE "$SANDBOX_STATE_DIR/.zhistory")
+fi
+
+# Build bwrap command using library function
+sandbox_build_cmd "$PROJECT_ROOT" "$HOME_MODE" "${SHELL_CMD[@]}"
+
+echo "Entering sandbox [root: $PROJECT_ROOT]" >&2
+exec "${SANDBOX_BWRAP_CMD[@]}"

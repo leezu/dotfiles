@@ -1,0 +1,242 @@
+#!/bin/bash
+# Claude Code Wrapper Script
+# ==========================
+#
+# Runs Anthropic's Claude Code CLI in a bubblewrap sandbox with strict isolation:
+# only the current project directory is accessible (read-write), preventing
+# accidental modification or deletion of files outside the project (e.g., your
+# entire home directory). The script enforces that you run it from within a
+# project folder (.git or .claude-project) to avoid inadvertent exposure.
+#
+# Key Features:
+# - **Sandboxing**: Uses bubblewrap to isolate Claude from the rest of your system
+# - **Project isolation**: Only current directory + ~/.claude config are writable
+# - **Emacs integration**: Preserves PID/network namespaces for IDE connectivity
+# - **Auto-download**: Fetches and verifies upstream claude-bin if not present
+#
+# Usage:
+#   claude [OPTIONS] [CLAUDE_ARGS...]
+#
+# Options:
+#   --force-update        Force update check and re-download
+#   --install-only        Download claude-bin if not yet present then exit
+#   --bind SRC DEST       Add writable bind mount to sandbox
+#   --ro-bind SRC DEST    Add read-only bind mount to sandbox
+#   --gpu                 Enable GPU device passthrough
+#   --worktree-rw         Mount main git repo read-write for worktree commits
+#   --persistent-home     Use persistent home directory (mirrors project path)
+#
+# Requirements:
+#   - bubblewrap (bwrap)
+#   - Must be run from within a git repo or directory with .claude-project
+
+# Source common sandbox library
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/sandbox-lib.sh"
+
+# Check for required dependencies
+sandbox_check_deps bwrap curl || exit 1
+
+# Check for project root
+PROJECT_ROOT=$(sandbox_find_project_root .git .claude-project) || {
+    echo "No project root found" >&2
+    exit 1
+}
+
+# ============================================================================
+# Version Management
+# ============================================================================
+
+CLAUDE_BIN="$HOME/.local/bin/claude-bin"
+CLAUDE_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/claude-wrapper"
+VERSION_FILE="$CLAUDE_CACHE_DIR/version"
+LAST_CHECK_FILE="$CLAUDE_CACHE_DIR/last_check"
+
+check_for_updates() {
+    local NOW=$(date +%s)
+    local LAST=$(cat "$LAST_CHECK_FILE" 2>/dev/null || echo 0)
+
+    # Check max once per day (86400 seconds)
+    if (( NOW - LAST < 86400 )); then
+        return 0  # Already checked today
+    fi
+
+    local CURRENT=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
+    local LATEST=$(curl -fsSL https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/latest 2>/dev/null)
+
+    mkdir -p "$CLAUDE_CACHE_DIR"
+    echo "$NOW" > "$LAST_CHECK_FILE"
+
+    if [[ -n "$LATEST" && "$CURRENT" != "$LATEST" ]]; then
+        echo "Claude update available: $CURRENT -> $LATEST" >&2
+        echo "Deleting existing claude-bin." >&2
+        rm -f "$CLAUDE_BIN" "$VERSION_FILE"
+    fi
+}
+
+download_claude() {
+    echo "claude-bin not found, checking for latest version online..." >&2
+
+    # Detect platform
+    OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+    ARCH=$(uname -m)
+
+    case "$OS" in
+        linux) PLATFORM="linux" ;;
+        *) echo "Bubblewrap only supports Linux. Unsupported OS: $OS" >&2; exit 1 ;;
+    esac
+
+    case "$ARCH" in
+        x86_64) PLATFORM="$PLATFORM-x64" ;;
+        aarch64|arm64) PLATFORM="$PLATFORM-arm64" ;;
+        *) echo "Unsupported architecture: $ARCH" >&2; exit 1 ;;
+    esac
+
+    # Add musl detection for Linux
+    if [[ "$PLATFORM" == linux-* ]] && ldd --version 2>&1 | grep -q musl; then
+        PLATFORM="$PLATFORM-musl"
+    fi
+
+    # Get latest version and manifest
+    VERSION=$(curl -fsSL https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/latest)
+    MANIFEST=$(curl -fsSL https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/$VERSION/manifest.json)
+
+    # Extract checksum for platform
+    EXPECTED_CHECKSUM=$(echo "$MANIFEST" | grep -A2 "\"$PLATFORM\"" | grep checksum | cut -d'"' -f4)
+
+    if [[ -z "$EXPECTED_CHECKSUM" ]]; then
+        echo "Platform $PLATFORM not found in manifest" >&2
+        exit 1
+    fi
+
+    # Download binary
+    URL="https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/$VERSION/$PLATFORM/claude"
+    mkdir -p "$HOME/.local/bin"
+    echo "Downloading claude version $VERSION" >&2
+    curl -fSL --progress-bar "$URL" -o "$CLAUDE_BIN.tmp"
+
+    # Verify checksum
+    ACTUAL_CHECKSUM=$(sha256sum "$CLAUDE_BIN.tmp" | cut -d' ' -f1)
+    if [[ "$ACTUAL_CHECKSUM" != "$EXPECTED_CHECKSUM" ]]; then
+        echo "Checksum mismatch! Expected: $EXPECTED_CHECKSUM, Got: $ACTUAL_CHECKSUM" >&2
+        rm "$CLAUDE_BIN.tmp"
+        exit 1
+    fi
+
+    mv "$CLAUDE_BIN.tmp" "$CLAUDE_BIN"
+    chmod +x "$CLAUDE_BIN"
+    echo "Downloaded claude" >&2
+
+    # Store version
+    mkdir -p "$CLAUDE_CACHE_DIR"
+    echo "$VERSION" > "$VERSION_FILE"
+}
+
+# ============================================================================
+# Argument Parsing
+# ============================================================================
+
+FORCE_UPDATE=false
+INSTALL_ONLY=false
+SANDBOX_CUSTOM_BINDS=()
+SANDBOX_PERSISTENT_HOME=false
+SANDBOX_GPU=false
+SANDBOX_WORKTREE_RW=false
+CLAUDE_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+    if sandbox_parse_option "$@"; then
+        shift "$SANDBOX_SHIFT"
+        continue
+    elif [[ $? -eq 2 ]]; then
+        exit 1  # Parse error
+    fi
+    case "$1" in
+        --force-update)
+            FORCE_UPDATE=true
+            shift
+            ;;
+        --install-only)
+            INSTALL_ONLY=true
+            shift
+            ;;
+        *)
+            CLAUDE_ARGS+=("$1")
+            shift
+            ;;
+    esac
+done
+
+# ============================================================================
+# Handle Updates and Downloads
+# ============================================================================
+
+if [[ "$FORCE_UPDATE" == true ]]; then
+    echo "Forcing update..." >&2
+    echo "Deleting version $(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")" >&2
+    rm -f "$CLAUDE_BIN" "$VERSION_FILE"
+elif [[ -f "$CLAUDE_BIN" ]]; then
+    check_for_updates
+fi
+
+if [[ ! -f "$CLAUDE_BIN" ]]; then
+    download_claude
+fi
+
+if [[ "$INSTALL_ONLY" == true ]]; then
+    echo "Install/update complete. Claude binary at: $CLAUDE_BIN" >&2
+    exit 0
+fi
+
+# ============================================================================
+# Setup Sandbox
+# ============================================================================
+
+# Initialize sandbox with common binds
+sandbox_init
+
+# Add GPU devices if requested
+[[ "$SANDBOX_GPU" == true ]] && sandbox_add_gpu_devices
+
+# Mount main git directory for worktree support
+WORKTREE_MAIN=$(sandbox_get_worktree_main)
+if [[ -n "$WORKTREE_MAIN" ]]; then
+    if [[ "$SANDBOX_WORKTREE_RW" == true ]]; then
+        sandbox_add_bind "$WORKTREE_MAIN"
+    else
+        sandbox_add_ro_bind "$WORKTREE_MAIN"
+    fi
+fi
+
+# Add Rust toolchain
+sandbox_add_rust_toolchain
+
+# Add shell configs (needed for persistent home mode)
+sandbox_add_shell_configs
+
+# Setup home directory mode
+if [[ "$SANDBOX_PERSISTENT_HOME" == true ]]; then
+    SANDBOX_HOME=$(sandbox_get_persistent_home "$PROJECT_ROOT")
+    mkdir -p "$SANDBOX_HOME" 2>/dev/null
+    HOME_MODE="bind:$SANDBOX_HOME"
+else
+    HOME_MODE="ephemeral"
+fi
+
+# Claude-specific directories
+mkdir -p "$HOME/.claude" /tmp/claude
+[[ -f "$HOME/.claude.json" ]] || echo '{}' > "$HOME/.claude.json"
+
+sandbox_add_bind "$HOME/.claude"
+SANDBOX_OPTIONAL_BINDS+=(--bind "$HOME/.claude.json" "$HOME/.claude.json")
+SANDBOX_OPTIONAL_BINDS+=(--bind /tmp/claude /tmp/claude)
+
+# Bind claude binary
+SANDBOX_OPTIONAL_BINDS+=(--bind "$CLAUDE_BIN" "$HOME/.local/bin/claude")
+
+# ============================================================================
+# Execute
+# ============================================================================
+
+sandbox_build_cmd "$PROJECT_ROOT" "$HOME_MODE" claude "${CLAUDE_ARGS[@]}"
+exec "${SANDBOX_BWRAP_CMD[@]}"
