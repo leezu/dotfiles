@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ "$1" == "0000000000000000000000000000000000000000" ]]; then
+	# Get the main worktree path
+	basePath="$(git rev-parse --path-format=absolute --git-common-dir)"
+	basePath="${basePath%/.git}"
+
+	# Reflink .venv from main tree if it exists (Btrfs)
+	if [[ -d "$basePath/.venv" ]]; then
+		if [[ ! -e "$(pwd)/.venv" ]]; then
+			echo "Creating reflink copy of .venv from main tree..."
+			cp -r --reflink=auto "$basePath/.venv" "$(pwd)/.venv"
+		fi
+	fi
+fi

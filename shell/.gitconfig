@@ -19,3 +19,5 @@
 	user = leezu
 [rerere]
 	enabled = true
+[core]
+	hooksPath = ~/.githooks
