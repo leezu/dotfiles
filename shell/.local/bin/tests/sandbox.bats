@@ -54,6 +54,14 @@ teardown() {
     [ "$status" -eq 1 ]
 }
 
+@test "find project root: nested repos finds highest" {
+    mkdir -p "$TEST_PROJECT/nested/.git"
+    cd "$TEST_PROJECT/nested"
+    run sandbox_find_project_root .git
+    [ "$status" -eq 0 ]
+    [ "$output" = "$TEST_PROJECT" ]  # Should find outer, not inner
+}
+
 # === Unit Tests: sandbox_build_cmd ===
 
 @test "sandbox_build_cmd includes project dir" {

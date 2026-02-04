@@ -52,12 +52,17 @@ sandbox_find_project_root() {
     [[ ${#markers[@]} -eq 0 ]] && markers=(".git")
 
     local d="$PWD"
+    local result=""
     while [[ "$d" != "/" ]]; do
         for marker in "${markers[@]}"; do
-            [[ -e "$d/$marker" ]] && echo "$d" && return 0
+            if [[ -e "$d/$marker" ]]; then
+                result="$d"
+                break  # Found a match at this level, continue upward
+            fi
         done
         d="$(dirname "$d")"
     done
+    [[ -n "$result" ]] && echo "$result" && return 0
     return 1
 }
 
