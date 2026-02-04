@@ -291,7 +291,7 @@ sandbox_init() {
     SANDBOX_DEVICE_BINDS=()
     # Preserve SANDBOX_CUSTOM_BINDS if already populated by argument parsing
     [[ -v SANDBOX_CUSTOM_BINDS ]] || SANDBOX_CUSTOM_BINDS=()
-    SANDBOX_ENV_VARS=()
+    SANDBOX_ENV_VARS=(--setenv TZ UTC)
 }
 
 # Build the bwrap command array without executing
