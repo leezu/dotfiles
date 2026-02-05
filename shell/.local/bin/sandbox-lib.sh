@@ -120,8 +120,8 @@ sandbox_build_system_binds() {
     )
 
     # Architecture-specific library directories
-    [[ -d /lib64 ]] && SANDBOX_SYSTEM_BINDS+=(--ro-bind /lib64 /lib64)
-    [[ -d /lib32 ]] && SANDBOX_SYSTEM_BINDS+=(--ro-bind /lib32 /lib32)
+    [[ -d /lib64 ]] && SANDBOX_SYSTEM_BINDS+=(--ro-bind /lib64 /lib64) || true
+    [[ -d /lib32 ]] && SANDBOX_SYSTEM_BINDS+=(--ro-bind /lib32 /lib32) || true
 }
 
 # ============================================================================
