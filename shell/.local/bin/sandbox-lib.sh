@@ -162,6 +162,14 @@ sandbox_add_rust_toolchain() {
     sandbox_add_ro_bind "$HOME/.cargo"
 }
 
+# Add LaTeX toolchain (read-only)
+# TeX binaries and shared data are already available via /usr,
+# but generated font/format caches live under /var
+sandbox_add_latex_toolchain() {
+    sandbox_add_ro_bind /var/lib/texmf
+    sandbox_add_ro_bind /var/cache/texmf
+}
+
 # ============================================================================
 # GPU Device Passthrough
 # ============================================================================
