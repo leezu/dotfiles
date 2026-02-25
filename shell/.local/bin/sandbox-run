@@ -1,0 +1,164 @@
+#!/bin/bash
+# Sandbox Run Script
+# ==================
+#
+# Runs an arbitrary command in a bubblewrap sandbox. Generic alternative to
+# tool-specific wrappers — any binary can be sandboxed without writing a
+# dedicated wrapper script.
+#
+# Usage:
+#   sandbox-run [OPTIONS] COMMAND [ARGS...]
+#
+# Options:
+#   --bind SRC DEST       Add writable bind mount to sandbox
+#   --ro-bind SRC DEST    Add read-only bind mount to sandbox
+#   --persistent-home     Use persistent home directory (mirrors project path)
+#   --gpu                 Enable GPU device passthrough
+#   --worktree-rw         Mount main git repo read-write for worktree commits
+#   -h, --help            Show this help
+#
+# Examples:
+#   sandbox-run ls /tmp
+#   sandbox-run node --version
+#   sandbox-run --bind ~/.config/foo ~/.config/foo -- foo-cli
+
+set -euo pipefail
+
+# Source common sandbox library
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/sandbox-lib.sh"
+
+# Check dependencies
+sandbox_check_deps bwrap || exit 1
+
+# ============================================================================
+# Argument Parsing
+# ============================================================================
+
+usage() {
+    cat <<'EOF'
+Usage: sandbox-run [OPTIONS] COMMAND [ARGS...]
+
+Run a command in a bubblewrap sandbox.
+
+Options:
+    --bind SRC DEST       Add writable bind mount to sandbox
+    --ro-bind SRC DEST    Add read-only bind mount to sandbox
+    --persistent-home     Use persistent home directory (mirrors project path)
+    --gpu                 Enable GPU device passthrough
+    --worktree-rw         Mount main git repo read-write for worktree commits
+    -h, --help            Show this help
+
+Examples:
+    sandbox-run ls /tmp                              # Run ls in sandbox
+    sandbox-run node --version                        # Run node in sandbox
+    sandbox-run --bind ~/.config/foo ~/.config/foo -- foo-cli   # With extra binds
+EOF
+}
+
+SANDBOX_CUSTOM_BINDS=()
+SANDBOX_PERSISTENT_HOME=false
+SANDBOX_GPU=false
+SANDBOX_WORKTREE_RW=false
+RUN_CMD=()
+
+while [[ $# -gt 0 ]]; do
+    if sandbox_parse_option "$@"; then
+        shift "$SANDBOX_SHIFT"
+        continue
+    elif [[ $? -eq 2 ]]; then
+        exit 1  # Parse error
+    fi
+    case "$1" in
+        --)
+            shift
+            RUN_CMD=("$@")
+            break
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            echo "Error: unknown option '$1'" >&2
+            echo "Use --help for usage information" >&2
+            exit 1
+            ;;
+        *)
+            RUN_CMD=("$@")
+            break
+            ;;
+    esac
+done
+
+if [[ ${#RUN_CMD[@]} -eq 0 ]]; then
+    echo "Error: no command specified" >&2
+    echo "Use --help for usage information" >&2
+    exit 1
+fi
+
+# ============================================================================
+# Resolve Command Binary
+# ============================================================================
+
+CMD_NAME="${RUN_CMD[0]}"
+CMD_PATH=$(command -v "$CMD_NAME" 2>/dev/null) || {
+    echo "Error: command not found: $CMD_NAME" >&2
+    exit 1
+}
+CMD_REAL=$(readlink -f "$CMD_PATH")
+
+# Replace command name with resolved absolute path
+RUN_CMD[0]="$CMD_REAL"
+
+# ============================================================================
+# Main
+# ============================================================================
+
+# Find project root
+PROJECT_ROOT=$(sandbox_find_project_root .git .sandbox-project) || {
+    echo "Error: not in a project directory (no .git or .sandbox-project found)" >&2
+    echo "Create a .sandbox-project file to mark this directory as a project root." >&2
+    exit 1
+}
+
+# Initialize sandbox with common binds
+sandbox_init
+
+# Add GPU devices if requested
+[[ "$SANDBOX_GPU" == true ]] && sandbox_add_gpu_devices
+
+# Mount main git directory for worktree support
+WORKTREE_MAIN=$(sandbox_get_worktree_main)
+if [[ -n "$WORKTREE_MAIN" ]]; then
+    if [[ "$SANDBOX_WORKTREE_RW" == true ]]; then
+        sandbox_add_bind "$WORKTREE_MAIN"
+    else
+        sandbox_add_ro_bind "$WORKTREE_MAIN"
+    fi
+fi
+
+# Bind the command's directory (as found on PATH) so companion binaries
+# that are looked up via PATH work (e.g. node spawning npm).
+CMD_PATH_DIR=$(cd "$(dirname "$CMD_PATH")" && pwd)
+sandbox_add_ro_bind "$CMD_PATH_DIR"
+
+# If the command is a symlink, also bind the real target's directory
+# so the symlink resolves inside the sandbox.
+CMD_REAL_DIR=$(dirname "$CMD_REAL")
+if [[ "$CMD_REAL_DIR" != "$CMD_PATH_DIR" ]]; then
+    sandbox_add_ro_bind "$CMD_REAL_DIR"
+fi
+
+# Setup home directory mode
+if [[ "$SANDBOX_PERSISTENT_HOME" == true ]]; then
+    SANDBOX_HOME=$(sandbox_get_persistent_home "$PROJECT_ROOT")
+    mkdir -p "$SANDBOX_HOME" 2>/dev/null
+    HOME_MODE="bind:$SANDBOX_HOME"
+else
+    HOME_MODE="ephemeral"
+fi
+
+# Build and execute
+sandbox_build_cmd "$PROJECT_ROOT" "$HOME_MODE" "${RUN_CMD[@]}"
+exec "${SANDBOX_BWRAP_CMD[@]}"
