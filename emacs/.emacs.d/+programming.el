@@ -32,6 +32,11 @@
 	  (rust-mode . rust-ts-mode)
 	  )))
 
+;; LaTeX
+(use-package auctex
+  :config
+  (setq TeX-view-program-selection '((output-pdf "xdg-open"))))
+
 ;; List common modes in case emacs-major-editing-modes debian package is not available/installed
 (use-package markdown-mode
   :ensure t)
