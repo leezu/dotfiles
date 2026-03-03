@@ -20,7 +20,7 @@
     :models '((openai.gpt-oss-20b-1:0 :capabilities (reasoning))
               (openai.gpt-oss-120b-1:0 :capabilities (reasoning))))
   (setq gptel-backend (gptel-get-backend "Bedrock"))
-  (setq gptel-model 'claude-opus-4-5-20251111)
+  (setq gptel-model 'claude-opus-4-6)
   (setq gptel-max-tokens 32000))
 
 
