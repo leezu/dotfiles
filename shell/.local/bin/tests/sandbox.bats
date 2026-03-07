@@ -7,6 +7,9 @@
 
 # Setup: create temp project dir
 setup() {
+    ORIGINAL_HOME="$HOME"
+    HOME="$(mktemp -d)"
+
     SCRIPT_DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")/.." && pwd)"
     source "$SCRIPT_DIR/sandbox-lib.sh"
 
@@ -16,6 +19,8 @@ setup() {
 
 teardown() {
     rm -rf "$TEST_PROJECT"
+    rm -rf "$HOME"
+    HOME="$ORIGINAL_HOME"
 }
 
 # === Unit Tests: sandbox_get_persistent_home ===
@@ -60,6 +65,47 @@ teardown() {
     run sandbox_find_project_root .git
     [ "$status" -eq 0 ]
     [ "$output" = "$TEST_PROJECT" ]  # Should find outer, not inner
+}
+
+# === Unit Tests: sandbox_get_worktree_main ===
+
+@test "worktree main: valid gitdir returns main .git path" {
+    local main_repo="$TEST_PROJECT/main-repo"
+    local worktree="$TEST_PROJECT/wt-valid"
+    mkdir -p "$main_repo/.git/worktrees/wt-valid" "$worktree"
+    echo "gitdir: $main_repo/.git/worktrees/wt-valid" > "$worktree/.git"
+
+    cd "$worktree"
+    run sandbox_get_worktree_main
+    [ "$status" -eq 0 ]
+    [ "$output" = "$main_repo/.git" ]
+}
+
+@test "worktree main: invalid gitdir outside worktrees is rejected" {
+    local worktree="$TEST_PROJECT/wt-invalid-etc"
+    mkdir -p "$worktree"
+    echo "gitdir: /etc" > "$worktree/.git"
+
+    cd "$worktree"
+    run sandbox_get_worktree_main
+    [ "$status" -eq 1 ]
+}
+
+@test "worktree main: invalid relative gitdir is rejected" {
+    local worktree="$TEST_PROJECT/wt-invalid-relative"
+    mkdir -p "$worktree"
+    echo "gitdir: ../not-a-worktree" > "$worktree/.git"
+
+    cd "$worktree"
+    run sandbox_get_worktree_main
+    [ "$status" -eq 1 ]
+}
+
+@test "worktree main: regular repo returns empty" {
+    cd "$TEST_PROJECT"
+    run sandbox_get_worktree_main
+    [ "$status" -eq 0 ]
+    [ -z "$output" ]
 }
 
 # === Unit Tests: sandbox_build_cmd ===

@@ -223,28 +223,37 @@ sandbox_get_persistent_home() {
 # ============================================================================
 
 # Get the main git directory for worktree support
-# Returns the repo root containing .git directory, or empty if not a worktree
+# Returns the main repo .git directory path, or empty if not a worktree/invalid
 sandbox_get_worktree_main() {
     local d="$PWD"
     while [[ "$d" != "/" ]]; do
         if [[ -f "$d/.git" ]]; then
-            # It's a worktree - .git is a file pointing to the main repo
-            local gitdir
-            gitdir=$(sed -n 's/^gitdir: //p' "$d/.git")
-            [[ -z "$gitdir" ]] && return
+            # Worktree uses a .git file containing "gitdir: <path>".
+            # Validate strictly to avoid mounting arbitrary host paths.
+            local gitfile_line gitdir
+            IFS= read -r gitfile_line < "$d/.git" || return
+            [[ "$gitfile_line" == gitdir:\ * ]] || return
+            gitdir="${gitfile_line#gitdir: }"
+            [[ -n "$gitdir" ]] || return
 
-            # Convert to absolute path if relative
+            # Convert relative gitdir path to absolute against worktree root.
             if [[ "$gitdir" != /* ]]; then
                 gitdir="$d/$gitdir"
             fi
 
-            # Resolve to canonical path and get main .git dir
-            # /path/to/repo/.git/worktrees/branch -> /path/to/repo/.git
-            gitdir=$(cd "$(dirname "$gitdir")" && pwd)/$(basename "$gitdir")
-            local main_gitdir="${gitdir%/worktrees/*}"
+            # Canonical path must exist and must look like .../.git/worktrees/<name>
+            # so we only trust valid worktree metadata locations.
+            gitdir="$(realpath -e "$gitdir" 2>/dev/null)" || return
+            [[ "$gitdir" == */.git/worktrees/* ]] || return
 
-            # Return the directory containing .git (the repo root)
-            echo "${main_gitdir%/.git}"
+            # Derive main .git directory and validate relationship.
+            local main_gitdir="${gitdir%/worktrees/*}"
+            [[ "$main_gitdir" == */.git ]] || return
+            [[ -d "$main_gitdir/worktrees" ]] || return
+            [[ "$gitdir" == "$main_gitdir/worktrees/"* ]] || return
+
+            # Return main .git directory directly (minimal mount scope).
+            echo "$main_gitdir"
             return
         elif [[ -d "$d/.git" ]]; then
             # Regular repo, not a worktree
