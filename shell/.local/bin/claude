@@ -69,8 +69,7 @@ check_for_updates() {
 
     if [[ -n "$LATEST" && "$CURRENT" != "$LATEST" ]]; then
         echo "Claude update available: $CURRENT -> $LATEST" >&2
-        echo "Deleting existing claude-bin." >&2
-        rm -f "$CLAUDE_BIN" "$VERSION_FILE"
+        rm -f "$VERSION_FILE"
     fi
 }
 
@@ -173,13 +172,13 @@ done
 
 if [[ "$FORCE_UPDATE" == true ]]; then
     echo "Forcing update..." >&2
-    echo "Deleting version $(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")" >&2
-    rm -f "$CLAUDE_BIN" "$VERSION_FILE"
+    echo "Updating from version $(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")" >&2
+    rm -f "$VERSION_FILE"
 elif [[ -f "$CLAUDE_BIN" ]]; then
     check_for_updates
 fi
 
-if [[ ! -f "$CLAUDE_BIN" ]]; then
+if [[ ! -f "$CLAUDE_BIN" ]] || [[ ! -f "$VERSION_FILE" ]]; then
     download_claude
 fi
 
@@ -232,7 +231,7 @@ SANDBOX_OPTIONAL_BINDS+=(--bind "$HOME/.claude.json" "$HOME/.claude.json")
 SANDBOX_OPTIONAL_BINDS+=(--bind /tmp/claude /tmp/claude)
 
 # Bind claude binary
-SANDBOX_OPTIONAL_BINDS+=(--bind "$CLAUDE_BIN" "$HOME/.local/bin/claude")
+SANDBOX_OPTIONAL_BINDS+=(--ro-bind "$CLAUDE_BIN" "$HOME/.local/bin/claude")
 
 # ============================================================================
 # Execute
