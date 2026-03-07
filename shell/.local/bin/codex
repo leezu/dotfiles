@@ -1,0 +1,106 @@
+#!/bin/bash
+# Codex CLI Wrapper Script
+# ========================
+#
+# Runs OpenAI's Codex CLI in a bubblewrap sandbox with strict isolation:
+# only the current project directory is accessible (read-write), preventing
+# accidental modification or deletion of files outside the project.
+#
+# Usage:
+#   codex [OPTIONS] [CODEX_ARGS...]
+#
+# Options:
+#   --bind SRC DEST       Add writable bind mount to sandbox
+#   --ro-bind SRC DEST    Add read-only bind mount to sandbox
+#   --gpu                 Enable GPU device passthrough
+#   --worktree-rw         Mount main git repo read-write for worktree commits
+#   --persistent-home     Use persistent home directory (mirrors project path)
+#
+# Requirements:
+#   - bubblewrap (bwrap)
+#   - codex-bin at ~/.local/bin/codex-bin
+#   - Must be run from within a git repo
+
+# Source common sandbox library
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+source "$SCRIPT_DIR/sandbox-lib.sh"
+
+# Check for required dependencies
+sandbox_check_deps bwrap || exit 1
+
+CODEX_BIN="$HOME/.local/bin/codex-bin"
+if [[ ! -f "$CODEX_BIN" ]]; then
+    echo "Error: codex-bin not found at $CODEX_BIN" >&2
+    exit 1
+fi
+
+# Check for project root
+PROJECT_ROOT=$(sandbox_find_project_root .git) || {
+    echo "No project root found (looking for .git)" >&2
+    exit 1
+}
+
+# ============================================================================
+# Argument Parsing
+# ============================================================================
+
+SANDBOX_CUSTOM_BINDS=()
+SANDBOX_PERSISTENT_HOME=false
+SANDBOX_GPU=false
+SANDBOX_WORKTREE_RW=false
+CODEX_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+    if sandbox_parse_option "$@"; then
+        shift "$SANDBOX_SHIFT"
+        continue
+    elif [[ $? -eq 2 ]]; then
+        exit 1  # Parse error
+    fi
+    CODEX_ARGS+=("$1")
+    shift
+done
+
+# ============================================================================
+# Setup Sandbox
+# ============================================================================
+
+sandbox_init
+
+[[ "$SANDBOX_GPU" == true ]] && sandbox_add_gpu_devices
+
+# Mount main git directory for worktree support
+WORKTREE_MAIN=$(sandbox_get_worktree_main)
+if [[ -n "$WORKTREE_MAIN" ]]; then
+    if [[ "$SANDBOX_WORKTREE_RW" == true ]]; then
+        sandbox_add_bind "$WORKTREE_MAIN"
+    else
+        sandbox_add_ro_bind "$WORKTREE_MAIN"
+    fi
+fi
+
+sandbox_add_rust_toolchain
+sandbox_add_shell_configs
+
+# Setup home directory mode
+if [[ "$SANDBOX_PERSISTENT_HOME" == true ]]; then
+    SANDBOX_HOME=$(sandbox_get_persistent_home "$PROJECT_ROOT")
+    mkdir -p "$SANDBOX_HOME" 2>/dev/null
+    HOME_MODE="bind:$SANDBOX_HOME"
+else
+    HOME_MODE="ephemeral"
+fi
+
+# Codex-specific directories
+mkdir -p "$HOME/.codex"
+sandbox_add_bind "$HOME/.codex"
+
+# Bind codex binary
+SANDBOX_OPTIONAL_BINDS+=(--ro-bind "$CODEX_BIN" "$HOME/.local/bin/codex")
+
+# ============================================================================
+# Execute
+# ============================================================================
+
+sandbox_build_cmd "$PROJECT_ROOT" "$HOME_MODE" codex "${CODEX_ARGS[@]}"
+exec "${SANDBOX_BWRAP_CMD[@]}"
