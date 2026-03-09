@@ -6,7 +6,7 @@
     "commit": "",
     "pr": ""
   },
-  "model": "us.anthropic.claude-opus-4-6-v1",
+  "model": "us.anthropic.claude-opus-4-6-v1[1m]",
   "hooks": {
     "Stop": [
       {
@@ -15,5 +15,6 @@
       }
     ]
   },
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true
 }
