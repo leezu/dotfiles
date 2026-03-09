@@ -261,7 +261,8 @@
   :hook (org-mode . visual-fill-column-mode)
   :config
   (setq-default visual-fill-column-width 100
-		visual-fill-column-center-text t))
+		visual-fill-column-center-text t)
+  (add-hook 'visual-fill-column-mode-hook #'visual-line-mode))
 
 (use-package writeroom-mode
   :ensure t)
