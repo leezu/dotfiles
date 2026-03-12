@@ -8,6 +8,7 @@
 (setq use-package-always-ensure nil  ; set to t on OS that doesn't package elpa
       help-window-select t  ; switch to help buffer when opened
       )
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ; Builtin functionality
 (use-package recentf
