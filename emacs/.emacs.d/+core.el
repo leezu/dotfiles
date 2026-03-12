@@ -8,6 +8,7 @@
 (setq use-package-always-ensure nil  ; set to t on OS that doesn't package elpa
       help-window-select t  ; switch to help buffer when opened
       )
+(global-visual-line-mode 1)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ; Builtin functionality
@@ -30,6 +31,12 @@
   :config
   (evil-mode 1)
   (setq evil-emacs-state-modes (append evil-emacs-state-modes '(eat-mode magit-mode dired-mode info-mode)))
+  ;; Improved movement in visual-line-mode
+  (define-key evil-normal-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-next-line>") 'evil-next-visual-line)
+  (define-key evil-motion-state-map (kbd "<remap> <evil-previous-line>") 'evil-previous-visual-line)
+  (setq evil-cross-lines t)
   (add-hook 'magit-blame-mode-hook
             (lambda ()
               (if magit-blame-mode

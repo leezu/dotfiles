@@ -258,11 +258,12 @@
 
 (use-package visual-fill-column
   :ensure t
-  :hook (org-mode . visual-fill-column-mode)
+  :hook
+  (org-mode . visual-fill-column-mode)
+  (markdown-mode . visual-fill-column-mode)
   :config
   (setq-default visual-fill-column-width 100
-		visual-fill-column-center-text t)
-  (add-hook 'visual-fill-column-mode-hook #'visual-line-mode))
+		visual-fill-column-center-text t))
 
 (use-package writeroom-mode
   :ensure t)
