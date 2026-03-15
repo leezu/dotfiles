@@ -6,10 +6,18 @@
 # only the current project directory is accessible (read-write), preventing
 # accidental modification or deletion of files outside the project.
 #
+# Key Features:
+# - Sandboxing: Uses bubblewrap to isolate Codex from the rest of your system
+# - Project isolation: Only current directory + ~/.codex are writable
+# - Auto-download: Fetches the standalone GitHub release binary if not present
+# - Auto-update: Checks for new releases once per day
+#
 # Usage:
 #   codex [OPTIONS] [CODEX_ARGS...]
 #
 # Options:
+#   --force-update        Force update check and re-download
+#   --install-only        Download/update codex-bin then exit
 #   --bind SRC DEST       Add writable bind mount to sandbox
 #   --ro-bind SRC DEST    Add read-only bind mount to sandbox
 #   --gpu                 Enable GPU device passthrough
@@ -17,33 +25,156 @@
 #   --persistent-home     Use persistent home directory (mirrors project path)
 #
 # Requirements:
-#   - bubblewrap (bwrap)
-#   - codex-bin at ~/.local/bin/codex-bin
-#   - Must be run from within a git repo
+#   - curl and tar to download standalone release binaries
+#   - bubblewrap (bwrap) to run sandboxed sessions
+#   - Must be run from within a git repo unless using --install-only
 
 # Source common sandbox library
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 source "$SCRIPT_DIR/sandbox-lib.sh"
 
-# Check for required dependencies
-sandbox_check_deps bwrap || exit 1
-
 CODEX_BIN="$HOME/.local/bin/codex-bin"
-if [[ ! -f "$CODEX_BIN" ]]; then
-    echo "Error: codex-bin not found at $CODEX_BIN" >&2
-    exit 1
-fi
+CODEX_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/codex-wrapper"
+VERSION_FILE="$CODEX_CACHE_DIR/version"
+LAST_CHECK_FILE="$CODEX_CACHE_DIR/last_check"
+LATEST_RELEASE_URL="https://github.com/openai/codex/releases/latest"
+RELEASE_DOWNLOAD_BASE="https://github.com/openai/codex/releases/download"
 
-# Check for project root
-PROJECT_ROOT=$(sandbox_find_project_root .git) || {
-    echo "No project root found (looking for .git)" >&2
-    exit 1
+get_latest_release_tag() {
+    curl -fsSL -o /dev/null -w '%{url_effective}' "$LATEST_RELEASE_URL" 2>/dev/null \
+        | sed 's:/*$::' \
+        | awk -F/ '{print $NF}'
+}
+
+get_codex_target() {
+    local os arch
+    os=$(uname -s)
+    arch=$(uname -m)
+
+    case "$os" in
+        Linux)
+            case "$arch" in
+                x86_64) echo "x86_64-unknown-linux-musl" ;;
+                aarch64|arm64) echo "aarch64-unknown-linux-musl" ;;
+                *) echo "Unsupported architecture: $arch" >&2; return 1 ;;
+            esac
+            ;;
+        Darwin)
+            case "$arch" in
+                x86_64) echo "x86_64-apple-darwin" ;;
+                arm64) echo "aarch64-apple-darwin" ;;
+                *) echo "Unsupported architecture: $arch" >&2; return 1 ;;
+            esac
+            ;;
+        *)
+            echo "Unsupported OS: $os" >&2
+            return 1
+            ;;
+    esac
+}
+
+detect_installed_release_tag() {
+    [[ -x "$CODEX_BIN" ]] || return 1
+
+    local raw semver
+    raw=$("$CODEX_BIN" --version 2>/dev/null | head -n1) || return 1
+    semver=$(printf '%s\n' "$raw" | grep -Eo 'v?[0-9]+(\.[0-9]+)+([-.][[:alnum:].]+)?' | head -n1)
+    [[ -n "$semver" ]] || return 1
+
+    semver="${semver#rust-}"
+    [[ "$semver" == v* ]] || semver="v$semver"
+    printf 'rust-%s\n' "$semver"
+}
+
+seed_version_file_from_binary() {
+    [[ -f "$VERSION_FILE" ]] && return 0
+
+    local detected
+    detected=$(detect_installed_release_tag) || return 0
+
+    mkdir -p "$CODEX_CACHE_DIR"
+    printf '%s\n' "$detected" > "$VERSION_FILE"
+}
+
+check_for_updates() {
+    local now last current latest
+    now=$(date +%s)
+    last=$(cat "$LAST_CHECK_FILE" 2>/dev/null || echo 0)
+
+    if (( now - last < 86400 )); then
+        return 0
+    fi
+
+    current=$(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")
+    latest=$(get_latest_release_tag)
+
+    mkdir -p "$CODEX_CACHE_DIR"
+    printf '%s\n' "$now" > "$LAST_CHECK_FILE"
+
+    if [[ -n "$latest" && "$current" != "$latest" ]]; then
+        echo "Codex update available: $current -> $latest" >&2
+        rm -f "$VERSION_FILE"
+    fi
+}
+
+download_codex() {
+    local version target asset url tmpdir archive extracted_bin
+
+    echo "Downloading standalone codex binary from GitHub releases..." >&2
+
+    version=$(get_latest_release_tag)
+    if [[ -z "$version" ]]; then
+        echo "Failed to determine the latest Codex release tag" >&2
+        return 1
+    fi
+
+    target=$(get_codex_target) || return 1
+    asset="codex-$target.tar.gz"
+    url="$RELEASE_DOWNLOAD_BASE/$version/$asset"
+
+    tmpdir=$(mktemp -d) || return 1
+    archive="$tmpdir/$asset"
+    extracted_bin="$tmpdir/codex-$target"
+
+    mkdir -p "$HOME/.local/bin"
+    echo "Downloading Codex release $version ($target)" >&2
+    if ! curl -fSL --progress-bar "$url" -o "$archive"; then
+        rm -rf "$tmpdir"
+        return 1
+    fi
+
+    if ! tar -xzf "$archive" -C "$tmpdir"; then
+        rm -rf "$tmpdir"
+        return 1
+    fi
+
+    if [[ ! -f "$extracted_bin" ]]; then
+        extracted_bin=$(find "$tmpdir" -maxdepth 2 -type f -name 'codex*' ! -name '*.tar.gz' | head -n1)
+    fi
+
+    if [[ -z "$extracted_bin" || ! -f "$extracted_bin" ]]; then
+        echo "Downloaded archive did not contain an extracted codex binary" >&2
+        rm -rf "$tmpdir"
+        return 1
+    fi
+
+    chmod +x "$extracted_bin"
+    mv "$extracted_bin" "$CODEX_BIN.tmp"
+    mv "$CODEX_BIN.tmp" "$CODEX_BIN"
+
+    mkdir -p "$CODEX_CACHE_DIR"
+    printf '%s\n' "$version" > "$VERSION_FILE"
+
+    rm -rf "$tmpdir"
+    echo "Downloaded codex to $CODEX_BIN" >&2
 }
 
 # ============================================================================
 # Argument Parsing
 # ============================================================================
 
+FORCE_UPDATE=false
+INSTALL_ONLY=false
 SANDBOX_CUSTOM_BINDS=()
 SANDBOX_PERSISTENT_HOME=false
 SANDBOX_GPU=false
@@ -57,9 +188,57 @@ while [[ $# -gt 0 ]]; do
     elif [[ $? -eq 2 ]]; then
         exit 1  # Parse error
     fi
-    CODEX_ARGS+=("$1")
-    shift
+    case "$1" in
+        --force-update)
+            FORCE_UPDATE=true
+            shift
+            ;;
+        --install-only)
+            INSTALL_ONLY=true
+            shift
+            ;;
+        *)
+            CODEX_ARGS+=("$1")
+            shift
+            ;;
+    esac
 done
+
+# ============================================================================
+# Handle Updates and Downloads
+# ============================================================================
+
+sandbox_check_deps curl tar || exit 1
+
+if [[ "$FORCE_UPDATE" == true ]]; then
+    echo "Forcing Codex update..." >&2
+    echo "Updating from version $(cat "$VERSION_FILE" 2>/dev/null || echo "unknown")" >&2
+    rm -f "$VERSION_FILE"
+else
+    seed_version_file_from_binary
+fi
+
+if [[ -f "$CODEX_BIN" && "$FORCE_UPDATE" != true ]]; then
+    check_for_updates
+fi
+
+if [[ ! -f "$CODEX_BIN" ]] || [[ ! -f "$VERSION_FILE" ]]; then
+    download_codex || exit 1
+fi
+
+if [[ "$INSTALL_ONLY" == true ]]; then
+    echo "Install/update complete. Codex binary at: $CODEX_BIN" >&2
+    exit 0
+fi
+
+# Check for required dependencies
+sandbox_check_deps bwrap || exit 1
+
+# Check for project root
+PROJECT_ROOT=$(sandbox_find_project_root .git) || {
+    echo "No project root found (looking for .git)" >&2
+    exit 1
+}
 
 # ============================================================================
 # Setup Sandbox

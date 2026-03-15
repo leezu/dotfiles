@@ -20,5 +20,5 @@ jobs:
           apt-get update
           apt-get install -y bats bubblewrap
 
-      - name: Run sandbox tests
-        run: bats shell/.local/bin/tests/sandbox.bats
+      - name: Run shell wrapper tests
+        run: bats shell/.local/bin/tests
