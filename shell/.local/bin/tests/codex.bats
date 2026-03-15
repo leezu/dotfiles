@@ -153,6 +153,20 @@ EOF
     [[ ! -e "$TEST_STATE_DIR/tar.log" ]]
 }
 
+@test "codex runs inside sandbox-project roots without a git repo" {
+    write_codex_bin "0.114.0"
+    install_mock_curl
+    install_mock_tar
+    install_mock_bwrap
+    touch "$PROJECT_DIR/.sandbox-project"
+
+    cd "$PROJECT_DIR"
+    run "$CODEX_SCRIPT" --help
+
+    [ "$status" -eq 0 ]
+    [[ -e "$TEST_STATE_DIR/bwrap.log" ]]
+}
+
 @test "stale cached version triggers auto-update on install-only" {
     write_codex_bin "0.100.0"
     install_mock_curl

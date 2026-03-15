@@ -59,6 +59,18 @@ teardown() {
     [ "$status" -eq 1 ]
 }
 
+@test "find project root: sandbox-project marker" {
+    local marker_root
+    marker_root="$(mktemp -d)"
+    mkdir -p "$marker_root/subdir"
+    touch "$marker_root/.sandbox-project"
+    cd "$marker_root/subdir"
+    run sandbox_find_project_root .git .sandbox-project
+    [ "$status" -eq 0 ]
+    [ "$output" = "$marker_root" ]
+    rm -rf "$marker_root"
+}
+
 @test "find project root: nested repos finds highest" {
     mkdir -p "$TEST_PROJECT/nested/.git"
     cd "$TEST_PROJECT/nested"

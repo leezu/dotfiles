@@ -27,7 +27,8 @@
 # Requirements:
 #   - curl and tar to download standalone release binaries
 #   - bubblewrap (bwrap) to run sandboxed sessions
-#   - Must be run from within a git repo unless using --install-only
+#   - Must be run from within a git repo or directory with .sandbox-project
+#     unless using --install-only
 
 # Source common sandbox library
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
@@ -235,8 +236,8 @@ fi
 sandbox_check_deps bwrap || exit 1
 
 # Check for project root
-PROJECT_ROOT=$(sandbox_find_project_root .git) || {
-    echo "No project root found (looking for .git)" >&2
+PROJECT_ROOT=$(sandbox_find_project_root .git .sandbox-project) || {
+    echo "No project root found (looking for .git or .sandbox-project)" >&2
     exit 1
 }
 

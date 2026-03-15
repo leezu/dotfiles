@@ -6,7 +6,7 @@
 # only the current project directory is accessible (read-write), preventing
 # accidental modification or deletion of files outside the project (e.g., your
 # entire home directory). The script enforces that you run it from within a
-# project folder (.git or .claude-project) to avoid inadvertent exposure.
+# project folder (.git or .sandbox-project) to avoid inadvertent exposure.
 #
 # Key Features:
 # - **Sandboxing**: Uses bubblewrap to isolate Claude from the rest of your system
@@ -28,7 +28,7 @@
 #
 # Requirements:
 #   - bubblewrap (bwrap)
-#   - Must be run from within a git repo or directory with .claude-project
+#   - Must be run from within a git repo or directory with .sandbox-project
 
 # Source common sandbox library
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
@@ -38,8 +38,8 @@ source "$SCRIPT_DIR/sandbox-lib.sh"
 sandbox_check_deps bwrap curl || exit 1
 
 # Check for project root
-PROJECT_ROOT=$(sandbox_find_project_root .git .claude-project) || {
-    echo "No project root found" >&2
+PROJECT_ROOT=$(sandbox_find_project_root .git .sandbox-project) || {
+    echo "No project root found (looking for .git or .sandbox-project)" >&2
     exit 1
 }
 
