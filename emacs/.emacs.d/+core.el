@@ -155,4 +155,13 @@
 (use-package dirvish
   :ensure t  ; download
   :config
-  (dirvish-override-dired-mode))
+  (dirvish-override-dired-mode)
+  (setq dirvish-attributes '(git-msg file-size))
+  ;; dirvish hardcodes git-msg to subject only; patch in date
+  (advice-add 'dirvish--make-proc :filter-args
+              (lambda (args)
+                (setcar args (cl-subst "git log -1 --date=short '--pretty=%%cd  %%s' %s"
+                                       "git log -1 --pretty=%%s %s"
+                                       (car args) :test #'equal))
+                args))
+  (define-key dired-mode-map (kbd "L") #'magit-dired-log))
