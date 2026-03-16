@@ -10,7 +10,7 @@
 ;; Language server support
 (use-package eglot
   :hook ((python-ts-mode . eglot-ensure)
-	 (rust-mode . eglot-ensure)
+	 (rust-ts-mode . eglot-ensure)
 	 (emacs-lisp-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs `(python-ts-mode . ("rass" "python"))))
@@ -29,8 +29,8 @@
   (setq major-mode-remap-alist
 	'((c-mode . c-ts-mode)
 	  (python-mode . python-ts-mode)
-	  (rust-mode . rust-ts-mode)
-	  )))
+	  ))
+  (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
   ;; Install missing tree-sitter grammars
   (dolist (lang (mapcar #'car treesit-language-source-alist))
     (unless (treesit-language-available-p lang)
