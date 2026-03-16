@@ -25,12 +25,14 @@
 	'((c . ("https://github.com/tree-sitter/tree-sitter-c" "v0.23.6"))
 	  (python . ("https://github.com/tree-sitter/tree-sitter-python" "v0.23.6"))
 	  (rust . ("https://github.com/tree-sitter/tree-sitter-rust" "v0.23.3"))
+	  (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.23.4"))
 	  ))
   (setq major-mode-remap-alist
 	'((c-mode . c-ts-mode)
 	  (python-mode . python-ts-mode)
 	  ))
   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
   ;; Install missing tree-sitter grammars
   (dolist (lang (mapcar #'car treesit-language-source-alist))
     (unless (treesit-language-available-p lang)
