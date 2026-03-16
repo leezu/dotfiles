@@ -31,6 +31,10 @@
 	  (python-mode . python-ts-mode)
 	  (rust-mode . rust-ts-mode)
 	  )))
+  ;; Install missing tree-sitter grammars
+  (dolist (lang (mapcar #'car treesit-language-source-alist))
+    (unless (treesit-language-available-p lang)
+      (treesit-install-language-grammar lang))))
 
 ;; LaTeX
 (use-package auctex
