@@ -1,5 +1,15 @@
 # Setup git push_to_checkout on a remote server
+# Usage: git_setup_push_to_checkout user@host:/path
 
-ssh -t $1 "cd $2; git config receive.denyCurrentBranch updateInstead"
-ssh -t $1 "cd $2; echo 'git read-tree -u -m HEAD \"\$1\"' > .git/hooks/push-to-checkout"
-ssh -t $1 "cd $2; chmod +x .git/hooks/push-to-checkout"
+if [[ $# -ne 1 || "$1" != *:* ]]; then
+  echo "Usage: git_setup_push_to_checkout user@host:/path" >&2
+  return 1
+fi
+
+local remote="${1%%:*}"
+local dir="${1#*:}"
+
+ssh -t "$remote" "cd $dir &&
+  git config receive.denyCurrentBranch updateInstead &&
+  printf '#!/bin/sh\ngit read-tree -u -m HEAD \"\$1\"\n' > .git/hooks/push-to-checkout &&
+  chmod +x .git/hooks/push-to-checkout"
