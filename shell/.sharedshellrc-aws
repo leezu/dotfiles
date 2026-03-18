@@ -1,4 +1,14 @@
-# Cuda
-export PATH="/usr/local/cuda/bin:$PATH"
-export LD_LIBRARY_PATH=/usr/local/cuda/lib:/usr/local/cuda/lib64:/usr/local/lib:$LD_LIBRARY_PATH
-export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+# CUDA
+if [ -d /usr/local/cuda ]; then
+    export PATH="/usr/local/cuda/bin:$PATH"
+    export LD_LIBRARY_PATH="/usr/local/cuda/lib:/usr/local/cuda/lib64:/usr/local/lib:$LD_LIBRARY_PATH"
+    export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
+fi
+
+# AWS Neuron
+if [ -d /opt/aws/neuron ]; then
+    export PATH="/opt/aws/neuron/bin:$PATH"
+fi
+
+# Always use Bedrock on AWS instances
+export CLAUDE_CODE_USE_BEDROCK=1
