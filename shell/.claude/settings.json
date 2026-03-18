@@ -10,8 +10,12 @@
   "hooks": {
     "Stop": [
       {
-        "matcher": "",
-        "hooks": []
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '\\a'"
+          }
+        ]
       }
     ]
   },
