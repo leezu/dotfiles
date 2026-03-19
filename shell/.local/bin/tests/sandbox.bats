@@ -174,6 +174,14 @@ teardown() {
     [ "$SANDBOX_GPU" = "true" ]
 }
 
+@test "sandbox_parse_option handles --neuron" {
+    SANDBOX_NEURON=false
+    sandbox_parse_option --neuron
+    [ "$?" -eq 0 ]
+    [ "$SANDBOX_SHIFT" -eq 1 ]
+    [ "$SANDBOX_NEURON" = "true" ]
+}
+
 @test "sandbox_parse_option returns 1 for unknown option" {
     run sandbox_parse_option --unknown
     [ "$status" -eq 1 ]

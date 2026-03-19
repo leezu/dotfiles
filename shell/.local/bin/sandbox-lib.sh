@@ -202,6 +202,29 @@ sandbox_add_gpu_devices() {
     SANDBOX_DEVICE_BINDS+=(--dev-bind-try /proc/driver/nvidia /proc/driver/nvidia)
 }
 
+# Add AWS Neuron device mounts (Inferentia/Trainium)
+sandbox_add_neuron_devices() {
+    SANDBOX_DEVICE_BINDS=()
+
+    # Neuron runtime devices (up to 16)
+    for i in {0..15}; do
+        sandbox_add_dev_bind_try "/dev/neuron$i" "/dev/neuron$i"
+    done
+
+    # EFA / InfiniBand devices (up to 16)
+    for i in {0..15}; do
+        sandbox_add_dev_bind_try "/dev/infiniband/uverbs$i" "/dev/infiniband/uverbs$i"
+    done
+
+    # Neuron SDK / runtime (read-only)
+    SANDBOX_OPTIONAL_BINDS+=(--ro-bind-try /opt/aws/neuron /opt/aws/neuron)
+
+    # Neuron sysfs — broad mount needed because /sys/bus/pci/devices/ symlinks
+    # resolve into /sys/devices/pci* trees (varies per machine) and the Neuron
+    # driver reads PCI topology (local_cpulist, infiniband, etc.)
+    SANDBOX_OPTIONAL_BINDS+=(--ro-bind-try /sys /sys)
+}
+
 # ============================================================================
 # Persistent Home
 # ============================================================================
@@ -285,6 +308,9 @@ sandbox_parse_option() {
             SANDBOX_SHIFT=1 ;;
         --gpu)
             SANDBOX_GPU=true
+            SANDBOX_SHIFT=1 ;;
+        --neuron)
+            SANDBOX_NEURON=true
             SANDBOX_SHIFT=1 ;;
         --worktree-rw)
             SANDBOX_WORKTREE_RW=true

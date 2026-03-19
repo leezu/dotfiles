@@ -23,6 +23,7 @@
 #   --bind SRC DEST       Add writable bind mount to sandbox
 #   --ro-bind SRC DEST    Add read-only bind mount to sandbox
 #   --gpu                 Enable GPU device passthrough
+#   --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
 #   --worktree-rw         Mount main git repo read-write for worktree commits
 #   --persistent-home     Use persistent home directory (mirrors project path)
 #
@@ -140,6 +141,7 @@ INSTALL_ONLY=false
 SANDBOX_CUSTOM_BINDS=()
 SANDBOX_PERSISTENT_HOME=false
 SANDBOX_GPU=false
+SANDBOX_NEURON=false
 SANDBOX_WORKTREE_RW=false
 CLAUDE_ARGS=()
 
@@ -196,6 +198,7 @@ sandbox_init
 
 # Add GPU devices if requested
 [[ "$SANDBOX_GPU" == true ]] && sandbox_add_gpu_devices
+[[ "$SANDBOX_NEURON" == true ]] && sandbox_add_neuron_devices
 
 # Mount main git directory for worktree support
 WORKTREE_MAIN=$(sandbox_get_worktree_main)

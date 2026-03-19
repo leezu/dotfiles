@@ -23,6 +23,7 @@
 #   --device PATH         Add device access (e.g., /dev/ttyUSB0)
 #   --persistent-home     Use persistent home directory (mirrors project path)
 #   --gpu                 Enable GPU device passthrough
+#   --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
 #   --worktree-rw         Mount main git repo read-write for worktree commits
 #   -h, --help            Show this help
 #
@@ -55,6 +56,7 @@ Options:
     --device PATH         Add device access (e.g., /dev/ttyUSB0)
     --persistent-home     Use persistent home directory (mirrors project path)
     --gpu                 Enable GPU device passthrough
+    --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
     --worktree-rw         Mount main git repo read-write for worktree commits
     -h, --help            Show this help
 
@@ -62,6 +64,7 @@ Examples:
     sandbox-enter                              # Enter interactive sandbox shell
     sandbox-enter --persistent-home            # Enable persistent home directory
     sandbox-enter --gpu                        # Enable GPU access
+    sandbox-enter --neuron                     # Enable Neuron device access
     sandbox-enter --bind ~/.cache/pip ~/.cache/pip   # Add writable pip cache
     sandbox-enter --device /dev/ttyUSB0        # Add serial device access
     sandbox-enter -- make build                # Run 'make build' in sandbox
@@ -81,6 +84,7 @@ EOF
 SANDBOX_CUSTOM_BINDS=()
 SANDBOX_PERSISTENT_HOME=false
 SANDBOX_GPU=false
+SANDBOX_NEURON=false
 SANDBOX_WORKTREE_RW=false
 CUSTOM_DEVICES=()
 EXEC_CMD=()
@@ -131,6 +135,9 @@ sandbox_init
 
 # Add GPU devices if requested
 [[ "$SANDBOX_GPU" == true ]] && sandbox_add_gpu_devices
+
+# Add Neuron devices if requested
+[[ "$SANDBOX_NEURON" == true ]] && sandbox_add_neuron_devices
 
 # Mount main git directory for worktree support
 WORKTREE_MAIN=$(sandbox_get_worktree_main)
