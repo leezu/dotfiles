@@ -182,6 +182,14 @@ teardown() {
     [ "$SANDBOX_NEURON" = "true" ]
 }
 
+@test "sandbox_parse_option handles --dev" {
+    SANDBOX_DEV=false
+    sandbox_parse_option --dev
+    [ "$?" -eq 0 ]
+    [ "$SANDBOX_SHIFT" -eq 1 ]
+    [ "$SANDBOX_DEV" = "true" ]
+}
+
 @test "sandbox_parse_option returns 1 for unknown option" {
     run sandbox_parse_option --unknown
     [ "$status" -eq 1 ]

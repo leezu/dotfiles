@@ -24,6 +24,7 @@
 #   --persistent-home     Use persistent home directory (mirrors project path)
 #   --gpu                 Enable GPU device passthrough
 #   --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
+#   --dev                 Mount all host /dev and /sys into sandbox
 #   --worktree-rw         Mount main git repo read-write for worktree commits
 #   -h, --help            Show this help
 #
@@ -57,6 +58,7 @@ Options:
     --persistent-home     Use persistent home directory (mirrors project path)
     --gpu                 Enable GPU device passthrough
     --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
+    --dev                 Mount all host /dev and /sys into sandbox
     --worktree-rw         Mount main git repo read-write for worktree commits
     -h, --help            Show this help
 
@@ -65,6 +67,7 @@ Examples:
     sandbox-enter --persistent-home            # Enable persistent home directory
     sandbox-enter --gpu                        # Enable GPU access
     sandbox-enter --neuron                     # Enable Neuron device access
+    sandbox-enter --dev                        # Mount all /dev and /sys
     sandbox-enter --bind ~/.cache/pip ~/.cache/pip   # Add writable pip cache
     sandbox-enter --device /dev/ttyUSB0        # Add serial device access
     sandbox-enter -- make build                # Run 'make build' in sandbox
@@ -85,6 +88,7 @@ SANDBOX_CUSTOM_BINDS=()
 SANDBOX_PERSISTENT_HOME=false
 SANDBOX_GPU=false
 SANDBOX_NEURON=false
+SANDBOX_DEV=false
 SANDBOX_WORKTREE_RW=false
 CUSTOM_DEVICES=()
 EXEC_CMD=()

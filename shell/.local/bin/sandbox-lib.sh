@@ -310,6 +310,9 @@ sandbox_parse_option() {
         --neuron)
             SANDBOX_NEURON=true
             SANDBOX_SHIFT=1 ;;
+        --dev)
+            SANDBOX_DEV=true
+            SANDBOX_SHIFT=1 ;;
         --worktree-rw)
             SANDBOX_WORKTREE_RW=true
             SANDBOX_SHIFT=1 ;;
@@ -353,9 +356,14 @@ sandbox_build_cmd() {
         --tmpfs /tmp
         --tmpfs /run
         --proc /proc
-        --dev /dev
-        "${SANDBOX_DEVICE_BINDS[@]}"
     )
+
+    # Mount /dev: full host passthrough or minimal synthetic + explicit devices
+    if [[ "${SANDBOX_DEV:-false}" == true ]]; then
+        SANDBOX_BWRAP_CMD+=(--dev-bind /dev /dev --bind /sys /sys)
+    else
+        SANDBOX_BWRAP_CMD+=(--dev /dev "${SANDBOX_DEVICE_BINDS[@]}")
+    fi
 
     # Add home directory based on mode
     if [[ "$home_mode" == "ephemeral" ]]; then

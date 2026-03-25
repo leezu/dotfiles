@@ -24,6 +24,7 @@
 #   --ro-bind SRC DEST    Add read-only bind mount to sandbox
 #   --gpu                 Enable GPU device passthrough
 #   --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
+#   --dev                 Mount all host /dev and /sys into sandbox
 #   --worktree-rw         Mount main git repo read-write for worktree commits
 #   --persistent-home     Use persistent home directory (mirrors project path)
 #
@@ -142,6 +143,7 @@ SANDBOX_CUSTOM_BINDS=()
 SANDBOX_PERSISTENT_HOME=false
 SANDBOX_GPU=false
 SANDBOX_NEURON=false
+SANDBOX_DEV=false
 SANDBOX_WORKTREE_RW=false
 CLAUDE_ARGS=()
 
@@ -212,6 +214,7 @@ fi
 
 # Add Rust toolchain
 sandbox_add_rust_toolchain
+sandbox_add_latex_toolchain
 
 # Add shell configs (needed for persistent home mode)
 sandbox_add_shell_configs

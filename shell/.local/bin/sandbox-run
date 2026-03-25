@@ -15,6 +15,7 @@
 #   --persistent-home     Use persistent home directory (mirrors project path)
 #   --gpu                 Enable GPU device passthrough
 #   --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
+#   --dev                 Mount all host /dev and /sys into sandbox
 #   --worktree-rw         Mount main git repo read-write for worktree commits
 #   -h, --help            Show this help
 #
@@ -48,6 +49,7 @@ Options:
     --persistent-home     Use persistent home directory (mirrors project path)
     --gpu                 Enable GPU device passthrough
     --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
+    --dev                 Mount all host /dev and /sys into sandbox
     --worktree-rw         Mount main git repo read-write for worktree commits
     -h, --help            Show this help
 
@@ -62,6 +64,7 @@ SANDBOX_CUSTOM_BINDS=()
 SANDBOX_PERSISTENT_HOME=false
 SANDBOX_GPU=false
 SANDBOX_NEURON=false
+SANDBOX_DEV=false
 SANDBOX_WORKTREE_RW=false
 RUN_CMD=()
 
