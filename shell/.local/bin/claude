@@ -212,7 +212,7 @@ if [[ -n "$WORKTREE_MAIN" ]]; then
     fi
 fi
 
-# Add Rust toolchain
+# Add programming toolchains (read-only)
 sandbox_add_rust_toolchain
 sandbox_add_latex_toolchain
 
