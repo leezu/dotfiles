@@ -263,7 +263,8 @@
   (markdown-mode . visual-fill-column-mode)
   :config
   (setq-default visual-fill-column-width 100
-		visual-fill-column-center-text t))
+		visual-fill-column-center-text t)
+  (setq visual-fill-column-enable-sensible-window-split t))
 
 (use-package writeroom-mode
   :ensure t)
