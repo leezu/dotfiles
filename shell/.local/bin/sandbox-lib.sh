@@ -383,6 +383,7 @@ sandbox_build_cmd() {
         "${SANDBOX_ENV_VARS[@]}"
         --chdir "$(pwd)"
         --unshare-user
+        --unshare-pid
         --unshare-ipc
         --unshare-uts
         --unshare-cgroup
