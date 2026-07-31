@@ -167,6 +167,27 @@ EOF
     [[ -e "$TEST_STATE_DIR/bwrap.log" ]]
 }
 
+@test "--device passes a device through to the sandbox" {
+    write_codex_bin "0.114.0"
+    install_mock_curl
+    install_mock_tar
+    install_mock_bwrap
+    mkdir -p "$PROJECT_DIR/.git"
+
+    cd "$PROJECT_DIR"
+    run "$CODEX_SCRIPT" --device /dev/null --help
+
+    [ "$status" -eq 0 ]
+    [[ "$(cat "$TEST_STATE_DIR/bwrap.log")" == *"--dev-bind /dev/null /dev/null"* ]]
+}
+
+@test "--device requires a path" {
+    run "$CODEX_SCRIPT" --device
+
+    [ "$status" -eq 1 ]
+    [[ "$output" == *"Error: --device requires PATH"* ]]
+}
+
 @test "stale cached version triggers auto-update on install-only" {
     write_codex_bin "0.100.0"
     install_mock_curl

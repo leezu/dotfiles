@@ -20,6 +20,7 @@
 #   --install-only        Download/update codex-bin then exit
 #   --bind SRC DEST       Add writable bind mount to sandbox
 #   --ro-bind SRC DEST    Add read-only bind mount to sandbox
+#   --device PATH         Add device access (e.g., /dev/ttyUSB0)
 #   --gpu                 Enable GPU device passthrough
 #   --neuron              Enable AWS Neuron device passthrough (Inferentia/Trainium)
 #   --dev                 Mount all host /dev and /sys into sandbox
@@ -184,6 +185,7 @@ SANDBOX_GPU=false
 SANDBOX_NEURON=false
 SANDBOX_DEV=false
 SANDBOX_WORKTREE_RW=false
+CUSTOM_DEVICES=()
 CODEX_ARGS=()
 
 while [[ $# -gt 0 ]]; do
@@ -201,6 +203,11 @@ while [[ $# -gt 0 ]]; do
         --install-only)
             INSTALL_ONLY=true
             shift
+            ;;
+        --device)
+            [[ $# -lt 2 ]] && { echo "Error: --device requires PATH" >&2; exit 1; }
+            CUSTOM_DEVICES+=("$2")
+            shift 2
             ;;
         *)
             CODEX_ARGS+=("$1")
@@ -253,6 +260,11 @@ sandbox_init
 
 [[ "$SANDBOX_GPU" == true ]] && sandbox_add_gpu_devices
 [[ "$SANDBOX_NEURON" == true ]] && sandbox_add_neuron_devices
+
+# Add explicitly requested devices
+for dev in "${CUSTOM_DEVICES[@]}"; do
+    sandbox_add_dev_bind "$dev"
+done
 
 # Mount main git directory for worktree support
 WORKTREE_MAIN=$(sandbox_get_worktree_main)
