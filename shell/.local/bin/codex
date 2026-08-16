@@ -38,6 +38,9 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 source "$SCRIPT_DIR/sandbox-lib.sh"
 
 CODEX_BIN="$HOME/.local/bin/codex-bin"
+# Code Mode spawns this helper from the directory holding the codex
+# executable, so it must sit next to the sandboxed codex entrypoint.
+CODE_MODE_HOST_BIN="$HOME/.local/bin/codex-code-mode-host"
 CODEX_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/codex-wrapper"
 VERSION_FILE="$CODEX_CACHE_DIR/version"
 LAST_CHECK_FILE="$CODEX_CACHE_DIR/last_check"
@@ -121,27 +124,25 @@ check_for_updates() {
     fi
 }
 
-download_codex() {
-    local version target asset url tmpdir archive extracted_bin
-
-    echo "Downloading standalone codex binary from GitHub releases..." >&2
-
-    version=$(get_latest_release_tag)
-    if [[ -z "$version" ]]; then
-        echo "Failed to determine the latest Codex release tag" >&2
-        return 1
-    fi
+# Download a single release binary
+# Arguments:
+#   $1 - release tag
+#   $2 - binary (and release asset) name
+#   $3 - destination path
+download_release_binary() {
+    local version="$1" binary="$2" dest="$3"
+    local target asset url tmpdir archive extracted_bin
 
     target=$(get_codex_target) || return 1
-    asset="codex-$target.tar.gz"
+    asset="$binary-$target.tar.gz"
     url="$RELEASE_DOWNLOAD_BASE/$version/$asset"
 
     tmpdir=$(mktemp -d) || return 1
     archive="$tmpdir/$asset"
-    extracted_bin="$tmpdir/codex-$target"
+    extracted_bin="$tmpdir/$binary-$target"
 
-    mkdir -p "$HOME/.local/bin"
-    echo "Downloading Codex release $version ($target)" >&2
+    mkdir -p "$(dirname "$dest")"
+    echo "Downloading $binary release $version ($target)" >&2
     if ! curl -fSL --progress-bar "$url" -o "$archive"; then
         rm -rf "$tmpdir"
         return 1
@@ -153,24 +154,41 @@ download_codex() {
     fi
 
     if [[ ! -f "$extracted_bin" ]]; then
-        extracted_bin=$(find "$tmpdir" -maxdepth 2 -type f -name 'codex*' ! -name '*.tar.gz' | head -n1)
+        extracted_bin=$(find "$tmpdir" -maxdepth 2 -type f -name "$binary*" ! -name '*.tar.gz' | head -n1)
     fi
 
     if [[ -z "$extracted_bin" || ! -f "$extracted_bin" ]]; then
-        echo "Downloaded archive did not contain an extracted codex binary" >&2
+        echo "Downloaded archive did not contain an extracted $binary binary" >&2
         rm -rf "$tmpdir"
         return 1
     fi
 
     chmod +x "$extracted_bin"
-    mv "$extracted_bin" "$CODEX_BIN.tmp"
-    mv "$CODEX_BIN.tmp" "$CODEX_BIN"
+    mv "$extracted_bin" "$dest.tmp"
+    mv "$dest.tmp" "$dest"
+
+    rm -rf "$tmpdir"
+    echo "Downloaded $binary to $dest" >&2
+}
+
+download_codex() {
+    local version
+
+    echo "Downloading standalone codex binaries from GitHub releases..." >&2
+
+    version=$(get_latest_release_tag)
+    if [[ -z "$version" ]]; then
+        echo "Failed to determine the latest Codex release tag" >&2
+        return 1
+    fi
+
+    download_release_binary "$version" codex "$CODEX_BIN" || return 1
+    # Code Mode is mandatory for the gpt-5.6 models, and the host must come
+    # from the same release as the codex binary that speaks to it.
+    download_release_binary "$version" codex-code-mode-host "$CODE_MODE_HOST_BIN" || return 1
 
     mkdir -p "$CODEX_CACHE_DIR"
     printf '%s\n' "$version" > "$VERSION_FILE"
-
-    rm -rf "$tmpdir"
-    echo "Downloaded codex to $CODEX_BIN" >&2
 }
 
 # ============================================================================
@@ -234,7 +252,8 @@ if [[ -f "$CODEX_BIN" && "$FORCE_UPDATE" != true ]]; then
     check_for_updates
 fi
 
-if [[ ! -f "$CODEX_BIN" ]] || [[ ! -f "$VERSION_FILE" ]]; then
+if [[ ! -f "$CODEX_BIN" ]] || [[ ! -f "$CODE_MODE_HOST_BIN" ]] \
+    || [[ ! -f "$VERSION_FILE" ]]; then
     download_codex || exit 1
 fi
 
@@ -295,8 +314,11 @@ fi
 mkdir -p "$HOME/.codex"
 sandbox_add_bind "$HOME/.codex"
 
-# Bind codex binary
+# Bind codex binary and the Code Mode host next to it
 SANDBOX_OPTIONAL_BINDS+=(--ro-bind "$CODEX_BIN" "$HOME/.local/bin/codex")
+SANDBOX_OPTIONAL_BINDS+=(
+    --ro-bind "$CODE_MODE_HOST_BIN" "$HOME/.local/bin/codex-code-mode-host"
+)
 
 # ============================================================================
 # Execute

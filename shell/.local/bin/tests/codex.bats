@@ -123,6 +123,15 @@ write_codex_bin() {
 echo "codex $version"
 EOF
     chmod +x "$HOME/.local/bin/codex-bin"
+    write_code_mode_host_bin
+}
+
+write_code_mode_host_bin() {
+    cat > "$HOME/.local/bin/codex-code-mode-host" <<'EOF'
+#!/bin/bash
+echo "codex-code-mode-host"
+EOF
+    chmod +x "$HOME/.local/bin/codex-code-mode-host"
 }
 
 @test "install-only downloads codex-bin outside a git repo" {
@@ -135,7 +144,37 @@ EOF
     [ "$status" -eq 0 ]
     [[ "$output" == *"Install/update complete"* ]]
     [ -x "$HOME/.local/bin/codex-bin" ]
+    [ -x "$HOME/.local/bin/codex-code-mode-host" ]
     [ "$(cat "$HOME/.cache/codex-wrapper/version")" = "$MOCK_LATEST_TAG" ]
+}
+
+@test "missing code-mode host triggers a download" {
+    write_codex_bin "0.114.0"
+    rm -f "$HOME/.local/bin/codex-code-mode-host"
+    install_mock_curl
+    install_mock_tar
+    install_mock_bwrap
+    mkdir -p "$PROJECT_DIR/.git"
+
+    cd "$PROJECT_DIR"
+    run "$CODEX_SCRIPT" --help
+
+    [ "$status" -eq 0 ]
+    [ -x "$HOME/.local/bin/codex-code-mode-host" ]
+}
+
+@test "code-mode host is bound into the sandbox" {
+    write_codex_bin "0.114.0"
+    install_mock_curl
+    install_mock_tar
+    install_mock_bwrap
+    mkdir -p "$PROJECT_DIR/.git"
+
+    cd "$PROJECT_DIR"
+    run "$CODEX_SCRIPT" --help
+
+    [ "$status" -eq 0 ]
+    [[ "$(cat "$TEST_STATE_DIR/bwrap.log")" == *"--ro-bind $HOME/.local/bin/codex-code-mode-host $HOME/.local/bin/codex-code-mode-host"* ]]
 }
 
 @test "existing codex-bin seeds missing version file without downloading" {
