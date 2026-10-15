@@ -350,6 +350,25 @@ sandbox_build_cmd() {
     shift 2
     local cmd=("$@")
 
+    # A later parent mount hides earlier child mounts. Put custom ancestors
+    # before the writable project, but keep mounts inside the project after it
+    # so explicit read-only subdirectories still work. Compare destinations,
+    # including trailing slashes and symlink aliases.
+    local project_path dest i
+    local parent_binds=() remaining_binds=()
+    project_path="$(realpath -m -- "$project_dir")" || return 1
+    for ((i = 0; i < ${#SANDBOX_CUSTOM_BINDS[@]}; i += 3)); do
+        # Bubblewrap resolves relative destinations from the sandbox root.
+        dest="${SANDBOX_CUSTOM_BINDS[i+2]}"
+        dest="$(realpath -m -- "/${dest#/}")" || return 1
+        if [[ "$dest" != "$project_path" &&
+              ( "$dest" == / || "$project_path" == "$dest/"* ) ]]; then
+            parent_binds+=("${SANDBOX_CUSTOM_BINDS[@]:i:3}")
+        else
+            remaining_binds+=("${SANDBOX_CUSTOM_BINDS[@]:i:3}")
+        fi
+    done
+
     SANDBOX_BWRAP_CMD=(
         bwrap
         "${SANDBOX_SYSTEM_BINDS[@]}"
@@ -378,8 +397,9 @@ sandbox_build_cmd() {
 
     SANDBOX_BWRAP_CMD+=(
         "${SANDBOX_OPTIONAL_BINDS[@]}"
+        "${parent_binds[@]}"
         --bind "$project_dir" "$project_dir"
-        "${SANDBOX_CUSTOM_BINDS[@]}"
+        "${remaining_binds[@]}"
         "${SANDBOX_ENV_VARS[@]}"
         --chdir "$(pwd)"
         --unshare-user

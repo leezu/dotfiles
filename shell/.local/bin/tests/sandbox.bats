@@ -143,6 +143,46 @@ teardown() {
 
 # === Integration Tests: sandbox-enter ===
 
+@test "read-only parent preserves writable project and read-only siblings and children" {
+    command -v bwrap >/dev/null || skip "bubblewrap unavailable"
+    bwrap --ro-bind / / --unshare-user -- /bin/true 2>/dev/null || skip "bubblewrap unavailable in this environment"
+
+    local parent="$TEST_PROJECT/Tax"
+    local project="$parent/US FBAR"
+    mkdir -p "$project/references" "$project/subdir" "$parent/returns"
+    printf 'return data\n' > "$parent/returns/input"
+    cd "$project/subdir"
+    sandbox_init
+    # A trailing slash must not prevent recognizing a parent destination.
+    SANDBOX_CUSTOM_BINDS=(
+        --ro-bind "$parent" "$parent/"
+        --ro-bind "$project/references" "$project/references"
+    )
+    local home_mode
+    for home_mode in ephemeral "bind:$HOME"; do
+        sandbox_build_cmd "$project" "$home_mode" /bin/bash -c '
+            set -e
+            printf "saved\n" > output
+            cat "$1/returns/input"
+            if touch "$1/returns/forbidden" 2>/dev/null; then exit 1; fi
+            if touch "$2/references/forbidden" 2>/dev/null; then exit 1; fi
+        ' bash "$parent" "$project"
+        run "${SANDBOX_BWRAP_CMD[@]}"
+        [ "$status" -eq 0 ]
+        [ "$output" = "return data" ]
+        [ "$(cat "$project/subdir/output")" = saved ]
+        rm "$project/subdir/output"
+    done
+}
+
+@test "explicit read-only project mount still takes precedence" {
+    cd "$TEST_PROJECT"
+    sandbox_init
+    SANDBOX_CUSTOM_BINDS=(--ro-bind "$TEST_PROJECT" "$TEST_PROJECT")
+    sandbox_build_cmd "$TEST_PROJECT" ephemeral bash
+    [[ " ${SANDBOX_BWRAP_CMD[*]} " == *"--bind $TEST_PROJECT $TEST_PROJECT --ro-bind $TEST_PROJECT $TEST_PROJECT"* ]]
+}
+
 @test "sandbox-enter outside project fails" {
     cd /tmp
     run "$SCRIPT_DIR/sandbox-enter"
