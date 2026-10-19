@@ -21,3 +21,11 @@
 	enabled = true
 [core]
 	hooksPath = ~/.githooks
+[sendemail]
+    smtpServer = devico.uberspace.de
+    smtpServerPort = 465
+    smtpEncryption = ssl
+    smtpUser = leonard@lausen.nl
+    from = Leonard Lausen <leonard@lausen.nl>
+    cc = leonard@lausen.nl
+    confirm = always
